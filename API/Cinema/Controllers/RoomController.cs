@@ -2,6 +2,7 @@
 using Cinema.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 
@@ -14,36 +15,40 @@ namespace Cinema.Controllers
         [HttpGet("getall")]
         public List<Room> GetAllRoom(int? name, int? status)
         {
+            
             conn.Open();
-            string sql = string.Format("select * from GetAllRoom a where (@Name is null or @Name = 0 or r.RName = @Name) and (@Status is null or r.RStatus = @Status) and isnull(IsDeleted, 0) = 0");
+            string sql = string.Format("select * from GetAllRoom");
 
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
-            sqlCommand.Parameters.AddWithValue("@Name", name);
-            sqlCommand.Parameters.AddWithValue("@Status", status);
-            SqlDataReader reader = sqlCommand.ExecuteReader();
-
+            DataTable data = new DataTable();
+            SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
+            adapter.Fill(data);
             var roomList = new List<Room>();
-            while (reader.Read())
+            foreach (DataRow i in data.Rows)
+            {
+                Room room = new Room(i);
+                roomList.Add(room);
+            }
+            //SqlDataReader reader = sqlCommand.ExecuteReader();
+            /*while (reader.Read())
             {
                 var room = new Room();
                 room.RId = (int)reader["RId"];
                 room.RName = (int)reader["RName"];
                 room.RStatus = (int)reader["RStatus"];
                 roomList.Add(room);
-            }
+            }*/
             conn.Close();
             return roomList.ToList();
         }
         [HttpPost("create")]
         public bool CreateRoom(int name, int creatorUserId)
         {
-
             conn.Open();
             string SQL = string.Format("exec CreateRoom @CreatorUserId = _CreatorUserId, @RName = _RName");
             SqlCommand sqlCommand = new SqlCommand(SQL, conn);
             sqlCommand.Parameters.AddWithValue("_CreatorUserId", creatorUserId);
             sqlCommand.Parameters.AddWithValue("_RName", name);
-
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();
             return false;

@@ -20,15 +20,15 @@ namespace Cinema.Controllers
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             sqlCommand.Parameters.AddWithValue("@Name", name);
             sqlCommand.Parameters.AddWithValue("@Status", status);
-            SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+            SqlDataReader reader = sqlCommand.ExecuteReader();
 
             var roomList = new List<Room>();
-            while (sqlDataReader.Read())
+            while (reader.Read())
             {
                 var room = new Room();
-                room.RId = (int)sqlDataReader["RId"];
-                room.RName = (int)sqlDataReader["RName"];
-                room.RStatus = (int)sqlDataReader["RStatus"];
+                room.RId = (int)reader["RId"];
+                room.RName = (int)reader["RName"];
+                room.RStatus = (int)reader["RStatus"];
                 roomList.Add(room);
             }
             conn.Close();

@@ -45,8 +45,8 @@ namespace Cinema.Controllers
         public bool CreateRoom(int name, int creatorUserId)
         {
             conn.Open();
-            string SQL = string.Format("exec CreateRoom @CreatorUserId = _CreatorUserId, @RName = _RName");
-            SqlCommand sqlCommand = new SqlCommand(SQL, conn);
+            string sql = string.Format("exec CreateRoom @CreatorUserId = _CreatorUserId, @RName = _RName");
+            SqlCommand sqlCommand = new SqlCommand(sql, conn);
             sqlCommand.Parameters.AddWithValue("_CreatorUserId", creatorUserId);
             sqlCommand.Parameters.AddWithValue("_RName", name);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
@@ -57,19 +57,8 @@ namespace Cinema.Controllers
         public bool UpdateRoom(int rId, int rName, int rStatus, int lastModifierUserId)
         {
             conn.Open();
-            string check = string.Format("select * from Room where RId = @id and isDelete = 0");
-            SqlCommand sqlCmd = new SqlCommand(check, conn);
-            sqlCmd.Parameters.AddWithValue("@id", rId);
-            SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
-            if (sqlDataReader.HasRows)
-            {
-                conn.Close();
-                return false;
-            }
-            conn.Close();
-            conn.Open();
-            string SQL = string.Format("exec UpdateRoom @LastModifierUserId = _LastModifierUserId, @RId = _RId, @RName = _RName, @RStatus = _RStatus");
-            SqlCommand sqlCommand = new SqlCommand(SQL, conn);
+            string sql = string.Format("exec UpdateRoom @LastModifierUserId = _LastModifierUserId, @RId = _RId, @RName = _RName, @RStatus = _RStatus");
+            SqlCommand sqlCommand = new SqlCommand(sql, conn);
             sqlCommand.Parameters.AddWithValue("_LastModifierUserId", lastModifierUserId);
             sqlCommand.Parameters.AddWithValue("_RId", rId);
             sqlCommand.Parameters.AddWithValue("_RName", rName);
@@ -83,20 +72,9 @@ namespace Cinema.Controllers
         public bool DeleteRoom(int rId, int deleterUserId)
         {
             conn.Open();
-            string check = string.Format("select * from Room where RId = @id and isDelete = 0");
-            SqlCommand sqlCmd = new SqlCommand(check, conn);
-            sqlCmd.Parameters.AddWithValue("@id", rId);
-            SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
-            if (sqlDataReader.HasRows)
-            {
-                conn.Close();
-                return false;
-            }
-            conn.Close();
-            conn.Open();
-            string SQL = string.Format("exec DeleteRoom @DeleterUserId = _deleterUserId, @RId = _RId");
+            string sql = string.Format("exec DeleteRoom @DeleterUserId = _deleterUserId, @RId = _RId");
 
-            SqlCommand sqlCommand = new SqlCommand(SQL, conn);
+            SqlCommand sqlCommand = new SqlCommand(sql, conn);
             sqlCommand.Parameters.AddWithValue("_DeleterUserId", deleterUserId);
             sqlCommand.Parameters.AddWithValue("_RId", rId);
 

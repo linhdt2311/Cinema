@@ -1,5 +1,25 @@
-<ul nz-menu nzMode="horizontal" nzTheme="dark">
-    <li nz-submenu nzPlacement="bottomLeft" nzTitle="Home" routerLink=""></li>
-    <li nz-submenu nzPlacement="bottomLeft" nzTitle="Movie" routerLink="movie"></li>
-</ul>
+<nav class="wrapper">
+  <ul nz-menu nzMode="horizontal" nzTheme="dark" [nzInlineCollapsed]="isCollapsed" style="text-align: center;">
+    <img src="../../../assets/HBQHM.png" alt="LogoHBQHM" class="logo">
+    <img src="../../../assets/LogoText.png" alt="LogoHBQHM" class="logo_text">
+    <li nz-menu-item routerLink="movie">
+      <span>Movie</span>
+    </li>
+    <li nz-menu-item routerLink="">
+      <span>Showtimes</span>
+    </li>
+    <li nz-menu-item routerLink="">
+      <span>Voucher</span>
+    </li>
+    <li nz-menu-item routerLink="">
+      <span>Membership</span>
+    </li>
+    <li nz-menu-item routerLink="">
+      <span>Support</span>
+    </li>
+    <div class="avatar">
+      <nz-avatar [nzSize]="50" nzIcon="user"></nz-avatar>
+    </div>
+  </ul>
+</nav>
 <router-outlet></router-outlet>

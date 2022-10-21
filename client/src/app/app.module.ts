@@ -17,6 +17,10 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,15 +36,18 @@ import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
     FormsModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
     NzButtonModule,
     NzLayoutModule,
     NzMenuModule,
     NzFormModule,
-    FormsModule,
-    ReactiveFormsModule,
     NzCardModule,
     NzPageHeaderModule,
     NzBreadCrumbModule,
+    NzPaginationModule,
+    NzToolTipModule,
+    NzAvatarModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

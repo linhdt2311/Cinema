@@ -208,7 +208,7 @@ as
 	declare @i int = 1;
 	while @i < 61 
 	begin
-		insert into Seat(CreationTime, CreatorUserId, IsDeleted, RId, SName, SPrice, SStatus, SType) values (GETDATE(), @CreatorUserId, 0, @RoomId, @i, 50000, 1, 1)
+		insert into Seat(CreationTime, CreatorUserId, IsDeleted, RId, SName, SPrice, SStatus, SType) values (getdate(), @CreatorUserId, 0, @RoomId, @i, 50000, 1, 1)
 	set @i = @i + 1;
 	end
 	print 'This room has been added with 60 seats.'
@@ -217,7 +217,7 @@ go
 create proc CreateMovie
 @CreatorUserId int, @MName int, @MTime int, @MOpeningDay datetime, @MCountry nvarchar(50), @MDirector nvarchar(50), @MGenre int, @MDescription nvarchar(max)
 as
-	insert into Movie(CreationTime, CreatorUserId, IsDeleted, MName, MTime, MOpeningDay, MCountry, MDirector, MGenre, MDescription) values ('2022-10-22', @CreatorUserId, 0, @MName, @MTime, @MOpeningDay, @MCountry, @MDirector, @MGenre, @MDescription)
+	insert into Movie(CreationTime, CreatorUserId, IsDeleted, MName, MTime, MOpeningDay, MCountry, MDirector, MGenre, MDescription) values (getdate(), @CreatorUserId, 0, @MName, @MTime, @MOpeningDay, @MCountry, @MDirector, @MGenre, @MDescription)
 go
 --proc update movie
 create proc UpdateMovie

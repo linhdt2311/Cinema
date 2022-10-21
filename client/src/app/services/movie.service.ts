@@ -6,21 +6,21 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class RoomService {
-  baseUrl = environment.baseUrl + 'room';
+export class MovieService {
+  baseUrl = environment.baseUrl + 'movie';
 
   constructor(private http: HttpClient) { }
 
-  getAllRoom():Observable<any>{
+  getAllMovie():Observable<any>{
     return this.http.get(this.baseUrl + '/getall');
    }
-  createRoom(payload:any):Observable<any>{
+  createMovie(payload:any):Observable<any>{
     return this.http.post(this.baseUrl + '/create', payload);
   }
-  updateRoom(payload:any):Observable<any>{
+  updateMovie(payload:any):Observable<any>{
     return this.http.put(this.baseUrl + '/update', payload);
   }
-  deleteRoom(payload:any):Observable<any>{
+  deleteMovie(payload:any):Observable<any>{
     return this.http.delete(this.baseUrl + '/delete', payload);
   }
 }

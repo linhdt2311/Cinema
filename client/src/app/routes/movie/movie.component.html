@@ -1,0 +1,43 @@
+<nz-page-header class="site-page-header" nzTitle="Title" nzSubtitle="This is a subtitle">
+    <nz-breadcrumb nz-page-header-breadcrumb>
+        <nz-breadcrumb-item>First-level Menu</nz-breadcrumb-item>
+        <nz-breadcrumb-item>Second-level Menu</nz-breadcrumb-item>
+        <nz-breadcrumb-item>Third-level Menu</nz-breadcrumb-item>
+    </nz-breadcrumb>
+</nz-page-header>
+<div style="background: #ECECEC;padding:30px;">
+    <div nz-row [nzGutter]="8">
+        <div nz-col [nzSpan]="8" routerLink="Movie-Detail-View">
+            <nz-card nzHoverable style="width:240px" [nzCover]="coverTemplate">
+                <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
+            </nz-card>
+            <ng-template #coverTemplate>
+                <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />
+            </ng-template>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-card nzHoverable style="width:240px" [nzCover]="coverTemplate" routerLink="Movie-Detail-View">
+                <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
+            </nz-card>
+            <ng-template #coverTemplate>
+                <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />
+            </ng-template>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-card nzHoverable style="width:240px" [nzCover]="coverTemplate" routerLink="Movie-Detail-View">
+                <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
+            </nz-card>
+            <ng-template #coverTemplate>
+                <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />
+            </ng-template>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-card nzHoverable style="width:240px" [nzCover]="coverTemplate" routerLink="Movie-Detail-View">
+                <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
+            </nz-card>
+            <ng-template #coverTemplate>
+                <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />
+            </ng-template>
+        </div>
+    </div>
+</div>

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Cinema.Controllers.ShowTimesController
 {
-    public class ShowTimeController
+    public class ShowTimesController
     {
     }
 }

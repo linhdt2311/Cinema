@@ -3,9 +3,9 @@ using System.Data;
 
 namespace Cinema.DTO
 {
-    public class DtoShowTimes
+    public class ShowTimesDto
     {
-        public DtoShowTimes(DataRow row)
+        public ShowTimesDto(DataRow row)
         {
             this.TId = (int)row["TId"];
             this.MId = (int)row["MId"];

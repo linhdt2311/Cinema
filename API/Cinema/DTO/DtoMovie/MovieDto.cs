@@ -3,9 +3,9 @@ using System.Data;
 
 namespace Cinema.DTO.DtoMovie
 {
-    public class MoveDto
+    public class MovieDto
     {
-        public MoveDto(DataRow row)
+        public MovieDto(DataRow row)
         {
             this.MId = (int)row["MId"];
             this.MName = (string)row["MName"];
@@ -15,7 +15,7 @@ namespace Cinema.DTO.DtoMovie
             this.MDirector = (string)row["MDirector"];
             this.MGenre = (int)row["MGenre"];
             this.MDescription = (string)row["MDescription"];
-            //this.MPoster = (string)row["MPoster"];
+            this.MPoster = (string)row["MPoster"];
         }
         public int MId { get; set; }
         public string MName { get; set; }
@@ -25,6 +25,6 @@ namespace Cinema.DTO.DtoMovie
         public string MDirector { get; set; }
         public int MGenre { get; set; }
         public string MDescription { get; set; }
-        //public string MPoster { get; set; }
+        public string MPoster { get; set; }
     }
 }

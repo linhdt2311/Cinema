@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 
 namespace Cinema.Controllers.Movie
@@ -14,18 +15,18 @@ namespace Cinema.Controllers.Movie
     public class MovieController : DBConnect
     {
         [HttpGet("getall")]
-        public List<GetAllMovieDto> GetAllMovie(string? name, string? country)
+        public List<MovieDto> GetAllMovie(string? name, string? country, int? genre, string? director)
         {
             conn.Open();
-            string sql = string.Format("exec GetViewMovie @MName = '" + name + "',@MCountry ='" + country + "'");
+            string sql = string.Format("exec GetViewMovie @MName = '" + name + "',@MCountry ='" + country + "', @MGenre = '" + genre + "', @MDirector = '" + director + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             DataTable data = new DataTable();
             SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
             adapter.Fill(data);
-            var movieList = new List<GetAllMovieDto>();
+            var movieList = new List<MovieDto>();
             foreach (DataRow i in data.Rows)
             {
-                GetAllMovieDto movie = new GetAllMovieDto(i);
+                MovieDto movie = new MovieDto(i);
                 movieList.Add(movie);
             }
             conn.Close();

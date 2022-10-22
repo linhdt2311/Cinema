@@ -13,12 +13,10 @@ namespace Cinema.Controllers
     public class RoomController : DBConnect
     {
         [HttpGet("getall")]
-        public List<Room> GetAllRoom(int? name, int? status)
+        public List<Room> GetAllRoom(int? RName, int? RStatus)
         {
-            
             conn.Open();
-            string sql = string.Format("select * from GetAllRoom");
-
+            string sql = string.Format("exec GetViewRoom @RName = '" + RName + "',@RStatus ='" + RStatus + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             DataTable data = new DataTable();
             SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);

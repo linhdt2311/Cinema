@@ -137,16 +137,44 @@ create view GetAllRoom
 as
 	select RId, RName, RStatus from Room
 go
+-- get all moi
+create proc GetViewRoom
+@RName nvarchar(50), @RStatus nvarchar(50)
+as
+select * from Room VHC where VHC.IsDeleted <> 1 
+                    AND (ISNULL(RName, '') = '' OR UPPER(VHC.RName) like  '%' + UPPER(RName) + '%')
+                    AND (ISNULL(@RStatus, '') = '' OR UPPER(VHC.RStatus) like '%' + UPPER(@RStatus)  + '%')
+                    OPTION (RECOMPILE)
+					go
 --view danh sách các lịch chiếu phim
 create view GetAllShowtimes
 as
 	select TId, MId, RId, TTime, TFormatMovieScreen from Showtimes order by TTime desc
 go
+-- get all moi
+create proc GetViewShowTime
+@MId int, @RId int , @TTime datetime
+as
+select * from Showtimes VHC where VHC.IsDeleted <> 1 
+                    AND (ISNULL(@MId, '') = '' OR UPPER(VHC.MId) like  '%' + UPPER(@MId) + '%')
+                    AND (ISNULL(@RId, '') = '' OR UPPER(VHC.RId) like '%' + UPPER(@RId)  + '%')
+                    AND (ISNULL(@TTime, '') = '' OR VHC.TTime like '%' + @TTime  + '%')
+                    OPTION (RECOMPILE)
+					go
 --view danh sách các phim
 create view GetAllMovie
 as
 	select MId, MName, MGenre, MTime, MOpeningDay, MCountry, MDirector, MPoster, MDescription from Movie
 go
+-- get all moi
+create proc GetViewMovie
+@MName nvarchar(MAX), @MCountry nvarchar(50)
+as
+select * from Movie VHC where VHC.IsDeleted <> 1 
+                    AND (ISNULL(@MName, '') = '' OR UPPER(VHC.MName) like  '%' + UPPER(@MName) + '%')
+                    AND (ISNULL(@MCountry, '') = '' OR UPPER(VHC.MCountry) like '%' + UPPER(@MCountry)  + '%')
+                    OPTION (RECOMPILE)
+					go
 --view danh sách các mã khuyến mãi
 create view GetAllCode
 as
@@ -224,7 +252,6 @@ create proc UpdateMovie
 @LastModifierUserId int, @MId int, @MName int, @MTime int, @MOpeningDay datetime, @MCountry nvarchar(50), @MDirector nvarchar(50), @MGenre int, @MDescription nvarchar(max)
 as
 	update Movie set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, MName = @MName, MTime = @MTime, MOpeningDay = @MOpeningDay, MCountry = @MCountry, MDirector = @MDirector, MGenre = @MGenre, MDescription = @MDescription where MId = @MId
-	select * from GetAllMovie where MId = @MId
 go
 --proc delete movie
 create proc DeleteMovie
@@ -232,7 +259,6 @@ create proc DeleteMovie
 as
 	update Movie set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = @DeleterUserId where MId = @MId
 	print 'This movie has been deleted!'
-	select * from GetAllMovie where MId = @MId
 go
 --proc update status seat
 create proc UpdateSeat
@@ -252,7 +278,6 @@ create proc UpdateAccount
 @LastModifierUserId int, @AId int, @AEmail nvarchar(50), @APassword nvarchar(30), @ARole int, @AName nvarchar(50), @AIdentityCard varchar(12), @ADoB datetime, @AAddress nvarchar(max), @APhone varchar(10), @APoint int
 as
 	update Account set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, AEmail = @AEmail, APassword = @APassword, AName = @AName, AIdentityCard = @AIdentityCard, ADoB = @ADoB, AAddress = @AAddress, APhone = @APhone, APoint = @APoint where AId = @AId
-	select * from GetAllAccount where AId = @AId
 go
 --proc delete account
 create proc DeleteAccount
@@ -260,7 +285,6 @@ create proc DeleteAccount
 as
 	update Account set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = @DeleterUserId where @AId = @AId
 	print 'This account has been deleted!'
-	select * from GetAllAccount where @AId = @AId
 go
 --proc add showtimes
 create proc CreateShowtimes
@@ -273,15 +297,12 @@ create proc UpdateShowtimes
 @LastModifierUserId int, @TId int, @MId int, @RId int, @TTime datetime, @TFormatMovieScreen int
 as
 	update Showtimes set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, MId = @MId, RId = @RId, TTime = @TTime, TFormatMovieScreen = @TFormatMovieScreen where TId = @TId
-	select * from GetAllShowtimes where TId = @TId
 go
 --proc delete showtimes
 create proc DeleteShowtimes
 @DeleterUserId int, @TId int
 as
 	update Showtimes set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = @DeleterUserId where TId = @TId
-	print 'This showtimes has been deleted!'
-	select * from GetAllShowtimes where TId = @TId
 go
 --proc add code
 create proc CreateCode
@@ -294,7 +315,6 @@ create proc UpdateCode
 @LastModifierUserId int, @CodeId int, @CodeName nvarchar(50), @CodeDiscount int, @CodeStart datetime, @CodeEnd datetime
 as
 	update Code set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, CodeName = @CodeName, CodeDiscount = @CodeDiscount, CodeStart = @CodeStart, CodeEnd = @CodeEnd where CodeId = @CodeId
-	select * from GetAllCode where CodeId = @CodeId
 go
 --proc delete code
 create proc DeleteCode
@@ -302,7 +322,6 @@ create proc DeleteCode
 as
 	update Code set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = @DeleterUserId where CodeId = @CodeId
 	print 'This code has been deleted!'
-	select * from GetAllCode where CodeId = @CodeId
 go
 --proc add bill
 create proc CreateBill
@@ -398,3 +417,10 @@ insert into Movie(CreationTime, CreatorUserId, IsDeleted, MName, MTime, MOpening
 insert into Movie(CreationTime, CreatorUserId, IsDeleted, MName, MTime, MOpeningDay, MCountry, MDirector, MGenre, MDescription) values ('2022-10-22', @AdminId, 0, N'Stand by me Doraemon', 120, '2014-08-08', 'Japan', 'Yamazaki Takashi Yagi Ryūichi', 1, N'Dựa trên nhiều mẩu truyện ngắn khác nhau trong manga Doraemon gốc, tác phẩm được biên tập lại thành phim hoàn chỉnh phát hành nhân dịp kỉ niệm 80 năm ngày sinh cố tác giả Fujiko F. Fujio.Nội dung phim kể về Doraemon, một chú mèo máy không tai đến từ tương lai trở về những năm 70 để giúp một cậu bé "vô tích sự" Nobi Nobita thay đổi tương lai đen tối sang một viễn cảnh tương lai tươi sáng vốn sẽ thay đổi số phận của con cháu Nobita về sau và khi Doraemon hoàn tất nhiệm vụ chia tay Nobita cùng với đó là cuộc hội ngộ bất ngờ của họ do chính Nobita tạo ra.')
 insert into Movie(CreationTime, CreatorUserId, IsDeleted, MName, MTime, MOpeningDay, MCountry, MDirector, MGenre, MDescription) values ('2022-10-22', @AdminId, 0, N'Stand by me Doraemon 2', 120, '2020-11-20', 'Japan', 'Yamazaki Takashi Yagi Ryūichi', 1, N'Đây là phần phim 3D tiếp nối sau Stand by Me Doraemon phát hành năm 2014, được sản xuất nhằm kỉ niệm 50 năm bộ truyện Doraemon ra đời, chủ yếu lấy cảm hứng từ các chương truyện tranh ngắn do tác giả Fujiko F. Fujio sáng tác và do nhà xuất bản Shogakukan ấn hành, các chương này sau đó từng được chuyển thể thành phim ngắn năm 2000 Kỉ niệm về bà và phim ngắn năm 2002 Ngày tớ ra đời.')
 go
+
+	exec CreateShowtimes @CreatorUserId = 1, @MId = 1, @RId = 1, @TTimme = '2022/11/20', @TFormatMovieScreen = 1
+	exec CreateShowtimes @CreatorUserId = 1, @MId = 2, @RId = 2, @TTimme = '2022/10/11', @TFormatMovieScreen = 2
+	exec CreateShowtimes @CreatorUserId = 1, @MId = 3, @RId = 3, @TTimme = '2022/10/21', @TFormatMovieScreen = 3
+	exec CreateShowtimes @CreatorUserId = 1, @MId = 4, @RId = 4, @TTimme = '2022/11/02', @TFormatMovieScreen = 4
+	exec CreateShowtimes @CreatorUserId = 1, @MId = 5, @RId = 5, @TTimme = '2022/11/27', @TFormatMovieScreen = 5
+	exec CreateShowtimes @CreatorUserId = 1, @MId = 6, @RId = 6, @TTimme = '2022/11/1', @TFormatMovieScreen = 6

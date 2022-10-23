@@ -35,17 +35,17 @@ namespace Cinema.Controllers
         public bool CreateRoom(int name, int creatorUserId)
         {
             conn.Open();
-            string sql = string.Format("exec CreateRoom @CreatorUserId = " + creatorUserId + ", @RName = " + name);
+            string sql = string.Format("exec CreateRoom @CreatorUserId = " + creatorUserId + ", @Name = " + name);
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();
             return false;
         }
         [HttpPut("update")]
-        public bool UpdateRoom(int rId, int rName, int rStatus, int lastModifierUserId)
+        public bool UpdateRoom(int rId, int name, int status, int lastModifierUserId)
         {
             conn.Open();
-            string sql = string.Format("exec UpdateRoom @LastModifierUserId = " + lastModifierUserId + ", @RId = " + rId + ", @RName = " + rName + ", @RStatus = " + rStatus);
+            string sql = string.Format("exec UpdateRoom @LastModifierUserId = " + lastModifierUserId + ", @Id = " + rId + ", @Name = " + name + ", @Status = " + status);
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();

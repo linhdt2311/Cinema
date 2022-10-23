@@ -4,3 +4,17 @@
 @import "~ng-zorro-antd/ng-zorro-antd.dark.css";
 /* @import "~ng-zorro-antd/ng-zorro-antd.compact.css"; */
 /* @import "~ng-zorro-antd/ng-zorro-antd.aliyun.css"; */
+*{
+    font-family: 'Quicksand', sans-serif;
+}
+
+:root {
+    --primary-color: #00b4d8;
+    --heavy-color: #0077b6;
+    --light-text: #7c828d;
+    --table-width: 100%;
+}
+
+span{
+    font-weight: bolder;
+}

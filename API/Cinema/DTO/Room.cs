@@ -6,12 +6,8 @@ namespace Cinema.DTO
     {
         public Room(DataRow row)
         {
-            this.RId = (int)row["RId"];
-            this.RName = (int)row["RName"];
-            this.RStatus = (int)row["RStatus"];
+            this.Name = (int)row["Name"];
         }
-        public int RId { get; set; }
-        public int RName { get; set; }
-        public int RStatus { get; set; }
+        public int Name { get; set; }
     }
 }

@@ -153,6 +153,7 @@ as
         and (isnull(@Country, '') = '' or upper(m.Country) like '%' + upper(@Country) + '%')
         and (isnull(@Genre, '') = '' or upper(m.Genre) like '%' + upper(@Genre) + '%')
         and (isnull(@Director, '') = '' or upper(m.Director) like '%' + upper(@Director) + '%')
+		order by m.OpeningDay desc
         option (recompile)
 go
 --proc view Showtimes nếu có tìm kiếm sẽ tìm theo yêu cầu không thì sẽ hiện full
@@ -312,7 +313,15 @@ as
 	end
 	print 'This room has been added with 60 seats.'
 go
-
+--trigger chặn ko cho đặt chỗ khi phim đã chiếu
+create trigger NoBookTicket
+on Seat
+for update
+as
+	if((select Date from Inserted) > getdate())
+		rollback transaction
+		print 'This movie has been showed. You cannot book tickets!!!'
+go
 
 
 

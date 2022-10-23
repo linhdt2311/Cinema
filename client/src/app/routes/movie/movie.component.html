@@ -1,43 +1,26 @@
-<nz-page-header class="site-page-header" nzTitle="Title" nzSubtitle="This is a subtitle">
-    <nz-breadcrumb nz-page-header-breadcrumb>
-        <nz-breadcrumb-item>First-level Menu</nz-breadcrumb-item>
-        <nz-breadcrumb-item>Second-level Menu</nz-breadcrumb-item>
-        <nz-breadcrumb-item>Third-level Menu</nz-breadcrumb-item>
-    </nz-breadcrumb>
-</nz-page-header>
-<div style="background: #ECECEC;padding:30px;">
-    <div nz-row [nzGutter]="8">
-        <div nz-col [nzSpan]="8" routerLink="Movie-Detail-View">
-            <nz-card nzHoverable style="width:240px" [nzCover]="coverTemplate">
-                <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
-            </nz-card>
-            <ng-template #coverTemplate>
-                <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />
-            </ng-template>
-        </div>
-        <div nz-col [nzSpan]="8">
-            <nz-card nzHoverable style="width:240px" [nzCover]="coverTemplate" routerLink="Movie-Detail-View">
-                <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
-            </nz-card>
-            <ng-template #coverTemplate>
-                <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />
-            </ng-template>
-        </div>
-        <div nz-col [nzSpan]="8">
-            <nz-card nzHoverable style="width:240px" [nzCover]="coverTemplate" routerLink="Movie-Detail-View">
-                <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
-            </nz-card>
-            <ng-template #coverTemplate>
-                <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />
-            </ng-template>
-        </div>
-        <div nz-col [nzSpan]="8">
-            <nz-card nzHoverable style="width:240px" [nzCover]="coverTemplate" routerLink="Movie-Detail-View">
-                <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
-            </nz-card>
-            <ng-template #coverTemplate>
-                <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />
-            </ng-template>
-        </div>
-    </div>
-</div>
+<nz-layout>
+    <nz-header class="header">Movie</nz-header>
+    <nz-layout>
+        <nz-sider class="sider"></nz-sider>
+        <nz-content>
+            <div style="background: #001529;">
+                <div nz-row [nzGutter]="20">
+                    <div *ngFor="let movie of movies">
+                        <div nz-col routerLink="movie-detail-view">
+                            <nz-card nzHoverable class="card" [nzCover]="coverTemplate">
+                                <nz-card-meta nzTitle="{{ movie.name }}"
+                                    nzDescription="{{ movie.time }} phút | {{ movie.openingDay | date: 'dd/MM/yyyy' }}">
+                                </nz-card-meta>
+                            </nz-card>
+                            <ng-template #coverTemplate>
+                                <img alt="Poster" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
+                                    class="poster" />
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nz-content>
+        <nz-sider class="sider"></nz-sider>
+    </nz-layout>
+</nz-layout>

@@ -1,0 +1,17 @@
+.header{
+    color: #fff;
+    font-weight: bold;
+    font-size: 2rem;
+}
+.card{
+    width: 240px;
+    border-radius: 5%;
+    margin: 20px 0;
+}
+.poster{
+    border-top-left-radius: 5%;
+    border-top-right-radius: 5%;
+}
+.sider{
+    width: 1px;
+}

@@ -15,10 +15,10 @@ namespace Cinema.Controllers.Movie
     public class MovieController : DBConnect
     {
         [HttpGet("getall")]
-        public List<MovieDto> GetAllMovie(string? name, string? country, int? genre, string? director)
+        public List<MovieDto> GetAllMovie(string name, string country, int? genre, string director)
         {
             conn.Open();
-            string sql = string.Format("exec GetViewMovie @MName = '" + name + "',@MCountry ='" + country + "', @MGenre = '" + genre + "', @MDirector = '" + director + "'");
+            string sql = string.Format("exec GetViewMovie @Name = '" + name + "',@Country ='" + country + "', @Genre = '" + genre + "', @Director = '" + director + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             DataTable data = new DataTable();
             SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);

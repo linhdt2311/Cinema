@@ -13,9 +13,8 @@ namespace Cinema.Controllers
     public class RoomController : DBConnect
     {
         [HttpGet("getall")]
-        public List<Room> GetAllRoom(int? name, int? status)
+        public List<Room> GetAllRoom()
         {
-            
             conn.Open();
             string sql = string.Format("select Name from Room group by Name");
 

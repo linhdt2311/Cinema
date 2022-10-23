@@ -17,7 +17,7 @@ namespace Cinema.Controllers
         {
             
             conn.Open();
-            string sql = string.Format("select * from GetAllRoom");
+            string sql = string.Format("select Name from Room group by Name");
 
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             DataTable data = new DataTable();

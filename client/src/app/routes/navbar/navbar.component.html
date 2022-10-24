@@ -1,7 +1,34 @@
 <nav class="wrapper">
   <ul nz-menu nzMode="horizontal" nzTheme="dark" [nzInlineCollapsed]="isCollapsed" style="text-align: center;">
     <img src="../../../assets/HBQHM.png" alt="LogoHBQHM" class="logo">
-    <img src="../../../assets/LogoText.png" alt="LogoHBQHM" class="logo_text">
+    <img src="../../../assets/LogoText.png" alt="LogoHBQHM" class="logo_text nav-item">
+    <li nz-menu-item routerLink="movie" class="nav-item">
+      <span>Movie</span>
+    </li>
+    <li nz-menu-item routerLink="showtimes" class="nav-item">
+      <span>Showtimes</span>
+    </li>
+    <li nz-menu-item routerLink="promotion" class="nav-item">
+      <span>Promotion</span>
+    </li>
+    <li nz-menu-item routerLink="membership" class="nav-item">
+      <span>Membership</span>
+    </li>
+    <li nz-menu-item routerLink="support" class="nav-item">
+      <span>Support</span>
+    </li>
+    <div class="avatar">
+      <nz-avatar [nzSize]="50" nzIcon="user"></nz-avatar>
+      <span style="margin: 0 5px;">Username</span>
+      <span nz-icon nzType="caret-down" nzTheme="outline"></span>
+    </div>
+  </ul>
+</nav>
+<div class="content">
+  <router-outlet></router-outlet>
+</div>
+<div class="footer">
+  <ul nz-menu nzMode="horizontal" nzTheme="dark" [nzInlineCollapsed]="isCollapsed" style="text-align: center;">
     <li nz-menu-item routerLink="movie">
       <span>Movie</span>
     </li>
@@ -11,15 +38,5 @@
     <li nz-menu-item routerLink="promotion">
       <span>Promotion</span>
     </li>
-    <li nz-menu-item routerLink="membership">
-      <span>Membership</span>
-    </li>
-    <li nz-menu-item routerLink="support">
-      <span>Support</span>
-    </li>
-    <div class="avatar">
-      <nz-avatar [nzSize]="50" nzIcon="user"></nz-avatar>
-    </div>
   </ul>
-</nav>
-<router-outlet></router-outlet>
+</div>

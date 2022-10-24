@@ -12,6 +12,8 @@
     border-top-left-radius: 5%;
     border-top-right-radius: 5%;
 }
-.sider{
-    width: 1px;
+@media(max-width: 1000px) {
+    .sider{
+        display: none;
+    }
 }

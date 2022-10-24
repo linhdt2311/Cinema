@@ -6,7 +6,7 @@
             <div style="background: #001529;">
                 <div nz-row [nzGutter]="20">
                     <div *ngFor="let movie of movies">
-                        <div nz-col routerLink="movie-detail-view">
+                        <div nz-col [nzSpan]="8" routerLink="movie-detail-view">
                             <nz-card nzHoverable class="card" [nzCover]="coverTemplate">
                                 <nz-card-meta nzTitle="{{ movie.name }}"
                                     nzDescription="{{ movie.time }} phút | {{ movie.openingDay | date: 'dd/MM/yyyy' }}">

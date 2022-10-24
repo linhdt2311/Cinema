@@ -20,7 +20,8 @@ import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,6 +49,8 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
     NzPaginationModule,
     NzToolTipModule,
     NzAvatarModule,
+    NzGridModule,
+    NzIconModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

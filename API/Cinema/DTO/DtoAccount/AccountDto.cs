@@ -1,0 +1,35 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Cinema.DTO.DtoAccount
+{
+    public class AccountDto
+    {
+        public AccountDto(DataRow row)
+        {
+            this.AId = (int)row["AId"];
+            this.Email = row["Email"].ToString();
+            this.Password = row["Password"].ToString();
+            this.Role = (int)row["Role"];
+            this.Name = row["Name"].ToString();
+            this.IdentityCard = row["IdentityCard"].ToString();
+            this.DoB = (DateTime)row["DoB"];
+            this.Address = row["Address"].ToString();
+            this.Phone = row["Phone"].ToString();
+            this.Point = (int)row["Point"];
+        }
+        public int AId { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public int Role { get; set; }
+        public string Name { get; set; }
+        public string IdentityCard { get; set; }
+        public DateTime DoB { get; set; }
+        public string Address { get; set; }
+        public string Phone { get; set; }
+        public int Point { get; set; }
+    }
+}

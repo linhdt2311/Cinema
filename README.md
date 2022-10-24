@@ -193,7 +193,7 @@ as
 go
 --proc add movie
 create proc CreateMovie
-@CreatorUserId int, @Name int, @Time int, @OpeningDay datetime, @Country nvarchar(50), @Director nvarchar(50), @Genre int, @Description nvarchar(max)
+@CreatorUserId int, @Name nvarchar(max), @Time int, @OpeningDay datetime, @Country nvarchar(50), @Director nvarchar(50), @Genre int, @Description nvarchar(max)
 as
 	insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Genre, Description) values (getdate(), @CreatorUserId, 0, @Name, @Time, @OpeningDay, @Country, @Director, @Genre, @Description)
 go
@@ -224,7 +224,7 @@ as
 go
 --proc update account
 create proc UpdateAccount
-@LastModifierUserId int, @AId int, @Email nvarchar(50), @Password nvarchar(30), @Role int, @Name nvarchar(50), @IdentityCard varchar(12), @DoB datetime, @Address nvarchar(max), @Phone varchar(10), @Point int
+@LastModifierUserId int, @AId int, @Email nvarchar(50), @Password nvarchar(30), @RocreateShowtimesle int, @Name nvarchar(50), @IdentityCard varchar(12), @DoB datetime, @Address nvarchar(max), @Phone varchar(10), @Point int
 as
 	update Account set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, Email = @Email, Password = @Password, Name = @Name, IdentityCard = @IdentityCard, DoB = @DoB, Address = @Address, Phone = @Phone, Point = @Point where AId = @AId
 go
@@ -318,13 +318,27 @@ create trigger NoBookTicket
 on Seat
 for update
 as
-	if((select Date from Inserted) > getdate())
+	if(
+	(select t.TimeStart from Showtimes t 
+	join Room r on r.ShowtimesId = t.TId 
+	join Seat s on s.RoomId = r.RId 
+	where s.SId =(select SId from Inserted)) 
+	> getdate())
 		rollback transaction
 		print 'This movie has been showed. You cannot book tickets!!!'
 go
+--trigger chặn ko cho update khi ghế đã được đặt
+create trigger NoUpdateStatusSeat
+on Seat
+for update
+as
+	if((select Status from Inserted) = 1)
+		rollback transaction
+		print 'This seat has been booked. You cannot be selected'
+go
 
 
-
+select * from Promotion
 
 
 

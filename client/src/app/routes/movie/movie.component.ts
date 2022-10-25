@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NzImageService } from 'ng-zorro-antd/image';
 import { catchError, of } from 'rxjs';
 import { MovieService } from 'src/app/services/movie.service';
 
@@ -9,9 +10,10 @@ import { MovieService } from 'src/app/services/movie.service';
 })
 export class MovieComponent implements OnInit {
   movies:any[]=[];
-
+  loading = false;
   constructor(
     private movieService: MovieService,
+    private nzImageService: NzImageService,
   ) { }
 
   ngOnInit(): void {
@@ -25,5 +27,9 @@ export class MovieComponent implements OnInit {
       .subscribe((response) => {
         this.movies = response;
       });
+  }
+  onClick(): void {
+  }
+  clear(){
   }
 }

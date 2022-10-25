@@ -22,6 +22,9 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { ShowtimesComponent } from './routes/showtimes/showtimes.component';
+import { NzImageModule } from 'ng-zorro-antd/image';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,6 +32,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     NavbarComponent,
     MovieComponent,
     LoginComponent,
+    ShowtimesComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,6 +55,8 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     NzAvatarModule,
     NzGridModule,
     NzIconModule,
+    NzImageModule,
+    NzModalModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

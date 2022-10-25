@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { MovieComponent } from './routes/movie/movie.component';
 import { NavbarComponent } from './routes/navbar/navbar.component';
 import { RoomComponent } from './routes/room/room.component';
+import { ShowtimesComponent } from './routes/showtimes/showtimes.component';
 
 const routes: Routes = [
   {
@@ -10,6 +11,7 @@ const routes: Routes = [
     children: [
       { path: 'movie', component: MovieComponent },
       { path: 'movie/movie-detail-view', component: RoomComponent },
+      { path: 'showtimes', component: ShowtimesComponent },
     ],
   },
 ];

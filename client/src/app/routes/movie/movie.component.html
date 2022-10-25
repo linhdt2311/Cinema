@@ -7,14 +7,14 @@
                 <div nz-row [nzGutter]="20">
                     <div *ngFor="let movie of movies">
                         <div nz-col [nzSpan]="8" routerLink="movie-detail-view">
-                            <nz-card nzHoverable class="card" [nzCover]="coverTemplate">
+                            <nz-card nzHoverable class="card" [nzCover]="coverTemplate" [nzLoading]="loading">
                                 <nz-card-meta nzTitle="{{ movie.name }}"
                                     nzDescription="{{ movie.time }} phút | {{ movie.openingDay | date: 'dd/MM/yyyy' }}">
                                 </nz-card-meta>
                             </nz-card>
                             <ng-template #coverTemplate>
                                 <img alt="Poster" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
-                                    class="poster" />
+                                    class="poster" (mousemove)="onClick()" (mouseout)="clear()"/>
                             </ng-template>
                         </div>
                     </div>

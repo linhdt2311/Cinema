@@ -12,7 +12,6 @@ namespace Cinema.DTO.DtoAccount
         {
             this.AId = (int)row["AId"];
             this.Email = row["Email"].ToString();
-            this.Password = row["Password"].ToString();
             this.Role = (int)row["Role"];
             this.Name = row["Name"].ToString();
             this.IdentityCard = row["IdentityCard"].ToString();
@@ -23,7 +22,6 @@ namespace Cinema.DTO.DtoAccount
         }
         public int AId { get; set; }
         public string Email { get; set; }
-        public string Password { get; set; }
         public int Role { get; set; }
         public string Name { get; set; }
         public string IdentityCard { get; set; }

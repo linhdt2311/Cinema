@@ -9,6 +9,7 @@ using System.Linq;
 using Cinema.Enum;
 using System.IO;
 using System.Xml.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Cinema.Controllers
 {
@@ -17,6 +18,7 @@ namespace Cinema.Controllers
     public class AccountController : DBConnect
     {
         [HttpGet("getall")]
+        [AllowAnonymous]
         public List<AccountDto> GetAllAccountDto(string name, string email, string password, string identityCard, DateTime? dob, string address, string phone, int? point)
         {
             conn.Open();
@@ -34,6 +36,19 @@ namespace Cinema.Controllers
             }
             conn.Close();
             return accountList.ToList();
+        }
+        [HttpPost("login")]
+        public AccountDto Login(LoginDto input)
+        {
+            conn.Open();
+            string sql = string.Format("exec Login @Email = '" + input.Email + "', @Password = '" + input.Password + "'");
+
+            SqlCommand sqlCommand = new SqlCommand(sql, conn);
+            DataTable data = new DataTable();
+            SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
+            adapter.Fill(data);
+            conn.Close();
+            return new AccountDto(data.Rows[0]);
         }
         [HttpPost("create")]
         public bool CreateAccount(int creatorUserId, string email, string password, int role, string name, string identityCard, DateTime dob, string address, string phone)

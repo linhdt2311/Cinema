@@ -25,6 +25,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { ShowtimesComponent } from './routes/showtimes/showtimes.component';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzNotificationModule } from 'ng-zorro-antd/notification';
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,6 +58,7 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
     NzIconModule,
     NzImageModule,
     NzModalModule,
+    NzNotificationModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

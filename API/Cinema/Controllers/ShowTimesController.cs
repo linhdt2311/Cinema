@@ -15,7 +15,7 @@ namespace Cinema.Controllers
     public class ShowTimesController : DBConnect
     {
         [HttpGet("getall")]
-        public List<ShowTimesDto> GetAllShowTimes(Guid? movieId, DateTime? timeStart, int? formatMovieScreen)
+        public List<ShowTimesDto> GetAllShowTimes(Guid movieId, DateTime? timeStart, int? formatMovieScreen)
         {
             conn.Open();
             string sql = string.Format("exec GetViewShowtimes @MovieId = '" + movieId + "', @TimeStart = '" + timeStart + "', @FormatMovieScreen = '" + formatMovieScreen + "'");
@@ -36,7 +36,7 @@ namespace Cinema.Controllers
         public bool CreateShowTime(Guid movieId, Guid creatorUserId, DateTime timeStart, int formatMovieScreen, Guid roomId)
         {
             conn.Open();
-            string sql = string.Format("exec CreateShowtimes @CreatorUserId = " + creatorUserId + ", @MovieId = " + movieId + ", @TimeStart = '" + timeStart + "', @FormatMovieScreen = '" + formatMovieScreen + "', @RoomId = " + roomId);
+            string sql = string.Format("exec CreateShowtimes @CreatorUserId = '" + creatorUserId + "', @MovieId = '" + movieId + "', @TimeStart = '" + timeStart + "', @FormatMovieScreen = '" + formatMovieScreen + "', @RoomId = '" + roomId + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();
@@ -46,7 +46,7 @@ namespace Cinema.Controllers
         public bool UpdateShowTime(Guid lastModifierUserId, Guid id, Guid movieId, DateTime timeStart, int formatMovieScreen, Guid roomId)
         {
             conn.Open();
-            string sql = string.Format("exec UpdateShowtimes @LastModifierUserId = " + lastModifierUserId + ", @Id = " + id + ", @MovieId = " + movieId + ", @TimeStart = '" + timeStart + "', @FormatMovieScreen = " + formatMovieScreen + ", @RoomId = " + roomId);
+            string sql = string.Format("exec UpdateShowtimes @LastModifierUserId = '" + lastModifierUserId + "', @Id = '" + id + "', @MovieId = '" + movieId + "', @TimeStart = '" + timeStart + "', @FormatMovieScreen = '" + formatMovieScreen + "', @RoomId = '" + roomId + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();
@@ -56,7 +56,7 @@ namespace Cinema.Controllers
         public bool DeleteShowTime(Guid id, Guid deleterUserId)
         {
             conn.Open();
-            string sql = string.Format("update Showtimes set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = " + deleterUserId + " where Id = " + id);
+            string sql = string.Format("update Showtimes set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = '" + deleterUserId + "' where Id = '" + id + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();

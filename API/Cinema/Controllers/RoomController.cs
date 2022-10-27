@@ -14,10 +14,10 @@ namespace Cinema.Controllers
     public class RoomController : DBConnect
     {
         [HttpGet("getall")]
-        public List<Room> GetAllRoom()
+        public List<Room> GetAllRoom(Guid cinemaId)
         {
             conn.Open();
-            string sql = string.Format("select Name from Room group by Name");
+            string sql = string.Format("exec GetAllRoomByCinema @CinemaId = '" + cinemaId + "'");
 
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             DataTable data = new DataTable();
@@ -36,7 +36,7 @@ namespace Cinema.Controllers
         public bool CreateRoom(int name, Guid creatorUserId)
         {
             conn.Open();
-            string sql = string.Format("exec CreateRoom @CreatorUserId = " + creatorUserId + ", @Name = " + name);
+            string sql = string.Format("exec CreateRoom @CreatorUserId = '" + creatorUserId + "', @Name = '" + name + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();
@@ -46,7 +46,7 @@ namespace Cinema.Controllers
         public bool UpdateRoom(Guid Id, int name, int status, Guid lastModifierUserId)
         {
             conn.Open();
-            string sql = string.Format("exec UpdateRoom @LastModifierUserId = " + lastModifierUserId + ", @Id = " + Id + ", @Name = " + name + ", @Status = " + status);
+            string sql = string.Format("exec UpdateRoom @LastModifierUserId = '" + lastModifierUserId + "', @Id = '" + Id + "', @Name = '" + name + "', @Status = '" + status + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();
@@ -56,7 +56,7 @@ namespace Cinema.Controllers
         public bool DeleteRoom(Guid id, Guid deleterUserId)
         {
             conn.Open();
-            string sql = string.Format("update Room set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = " + deleterUserId + " where Id = " + id);
+            string sql = string.Format("update Room set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = '" + deleterUserId + "' where Id = '" + id + "'");
 
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;

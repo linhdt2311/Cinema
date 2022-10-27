@@ -1,14 +1,11 @@
-﻿using Cinema.DTO;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
 using Cinema.Services;
 using Cinema.DTO.DtoCode;
-using Cinema.Enum;
 using System.Linq;
 using System;
-using Microsoft.VisualBasic;
 
 namespace Cinema.Controllers
 {
@@ -39,7 +36,7 @@ namespace Cinema.Controllers
         public bool CreatePromotion(string code, Guid creatorUserId, int discount, DateTime startDate, DateTime endDate)
         {
             conn.Open();
-            string sql = string.Format("exec CreatePromotion @CreatorUserId = " + creatorUserId + ", @Code = '" + code + "', @Discount = " + discount + ", @StartDay = '" + startDate + "', @EndDay = '" + endDate + "'");
+            string sql = string.Format("exec CreatePromotion @CreatorUserId = '" + creatorUserId + "', @Code = '" + code + "', @Discount = '" + discount + "', @StartDay = '" + startDate + "', @EndDay = '" + endDate + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();
@@ -49,7 +46,7 @@ namespace Cinema.Controllers
         public bool UpdatePromotion(Guid lastModifierUserId, Guid id, string code, int discount, DateTime startDate, DateTime endDate)
         {
             conn.Open();
-            string sql = string.Format("exec UpdatePromotion @LastModifierUserId = " + lastModifierUserId + ", @Id = " + id + ", @Code = '" + code + "', @Discount = " + discount + ", @StartDay = '" + startDate + "', @EndDay = '" + endDate + "'");
+            string sql = string.Format("exec UpdatePromotion @LastModifierUserId = '" + lastModifierUserId + "', @Id = '" + id + "', @Code = '" + code + "', @Discount = '" + discount + "', @StartDay = '" + startDate + "', @EndDay = '" + endDate + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();
@@ -59,7 +56,7 @@ namespace Cinema.Controllers
         public bool DeletePromotion(Guid deleterUserId, Guid id)
         {
             conn.Open();
-            string sql = string.Format("update Promotion set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = " + deleterUserId + " where Id = " + id);
+            string sql = string.Format("update Promotion set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = '" + deleterUserId + "' where Id = '" + id + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();

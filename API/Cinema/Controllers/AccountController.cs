@@ -19,10 +19,10 @@ namespace Cinema.Controllers
     {
         [HttpGet("getall")]
         [AllowAnonymous]
-        public List<AccountDto> GetAllAccountDto(string name, string email, string password, string identityCard, DateTime? dob, string address, string phone, int? point)
+        public List<AccountDto> GetAllAccountDto(string name, string email, string identityCard, DateTime? dob, string address, string phone)
         {
             conn.Open();
-            string sql = string.Format("exec GetViewAccount @Name = '" + name + "',@Email = '" + email + "', @Password = '" + password + "', @IdentityCard = '" + identityCard + "', @DoB = '" + dob + "', @Address = '" + address + "', @Phone = '" + phone + "', @Point = '" + point + "'");
+            string sql = string.Format("exec GetViewAccount @Name = '" + name + "',@Email = '" + email + "', @IdentityCard = '" + identityCard + "', @DoB = '" + dob + "', @Address = '" + address + "', @Phone = '" + phone + "'");
 
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             DataTable data = new DataTable();
@@ -41,7 +41,7 @@ namespace Cinema.Controllers
         public bool CreateAccount(Guid creatorUserId, string email, string password, int role, string name, string identityCard, DateTime dob, string address, string phone)
         {
             conn.Open();
-            string sql = string.Format("exec CreateAccount @CreatorUserId = " + creatorUserId + ", @Email = '" + email + "', @Password = '" + password + "', @Role = " + role + ", @Name = '" + name + "', @IdentityCard = '" + identityCard + "', @DoB = '" + dob + "', @Address = '" + address + "', @Phone = '" + phone + "'");
+            string sql = string.Format("exec CreateAccount @CreatorUserId = '" + creatorUserId + "', @Email = '" + email + "', @Password = '" + password + "', @Role = '" + role + "', @Name = '" + name + "', @IdentityCard = '" + identityCard + "', @DoB = '" + dob + "', @Address = '" + address + "', @Phone = '" + phone + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();
@@ -51,7 +51,7 @@ namespace Cinema.Controllers
         public bool UpdateAccount(Guid lastModifierUserId, Guid id, string email, string password, int role, string name, string identityCard, DateTime dob, string address, string phone, int point)
         {
             conn.Open();
-            string sql = string.Format("exec UpdateAccount @LastModifierUserId = " + lastModifierUserId + ", @Id = " + id + ", @Email = '" + email + "', @Password = '" + password + "', @Role = " + role + ", @Name = '" + name + "', @IdentityCard = '" + identityCard + "', @DoB = '" + dob + "', @Address = '" + address, "', @Phone = '" + phone + "', @Point = " + point);
+            string sql = string.Format("exec UpdateAccount @LastModifierUserId = '" + lastModifierUserId + "', @Id = '" + id + "', @Email = '" + email + "', @Password = '" + password + "', @Role = '" + role + "', @Name = '" + name + "', @IdentityCard = '" + identityCard + "', @DoB = '" + dob + "', @Address = '" + address, "', @Phone = '" + phone + "', @Point = '" + point + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();
@@ -61,7 +61,7 @@ namespace Cinema.Controllers
         public bool DeleteAccount(Guid deleterUserId, Guid id)
         {
             conn.Open();
-            string sql = string.Format("update Account set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = " + deleterUserId + " where Id = " + id);
+            string sql = string.Format("update Account set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = '" + deleterUserId + "' where Id = '" + id + "'");
 
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;

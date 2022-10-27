@@ -13,7 +13,7 @@
                                 </nz-card-meta>
                             </nz-card>
                             <ng-template #coverTemplate>
-                                <img alt="Poster" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
+                                <img alt="Poster" src="{{ getPoster(movie.mId) }}"
                                     class="poster" (mousemove)="onClick()" (mouseout)="clear()"/>
                             </ng-template>
                         </div>

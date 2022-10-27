@@ -10,14 +10,14 @@ namespace Cinema.DTO.DtoCode
     {
         public PromotionDto(DataRow row)
         {
-            this.PId = (int)row["PId"];
+            this.Id = (Guid)row["Id"];
             this.Code = row["Code"].ToString();
             this.Discount = (int)row["Discount"];
             this.StartDay = (DateTime)row["StartDay"];
             this.EndDay = (DateTime)row["EndDay"];
 
         }
-        public int PId { get; set; }
+        public Guid Id { get; set; }
         public string Code { get; set; }
         public int Discount { get; set; }
         public DateTime StartDay { get; set; }

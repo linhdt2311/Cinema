@@ -10,7 +10,7 @@ namespace Cinema.DTO.DtoAccount
     {
         public AccountDto(DataRow row)
         {
-            this.AId = (int)row["AId"];
+            this.Id = (Guid)row["Id"];
             this.Email = row["Email"].ToString();
             this.Role = (int)row["Role"];
             this.Name = row["Name"].ToString();
@@ -20,7 +20,7 @@ namespace Cinema.DTO.DtoAccount
             this.Phone = row["Phone"].ToString();
             this.Point = (int)row["Point"];
         }
-        public int AId { get; set; }
+        public Guid Id { get; set; }
         public string Email { get; set; }
         public int Role { get; set; }
         public string Name { get; set; }

@@ -7,7 +7,7 @@ namespace Cinema.DTO.DtoMovie
     {
         public MovieDto(DataRow row)
         {
-            this.MId = (int)row["MId"];
+            this.Id = (Guid)row["Id"];
             this.Name = row["Name"].ToString();
             this.Time = (int)row["Time"];
             this.OpeningDay = (DateTime)row["OpeningDay"];
@@ -17,7 +17,7 @@ namespace Cinema.DTO.DtoMovie
             this.Description = row["Description"].ToString();
             this.Poster = row["Poster"].ToString();
         }
-        public int MId { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public int Time { get; set; }
         public DateTime? OpeningDay { get; set; }

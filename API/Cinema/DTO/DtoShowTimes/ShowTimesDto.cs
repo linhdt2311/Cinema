@@ -7,14 +7,16 @@ namespace Cinema.DTO
     {
         public ShowTimesDto(DataRow row)
         {
-            this.TId = (int)row["TId"];
+            this.Id = (Guid)row["Id"];
             this.MovieId = (int)row["MovieId"];
             this.TimeStart = (DateTime)row["TimeStart"];
             this.FormatMovieScreen = (int)row["FormatMovieScreen"];
+            this.RoomId = (Guid)row["RoomId"];
         }
-        public int TId { get; set; }
+        public Guid Id { get; set; }
         public int MovieId { get; set; }
         public DateTime TimeStart { get; set; }
         public int FormatMovieScreen { get; set; }
+        public Guid RoomId { get; set; }
     }
 }

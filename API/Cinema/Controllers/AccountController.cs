@@ -37,6 +37,37 @@ namespace Cinema.Controllers
             conn.Close();
             return accountList.ToList();
         }
+        [HttpPost("create")]
+        public bool CreateAccount(Guid creatorUserId, string email, string password, int role, string name, string identityCard, DateTime dob, string address, string phone)
+        {
+            conn.Open();
+            string sql = string.Format("exec CreateAccount @CreatorUserId = " + creatorUserId + ", @Email = '" + email + "', @Password = '" + password + "', @Role = " + role + ", @Name = '" + name + "', @IdentityCard = '" + identityCard + "', @DoB = '" + dob + "', @Address = '" + address + "', @Phone = '" + phone + "'");
+            SqlCommand sqlCommand = new SqlCommand(sql, conn);
+            if (sqlCommand.ExecuteNonQuery() > 0) return true;
+            conn.Close();
+            return false;
+        }
+        [HttpPut("update")]
+        public bool UpdateAccount(Guid lastModifierUserId, Guid id, string email, string password, int role, string name, string identityCard, DateTime dob, string address, string phone, int point)
+        {
+            conn.Open();
+            string sql = string.Format("exec UpdateAccount @LastModifierUserId = " + lastModifierUserId + ", @Id = " + id + ", @Email = '" + email + "', @Password = '" + password + "', @Role = " + role + ", @Name = '" + name + "', @IdentityCard = '" + identityCard + "', @DoB = '" + dob + "', @Address = '" + address, "', @Phone = '" + phone + "', @Point = " + point);
+            SqlCommand sqlCommand = new SqlCommand(sql, conn);
+            if (sqlCommand.ExecuteNonQuery() > 0) return true;
+            conn.Close();
+            return false;
+        }
+        [HttpDelete("delete")]
+        public bool DeleteAccount(Guid deleterUserId, Guid id)
+        {
+            conn.Open();
+            string sql = string.Format("update Account set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = " + deleterUserId + " where Id = " + id);
+
+            SqlCommand sqlCommand = new SqlCommand(sql, conn);
+            if (sqlCommand.ExecuteNonQuery() > 0) return true;
+            conn.Close();
+            return false;
+        }
         [HttpPost("login")]
         public AccountDto Login(LoginDto input)
         {
@@ -49,37 +80,6 @@ namespace Cinema.Controllers
             adapter.Fill(data);
             conn.Close();
             return new AccountDto(data.Rows[0]);
-        }
-        [HttpPost("create")]
-        public bool CreateAccount(int creatorUserId, string email, string password, int role, string name, string identityCard, DateTime dob, string address, string phone)
-        {
-            conn.Open();
-            string sql = string.Format("exec CreateAccount @CreatorUserId = " + creatorUserId + ", @Email = '" + email + "', @Password = '" + password + "', @Role = " + role + ", @Name = '" + name + "', @IdentityCard = '" + identityCard + "', @DoB = '" + dob + "', @Address = '" + address + "', @Phone = '" + phone + "'");
-            SqlCommand sqlCommand = new SqlCommand(sql, conn);
-            if (sqlCommand.ExecuteNonQuery() > 0) return true;
-            conn.Close();
-            return false;
-        }
-        [HttpPut("update")]
-        public bool UpdateAccount(int lastModifierUserId, int aId, string email, string password, int role, string name, string identityCard, DateTime dob, string address, string phone, int point)
-        {
-            conn.Open();
-            string sql = string.Format("exec UpdateAccount @LastModifierUserId = " + lastModifierUserId + ", @AId = " + aId + ", @Email = '" + email + "', @Password = '" + password + "', @Role = " + role + ", @Name = '" + name + "', @IdentityCard = '" + identityCard + "', @DoB = '" + dob + "', @Address = '" + address, "', @Phone = '" + phone + "', @Point = " + point);
-            SqlCommand sqlCommand = new SqlCommand(sql, conn);
-            if (sqlCommand.ExecuteNonQuery() > 0) return true;
-            conn.Close();
-            return false;
-        }
-        [HttpDelete("delete")]
-        public bool DeleteAccount(int deleterUserId, int aId)
-        {
-            conn.Open();
-            string sql = string.Format("exec DeletePromotion @DeleterUserId = " + deleterUserId + ", @AId = " + aId);
-
-            SqlCommand sqlCommand = new SqlCommand(sql, conn);
-            if (sqlCommand.ExecuteNonQuery() > 0) return true;
-            conn.Close();
-            return false;
         }
     }
 }

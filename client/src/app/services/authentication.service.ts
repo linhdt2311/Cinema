@@ -25,7 +25,7 @@ export class AuthenticationService {
     }
     setCurrentUser(user: User) {
       localStorage.setItem('user', JSON.stringify(user));
-      this.currentUserSource.next(user);
+      //this.currentUserSource.next(user);
   }
   logout() {
     localStorage.removeItem('user');

@@ -1,18 +1,18 @@
-drop database Cinema
+--drop database Cinema
 create database Cinema
 go
 use Cinema
 go
 --Bảng phim
 create table Movie(
-	MId int identity primary key,
+	Id uniqueidentifier primary key default newid(),
 	CreationTime datetime not null,
-	CreatorUserId int not null,
+	CreatorUserId uniqueidentifier not null,
 	LastModificationTime datetime null,
-	LastModifierUserId int  null ,
+	LastModifierUserId uniqueidentifier  null ,
 	IsDeleted bit not null,
 	DeleteTime datetime null,
-	DeleterUserId int null,
+	DeleterUserId uniqueidentifier null,
 	Name nvarchar(max) not null,
 	Time int not null,
 	OpeningDay datetime not null,
@@ -23,48 +23,63 @@ create table Movie(
 	Poster varchar(max),
 )
 go
---Bảng lịch chiếu phim
-create table Showtimes(
-	TId int identity primary key,
+--rạp chiếu phim
+create table Cinema(
+	Id uniqueidentifier primary key default newid(),
 	CreationTime datetime not null,
-	CreatorUserId int not null,
+	CreatorUserId uniqueidentifier not null,
 	LastModificationTime datetime null,
-	LastModifierUserId int null ,
+	LastModifierUserId uniqueidentifier null ,
 	IsDeleted bit not null,
 	DeleteTime datetime null,
-	DeleterUserId int null,
-	MovieId int not null,
-	TimeStart datetime not null,
-	FormatMovieScreen int not null,
-	constraint FK_ShowtimesMovie foreign key (MovieId) references Movie(MId),
+	DeleterUserId uniqueidentifier null,
+	Name nvarchar(max),
 )
 go
 --Bảng phòng chiếu
 create table Room(
-	RId int identity primary key,
+	Id uniqueidentifier primary key default newid(),
 	CreationTime datetime not null,
-	CreatorUserId int not null,
+	CreatorUserId uniqueidentifier not null,
 	LastModificationTime datetime null,
-	LastModifierUserId int null ,
+	LastModifierUserId uniqueidentifier null ,
 	IsDeleted bit not null,
 	DeleteTime datetime null,
-	DeleterUserId int null,
+	DeleterUserId uniqueidentifier null,
 	Name int not null,
-	ShowtimesId int null,
+	CinemaId uniqueidentifier not null,
 	Status int not null,
-	constraint FK_SeatShowtimes foreign key (ShowtimesId) references Showtimes(TId),
+	constraint FK_RoomCinema foreign key (CinemaId) references Cinema(Id),
+)
+go
+--Bảng lịch chiếu phim
+create table Showtimes(
+	Id uniqueidentifier primary key default newid(),
+	CreationTime datetime not null,
+	CreatorUserId uniqueidentifier not null,
+	LastModificationTime datetime null,
+	LastModifierUserId uniqueidentifier null ,
+	IsDeleted bit not null,
+	DeleteTime datetime null,
+	DeleterUserId uniqueidentifier null,
+	MovieId uniqueidentifier not null,
+	TimeStart datetime not null,
+	FormatMovieScreen int not null,
+	RoomId uniqueidentifier not null,
+	constraint FK_ShowtimesMovie foreign key (MovieId) references Movie(Id),
+	constraint FK_ShowtimesRoom foreign key (RoomId) references Room(Id),
 )
 go
 --Bảng tài khoản để đăng nhập vào hệ thống
 create table Account(
-	AId int identity primary key,
+	Id uniqueidentifier primary key default newid(),
 	CreationTime datetime not null,
-	CreatorUserId int not null,
+	CreatorUserId uniqueidentifier null,
 	LastModificationTime datetime null,
-	LastModifierUserId int null,
+	LastModifierUserId uniqueidentifier null,
 	IsDeleted bit not null,
 	DeleteTime datetime null,
-	DeleterUserId int null,
+	DeleterUserId uniqueidentifier null,
 	Email nvarchar(50) not null,
 	Password nvarchar(30) not null,
 	Role int not null,
@@ -78,71 +93,138 @@ create table Account(
 go
 --Bảng ghế ngồi trong phòng chiếu
 create table Seat(
-	SId int identity primary key,
+	Id uniqueidentifier primary key default newid(),
 	CreationTime datetime not null,
-	CreatorUserId int not null,
+	CreatorUserId uniqueidentifier not null,
 	LastModificationTime datetime null,
-	LastModifierUserId int null ,
+	LastModifierUserId uniqueidentifier null ,
 	IsDeleted bit not null,
 	DeleteTime datetime null,
-	DeleterUserId int null,
+	DeleterUserId uniqueidentifier null,
 	Name int not null,
-	RoomId int not null,
+	ShowtimesId uniqueidentifier not null,
 	Type int not null,
 	Price int not null,
 	Status int not null,
-	constraint FK_SeatRoom foreign key (RoomId) references Room(RId),
+	constraint FK_SeatShowtimes foreign key (ShowtimesId) references Showtimes(Id),
 )
 go
 --Bảng mã khuyến mãi
 create table Promotion(
-	PId int identity primary key,
+	Id uniqueidentifier primary key default newid(),
 	CreationTime datetime not null,
-	CreatorUserId int not null,
+	CreatorUserId uniqueidentifier not null,
 	LastModificationTime datetime null,
-	LastModifierUserId int null ,
+	LastModifierUserId uniqueidentifier null ,
 	IsDeleted bit not null,
 	DeleteTime datetime null,
-	DeleterUserId int null,
+	DeleterUserId uniqueidentifier null,
 	Code nvarchar(50) not null,
 	Discount int not null,
-	StartDay datetime not null,
-	EndDay datetime not null,
+	StartDate datetime not null,
+	EndDate datetime not null,
 )
 go
---Bảng hóa đơn
-create table Bill(
-	BId int identity primary key,
+--Bảng vé
+create table Ticket(
+	Id uniqueidentifier primary key default newid(),
 	CreationTime datetime not null,
-	CreatorUserId int not null,
+	CreatorUserId uniqueidentifier not null,
 	LastModificationTime datetime null,
-	LastModifierUserId int null ,
+	LastModifierUserId uniqueidentifier null ,
 	IsDeleted bit not null,
 	DeleteTime datetime null,
-	DeleterUserId int null,
-	AccountId int not null,
+	DeleterUserId uniqueidentifier null,
+	AccountId uniqueidentifier not null,
 	Date datetime not null,
-	SeatId int not null,
+	SeatId uniqueidentifier not null,
 	Price int not null,
-	PromotionId int not null,
-	constraint FK_BillAccount foreign key (AccountId) references Account(AId),
-	constraint FK_BillSeat foreign key (SeatId) references Seat(SId),
-	constraint FK_BillPromotion foreign key (PromotionId) references Promotion(PId),
+	PromotionId uniqueidentifier not null,
+	BillId uniqueidentifier null,
+	constraint FK_TicketAccount foreign key (AccountId) references Account(Id),
+	constraint FK_TicketSeat foreign key (SeatId) references Seat(Id),
+	constraint FK_TicketPromotion foreign key (PromotionId) references Promotion(Id),
+)
+go
+--Đồ ăn
+create table Food(
+	Id uniqueidentifier primary key default newid(),
+	CreationTime datetime not null,
+	CreatorUserId uniqueidentifier not null,
+	LastModificationTime datetime null,
+	LastModifierUserId uniqueidentifier null ,
+	IsDeleted bit not null,
+	DeleteTime datetime null,
+	DeleterUserId uniqueidentifier null,
+	Name nvarchar(50) not null,
+	Size int not null,
+	Price int not null,
+	CinemaId uniqueidentifier not null,
+	constraint FK_FoodCinema foreign key (CinemaId) references Cinema(Id),
+)
+go
+--hóa đơn đồ ăn
+create table FoodDetail(
+	Id uniqueidentifier primary key default newid(),
+	CreationTime datetime not null,
+	CreatorUserId uniqueidentifier not null,
+	LastModificationTime datetime null,
+	LastModifierUserId uniqueidentifier null ,
+	IsDeleted bit not null,
+	DeleteTime datetime null,
+	DeleterUserId uniqueidentifier null,
+	FoodId uniqueidentifier not null,
+	FoodNum int,
+	constraint FK_FoodDetail_Food foreign key (FoodId) references Food(Id),
+)
+go
+--Hóa đơn
+create table Bill(
+	TicketId uniqueidentifier not null,
+	FoodDetailId uniqueidentifier,
+	Cost int,
+	constraint FK_Bill_FoodDetail foreign key (FoodDetailId) references FoodDetail(Id),
+	constraint FK_Bill_Ticket foreign key (TicketId) references Ticket(Id),
+)
+go
+--poster
+create table Poster(
+	Id uniqueidentifier primary key default newid(),
+	Url nvarchar(max),
+	IsMain bit,
+	MovieId uniqueidentifier,
+	constraint FK_PosterMovie foreign key (MovieId) references Movie(Id),
 )
 go
 --view danh sách các mã khuyến mãi
 create view GetAllPromotion
 as
-	select PId, Code, Discount, StartDay, EndDay from Promotion
+	select Id, Code, Discount, StartDate, EndDate from Promotion
+go
+--proc getall food in cinema
+create proc GetAllFoodByCinema
+@CinemaId uniqueidentifier
+as
+	select c.Name as Cinema, f.Name as Food, f.Size, f.Price from Food f
+	join Cinema c on c.Id = f.CinemaId
+	where c.Id = @CinemaId
+go
+--proc getall room in cinema
+create proc GetAllRoomByCinema
+@CinemaId uniqueidentifier
+as
+	select r.Name as Room, r.Status, c.Name as Cinema from Room r
+	join Cinema c on c.Id = r.CinemaId
+	where c.Id = @CinemaId
 go
 --proc getall ghế trong 1 phòng
 create proc GetAllSeatByRoom
-@ShowtimesId int
+@ShowtimesId uniqueidentifier
 as
-	select r.Name, r.Status, s.sId, s.Name, s.Type, s.Price, s.Status from Room r
-	join Seat s on r.rId = s.RoomId
-	join Showtimes t on t.TId = r.ShowtimesId
-	where t.TId = @ShowtimesId
+	select r.Name as Room, r.Status, s.Id as ShowtimesId, s.Name as Seat, s.Type, s.Price, s.Status as SeatStatus from Room r
+	join Showtimes t on t.RoomId = r.Id
+	join Seat s on t.Id = s.ShowtimesId
+	where t.Id = @ShowtimesId
 go
 --proc view Movie nếu có tìm kiếm sẽ tìm theo yêu cầu không thì sẽ hiện full
 create proc GetViewMovie
@@ -158,7 +240,7 @@ as
 go
 --proc view Showtimes nếu có tìm kiếm sẽ tìm theo yêu cầu không thì sẽ hiện full
 create proc GetViewShowtimes
-@MovieId int, @TimeStart datetime, @FormatMovieScreen int
+@MovieId uniqueidentifier, @TimeStart datetime, @FormatMovieScreen int
 as
 	select * from Showtimes t where t.IsDeleted <> 1 
 		and (isnull(@MovieId, '') = '' or upper(t.MovieId) like '%' + upper(@MovieId) + '%')
@@ -168,24 +250,22 @@ as
 go
 --proc view Account nếu có tìm kiếm sẽ tìm theo yêu cầu không thì sẽ hiện full
 create proc GetViewAccount
-@Name nvarchar(50), @Email nvarchar(50), @Password nvarchar(30), @IdentityCard nvarchar(12), @DoB datetime, @Address nvarchar(max), @Phone nvarchar(10), @Point int
+@Name nvarchar(50), @Email nvarchar(50), @IdentityCard nvarchar(12), @DoB datetime, @Address nvarchar(max), @Phone nvarchar(10)
 as
 	select * from Account a where a.IsDeleted <> 1 and a.Role = 1
 		and (isnull(@Name, '') = '' or upper(a.Name) like '%' + upper(@Name) + '%')
         and (isnull(@Email, '') = '' or upper(a.Email) like '%' + upper(@Email) + '%')
-        and (isnull(@Password, '') = '' or upper(a.Password) like '%' + upper(@Password) + '%')
         and (isnull(@IdentityCard, '') = '' or upper(a.IdentityCard) like '%' + upper(@IdentityCard) + '%')
         and (isnull(@DoB, '') = '' or upper(a.DoB) like '%' + upper(@DoB) + '%')
         and (isnull(@Address, '') = '' or upper(a.Address) like '%' + upper(@Address) + '%')
         and (isnull(@Phone, '') = '' or upper(a.Phone) like '%' + upper(@Phone) + '%')
-        and (isnull(@Point, '') = '' or upper(a.Point) like '%' + upper(@Point) + '%')
         option (recompile)
 go
---proc view Bill nếu có tìm kiếm sẽ tìm theo yêu cầu không thì sẽ hiện full
-create proc GetViewBill
-@AccountId int, @Date datetime, @PromotionId int
+--proc view Ticket nếu có tìm kiếm sẽ tìm theo yêu cầu không thì sẽ hiện full
+create proc GetViewTicket
+@AccountId uniqueidentifier, @Date datetime, @PromotionId uniqueidentifier
 as
-	select * from Bill b where b.IsDeleted <> 1
+	select * from Ticket b where b.IsDeleted <> 1
 		and (isnull(@AccountId, '') = '' or upper(b.AccountId) like '%' + upper(@AccountId) + '%')
 		and (isnull(@Date, '') = '' or upper(b.Date) like '%' + upper(@Date) + '%')
 		and (isnull(@PromotionId, '') = '' or upper(b.PromotionId) like '%' + upper(@PromotionId) + '%')
@@ -193,122 +273,132 @@ as
 go
 --proc add movie
 create proc CreateMovie
-@CreatorUserId int, @Name nvarchar(max), @Time int, @OpeningDay datetime, @Country nvarchar(50), @Director nvarchar(50), @Genre int, @Description nvarchar(max)
+@CreatorUserId uniqueidentifier, @Name nvarchar(max), @Time int, @OpeningDay datetime, @Country nvarchar(50), @Director nvarchar(50), @Genre int, @Description nvarchar(max)
 as
 	insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Genre, Description) values (getdate(), @CreatorUserId, 0, @Name, @Time, @OpeningDay, @Country, @Director, @Genre, @Description)
 go
 --proc update movie
 create proc UpdateMovie
-@LastModifierUserId int, @MId int, @Name int, @Time int, @OpeningDay datetime, @Country nvarchar(50), @Director nvarchar(50), @Genre int, @Description nvarchar(max), @Poster nvarchar(max)
+@LastModifierUserId uniqueidentifier, @Id uniqueidentifier, @Name int, @Time int, @OpeningDay datetime, @Country nvarchar(50), @Director nvarchar(50), @Genre int, @Description nvarchar(max), @Poster nvarchar(max)
 as
-	update Movie set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, Name = @Name, Time = @Time, OpeningDay = @OpeningDay, Country = @Country, Director = @Director, Genre = @Genre, Description = @Description, Poster = @Poster where MId = @MId
-go
---proc delete movie
-create proc DeleteMovie
-@DeleterUserId int, @MId int
-as
-	update Movie set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = @DeleterUserId where MId = @MId
-	print 'This movie has been deleted!'
+	update Movie set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, Name = @Name, Time = @Time, OpeningDay = @OpeningDay, Country = @Country, Director = @Director, Genre = @Genre, Description = @Description, Poster = @Poster where Id = @Id
 go
 --proc update status seat
 create proc UpdateSeat
-@LastModifierUserId int, @SId int, @Status int
+@LastModifierUserId uniqueidentifier, @Id uniqueidentifier, @Status int
 as
-	update Seat set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, Status = @Status where SId = @SId
+	update Seat set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, Status = @Status where Id = @Id
 go
 --proc add account
 create proc CreateAccount
-@CreatorUserId int, @Email nvarchar(50), @Password nvarchar(30), @Role int, @Name nvarchar(50), @IdentityCard varchar(12), @DoB datetime, @Address nvarchar(max), @Phone varchar(10)
+@CreatorUserId uniqueidentifier, @Email nvarchar(50), @Password nvarchar(30), @Role int, @Name nvarchar(50), @IdentityCard varchar(12), @DoB datetime, @Address nvarchar(max), @Phone varchar(10)
 as
 	insert into Account(CreationTime, CreatorUserId, IsDeleted, Email, Password, Role, Name, IdentityCard, DoB, Address, Phone, Point) values (getdate(), @CreatorUserId, 0, @Email, @Password, @Role, @Name, @IdentityCard, @DoB, @Address, @Phone, 0)
 go
 --proc update account
 create proc UpdateAccount
-@LastModifierUserId int, @AId int, @Email nvarchar(50), @Password nvarchar(30), @RocreateShowtimesle int, @Name nvarchar(50), @IdentityCard varchar(12), @DoB datetime, @Address nvarchar(max), @Phone varchar(10), @Point int
+@LastModifierUserId uniqueidentifier, @Id uniqueidentifier, @Email nvarchar(50), @Password nvarchar(30), @RocreateShowtimesle int, @Name nvarchar(50), @IdentityCard varchar(12), @DoB datetime, @Address nvarchar(max), @Phone varchar(10), @Point int
 as
-	update Account set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, Email = @Email, Password = @Password, Name = @Name, IdentityCard = @IdentityCard, DoB = @DoB, Address = @Address, Phone = @Phone, Point = @Point where AId = @AId
-go
---proc delete account
-create proc DeleteAccount
-@DeleterUserId int, @AId int
-as
-	update Account set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = @DeleterUserId where @AId = @AId
-	print 'This account has been deleted!'
+	update Account set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, Email = @Email, Password = @Password, Name = @Name, IdentityCard = @IdentityCard, DoB = @DoB, Address = @Address, Phone = @Phone, Point = @Point where Id = @Id
 go
 --proc add showtimes
 create proc CreateShowtimes
-@CreatorUserId int, @MovieId int, @TimeStart datetime, @FormatMovieScreen int, @RoomName int
+@CreatorUserId uniqueidentifier, @MovieId uniqueidentifier, @TimeStart datetime, @FormatMovieScreen int, @RoomId uniqueidentifier
 as
-	insert into Showtimes(CreationTime, CreatorUserId, IsDeleted, MovieId, TimeStart, FormatMovieScreen) values (getdate(), @CreatorUserId, 0, @MovieId, @TimeStart, @FormatMovieScreen)
-	insert into Room(CreationTime, CreatorUserId, IsDeleted, Name, Status) values (getdate(), @CreatorUserId, 0, @RoomName, 1)
+	insert into Showtimes(CreationTime, CreatorUserId, IsDeleted, MovieId, TimeStart, FormatMovieScreen, RoomId) values (getdate(), @CreatorUserId, 0, @MovieId, @TimeStart, @FormatMovieScreen, @RoomId)
 go
 --proc update showtimes
 create proc UpdateShowtimes
-@LastModifierUserId int, @TId int, @MovieId int, @TimeStart datetime, @FormatMovieScreen int
+@LastModifierUserId uniqueidentifier, @Id uniqueidentifier, @MovieId uniqueidentifier, @TimeStart datetime, @FormatMovieScreen int, @RoomId uniqueidentifier
 as
-	update Showtimes set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, MovieId = @MovieId, TimeStart = @TimeStart, FormatMovieScreen = @FormatMovieScreen where TId = @TId
-go
---proc delete showtimes
-create proc DeleteShowtimes
-@DeleterUserId int, @TId int
-as
-	update Showtimes set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = @DeleterUserId where TId = @TId
-	print 'This showtimes has been deleted!'
+	update Showtimes set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, MovieId = @MovieId, TimeStart = @TimeStart, FormatMovieScreen = @FormatMovieScreen, RoomId = @RoomId where Id = @Id
 go
 --proc add promotion
 create proc CreatePromotion
-@CreatorUserId int, @Code nvarchar(50), @Discount int, @StartDay datetime, @EndDay datetime
+@CreatorUserId uniqueidentifier, @Code nvarchar(50), @Discount int, @StartDate datetime, @EndDate datetime
 as
-	insert into Promotion(CreationTime, CreatorUserId, IsDeleted, Code, Discount, StartDay, EndDay) values (getdate(), @CreatorUserId, 0, @Code, @Discount, @StartDay, @EndDay)
+	insert into Promotion(CreationTime, CreatorUserId, IsDeleted, Code, Discount, StartDate, EndDate) values (getdate(), @CreatorUserId, 0, @Code, @Discount, @StartDate, @EndDate)
 go
 --proc update promotion
 create proc UpdatePromotion
-@LastModifierUserId int, @PId int, @Code nvarchar(50), @Discount int, @StartDay datetime, @EndDay datetime
+@LastModifierUserId uniqueidentifier, @Id uniqueidentifier, @Code nvarchar(50), @Discount int, @StartDate datetime, @EndDate datetime
 as
-	update Promotion set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, Code = @Code, Discount = @Discount, StartDay = @StartDay, EndDay = @EndDay where PId = @PId
-	select * from GetAllPromotion where PId = @PId
+	update Promotion set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, Code = @Code, Discount = @Discount, StartDate = @StartDate, EndDate = @EndDate where Id = @Id
+	select * from GetAllPromotion where Id = @Id
 go
---proc delete promotion
-create proc DeletePromotion
-@DeleterUserId int, @PId int
+--proc add Ticket
+create proc CreateTicket
+@CreatorUserId uniqueidentifier, @AccountId uniqueidentifier, @Date datetime, @SeatId uniqueidentifier, @Price int, @PromotionId uniqueidentifier
 as
-	update Promotion set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = @DeleterUserId where PId = @PId
-	print 'This code has been deleted!'
-	select * from GetAllPromotion where PId = @PId
+	insert into Ticket(CreationTime, CreatorUserId, IsDeleted, AccountId, Date, SeatId, Price, PromotionId) values (getdate(), @CreatorUserId, 0, @AccountId, @Date, @SeatId, @Price, @PromotionId)
 go
---proc add bill
-create proc CreateBill
-@CreatorUserId int, @AccountId int, @Date datetime, @SeatId int, @Price int, @PromotionId int
+--proc update Ticket
+create proc UpdateTicket
+@LastModifierUserId uniqueidentifier, @Id uniqueidentifier, @AccountId uniqueidentifier, @Date datetime, @SeatId uniqueidentifier, @Price int, @PromotionId uniqueidentifier
 as
-	insert into Bill(CreationTime, CreatorUserId, IsDeleted, AccountId, Date, SeatId, Price, PromotionId) values (getdate(), @CreatorUserId, 0, @AccountId, @Date, @SeatId, @Price, @PromotionId)
+	update Ticket set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, AccountId = @AccountId, Date = @Date, SeatId = @SeatId, Price = @Price, PromotionId = @PromotionId where Id = @Id
 go
---proc update bill
-create proc UpdateBill
-@LastModifierUserId int, @BId int, @AccountId int, @Date datetime, @SeatId int, @Price int, @PromotionId int
+--proc add Food
+create proc CreateFood
+@CreatorUserId uniqueidentifier, @CinemaId uniqueidentifier, @Name nvarchar(30), @Size int, @Price int
 as
-	update Bill set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, AccountId = @AccountId, Date = @Date, SeatId = @SeatId, Price = @Price, PromotionId = @PromotionId where PromotionId = @PromotionId
+	insert into Food(CreationTime, CreatorUserId, IsDeleted, CinemaId, Name, Size, Price) values (getdate(), @CreatorUserId, 0, @CinemaId, @Name, @Size, @Price)
 go
---proc delete bill
-create proc DeleteBill
-@DeleterUserId int, @BId int
+--proc update Food
+create proc UpdateFood
+@LastModifierUserId uniqueidentifier, @Id uniqueidentifier, @CinemaId uniqueidentifier, @Name nvarchar(30), @Size int, @Price int
 as
-	update Bill set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = @DeleterUserId where BId = @BId
-	print 'This bill has been deleted!'
+	update Food set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, CinemaId = @CinemaId, Name = @Name, Size = @Size, Price = @Price where Id = @Id
+go
+--proc add FoodDetail
+create proc CreateFoodDetail
+@CreatorUserId uniqueidentifier, @FoodId uniqueidentifier, @FoodNum int
+as
+	insert into FoodDetail(CreationTime, CreatorUserId, IsDeleted, FoodId, FoodNum) values (getdate(), @CreatorUserId, 0, @FoodId, @FoodNum)
+go
+--proc update FoodDetail
+create proc UpdateFoodDetail
+@LastModifierUserId uniqueidentifier, @Id uniqueidentifier, @FoodId uniqueidentifier, @FoodNum int
+as
+	update FoodDetail set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, FoodId = @FoodId, FoodNum = @FoodNum where Id = @Id
+go
+--proc login
+create proc Login
+@Email nvarchar(50), @Password nvarchar(30)
+as
+	select * from Account where Email = @Email and Password = @Password
+	if(@@rowcount = 1)
+		print 'Login success!'
+	else
+		print 'Login fail -_-'
+go
+--proc add poster
+create proc AddPosterMovie
+@Url nvarchar(max), @MovieId uniqueidentifier
+as
+	begin
+	insert into Poster(Url, MovieId) values (@Url, @MovieId)
+	select MovieId, IsMain from Poster where IsMain = 1 group by MovieId, IsMain
+	if(@@rowcount = 0)
+		update Poster set IsMain = 1 where MovieId = @MovieId and Url = @Url
+	else
+		update Poster set IsMain = 0 where MovieId = @MovieId and Url = @Url
+	end
 go
 --trigger add seat in 1 room
 create trigger AddSeatInRoom
-on Room
+on Showtimes
 for insert
 as
-	declare @RoomId int = (select RId from Inserted)
-	declare @CreatorUserId int = (select CreatorUserId from Inserted)
+	declare @ShowtimesId uniqueidentifier = (select Id from Inserted)
+	declare @CreatorUserId uniqueidentifier = (select CreatorUserId from Inserted)
 	declare @i int = 1;
 	while @i < 61
 	begin
 	if((@i > 12 and @i < 19) or (@i > 22 and @i < 29) or (@i > 32 and @i < 39) or (@i > 42 and @i < 49) or (@i > 52 and @i < 59))
-		insert into Seat(CreationTime, CreatorUserId, IsDeleted, RoomId, Name, Price, Status, Type) values (GETDATE(), @CreatorUserId, 0, @RoomId, @i, 60000, 1, 1)
+		insert into Seat(CreationTime, CreatorUserId, IsDeleted, Name, Price, Status, Type, ShowtimesId) values (GETDATE(), @CreatorUserId, 0, @i, 60000, 1, 1, @ShowtimesId)
 	else
-		insert into Seat(CreationTime, CreatorUserId, IsDeleted, RoomId, Name, Price, Status, Type) values (GETDATE(), @CreatorUserId, 0, @RoomId, @i, 50000, 1, 2)
+		insert into Seat(CreationTime, CreatorUserId, IsDeleted, Name, Price, Status, Type, ShowtimesId) values (GETDATE(), @CreatorUserId, 0, @i, 50000, 1, 2, @ShowtimesId)
 	set @i = @i + 1;
 	end
 	print 'This room has been added with 60 seats.'
@@ -320,9 +410,9 @@ for update
 as
 	if(
 	(select t.TimeStart from Showtimes t 
-	join Room r on r.ShowtimesId = t.TId 
-	join Seat s on s.RoomId = r.RId 
-	where s.SId =(select SId from Inserted)) 
+	join Seat s on s.ShowtimesId = t.Id 
+	join Room r on r.Id = t.RoomId
+	where s.Id =(select Id from Inserted)) 
 	> getdate())
 		rollback transaction
 		print 'This movie has been showed. You cannot book tickets!!!'
@@ -338,7 +428,7 @@ as
 go
 
 
-select * from Promotion
+
 
 
 
@@ -352,15 +442,38 @@ select name, is_instead_of_trigger from sys.triggers where type = 'TR';
 go
 
 --insert tài khoản admin
-insert into Account(CreationTime, CreatorUserId, IsDeleted, Email, Password, Role, Name, IdentityCard, DoB, Address, Phone, Point) values ('2022-10-22', 1, 0, 'admin@gmail.com', '123456', 2, N'ad văn min', '001122334455', '2001-01-01', N'Hà Nội', '0123456789', 0)
+insert into Account(CreationTime, IsDeleted, Email, Password, Role, Name, IdentityCard, DoB, Address, Phone, Point) values ('2022-10-22', 0, 'admin@gmail.com', '123456', 2, N'ad văn min', '001122334455', '2001-01-01', N'Hà Nội', '0123456789', 0)
+declare @AdminId uniqueidentifier = (select Id from (select top 1 * from Account) a)
+--insert Cinema
+insert into Cinema(CreationTime, CreatorUserId, IsDeleted, Name) values ('2022-10-22', @AdminId, 0, N'CGV')
+insert into Cinema(CreationTime, CreatorUserId, IsDeleted, Name) values ('2022-10-22', @AdminId, 0, N'Beta')
+insert into Cinema(CreationTime, CreatorUserId, IsDeleted, Name) values ('2022-10-22', @AdminId, 0, N'BHD')
+insert into Cinema(CreationTime, CreatorUserId, IsDeleted, Name) values ('2022-10-22', @AdminId, 0, N'Rạp chiếu phim quốc gia')
 --insert room
-declare @AdminId int = (select AId from (select top 1 * from Account) a)
-insert into Room(CreationTime, CreatorUserId, IsDeleted, Name, Status) values ('2022-10-22', @AdminId, 0, 1, 1)
-insert into Room(CreationTime, CreatorUserId, IsDeleted, Name, Status) values ('2022-10-22', @AdminId, 0, 2, 1)
-insert into Room(CreationTime, CreatorUserId, IsDeleted, Name, Status) values ('2022-10-22', @AdminId, 0, 3, 1)
-insert into Room(CreationTime, CreatorUserId, IsDeleted, Name, Status) values ('2022-10-22', @AdminId, 0, 4, 1)
-insert into Room(CreationTime, CreatorUserId, IsDeleted, Name, Status) values ('2022-10-22', @AdminId, 0, 5, 1)
-insert into Room(CreationTime, CreatorUserId, IsDeleted, Name, Status) values ('2022-10-22', @AdminId, 0, 6, 1)
+declare @j int = 1;
+while @j < 5
+begin
+	declare @CinemaId uniqueidentifier = (select Id from (select row_number() over(order by Name asc) as row, * from Cinema) c where row = @j)
+	insert into Food(CreationTime, CreatorUserId, IsDeleted, Name, Size, Price, CinemaId) values ('2022-10-22', @AdminId, 0, N'Bỏng ngô Default', 1, 25000, @CinemaId)
+	insert into Food(CreationTime, CreatorUserId, IsDeleted, Name, Size, Price, CinemaId) values ('2022-10-22', @AdminId, 0, N'Bỏng ngô Default', 2, 30000, @CinemaId)
+	insert into Food(CreationTime, CreatorUserId, IsDeleted, Name, Size, Price, CinemaId) values ('2022-10-22', @AdminId, 0, N'Bỏng ngô Default', 3, 35000, @CinemaId)
+	insert into Food(CreationTime, CreatorUserId, IsDeleted, Name, Size, Price, CinemaId) values ('2022-10-22', @AdminId, 0, N'Bỏng ngô Caramel', 1, 30000, @CinemaId)
+	insert into Food(CreationTime, CreatorUserId, IsDeleted, Name, Size, Price, CinemaId) values ('2022-10-22', @AdminId, 0, N'Bỏng ngô Caramel', 2, 35000, @CinemaId)
+	insert into Food(CreationTime, CreatorUserId, IsDeleted, Name, Size, Price, CinemaId) values ('2022-10-22', @AdminId, 0, N'Bỏng ngô Caramel', 3, 40000, @CinemaId)
+	insert into Food(CreationTime, CreatorUserId, IsDeleted, Name, Size, Price, CinemaId) values ('2022-10-22', @AdminId, 0, N'Bỏng ngô Phomai', 1, 30000, @CinemaId)		
+	insert into Food(CreationTime, CreatorUserId, IsDeleted, Name, Size, Price, CinemaId) values ('2022-10-22', @AdminId, 0, N'Bỏng ngô Phomai', 2, 35000, @CinemaId)
+	insert into Food(CreationTime, CreatorUserId, IsDeleted, Name, Size, Price, CinemaId) values ('2022-10-22', @AdminId, 0, N'Bỏng ngô Phomai', 3, 40000, @CinemaId)
+	insert into Food(CreationTime, CreatorUserId, IsDeleted, Name, Size, Price, CinemaId) values ('2022-10-22', @AdminId, 0, N'Nước Coca', 1, 30000, @CinemaId)
+	insert into Food(CreationTime, CreatorUserId, IsDeleted, Name, Size, Price, CinemaId) values ('2022-10-22', @AdminId, 0, N'Nước Coca', 2, 35000, @CinemaId)
+	insert into Food(CreationTime, CreatorUserId, IsDeleted, Name, Size, Price, CinemaId) values ('2022-10-22', @AdminId, 0, N'Nước Coca', 3, 40000, @CinemaId)
+	declare @i int = 1;
+	while @i < 7
+	begin
+		insert into Room(CreationTime, CreatorUserId, IsDeleted, Name, Status, CinemaId) values ('2022-10-22', @AdminId, 0, @i, 1, @CinemaId)
+	set @i = @i + 1;
+	end
+	set @j = @j + 1;
+end
 --insert phim
 insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Genre, Description) values ('2022-10-22', @AdminId, 0, N'Doraemon: Chú khủng long của Nobita', 120, '1980-03-15', 'Japan', 'Hiroshi Fukutomi', 1, N'Truyện phim mở đầu khi Nobita tìm thấy một quả trứng hóa thạch, và bằng bảo bối của Doraemon đã giúp nở ra một chú khủng long hiền lành mà cậu bé đặt tên là Pīsuke. Do không thể nuôi khủng long giữa lòng Tokyo hiện đại, Nobita phải đưa Pīsuke trở về quê nhà ở kỷ Creta, đồng thời tìm cách bảo vệ chú khủng long khỏi sự truy bắt của những tay săn trộm đến từ thế kỷ tương lai.')
 insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Genre, Description) values ('2022-10-22', @AdminId, 0, N'Doraemon: Nobita và lịch sử khai phá vũ trụ', 120, '1981-03-14', 'Japan', 'Hideo Nishimaki', 1, N'Bối cảnh của phim xảy ra luân phiên giữa Trái Đất và Hành tinh Tím qua một cửa không gian thông từ nền phòng Nôbita tới chiếc phi thuyền của những người bạn ở Hành tinh Tím.')
@@ -406,4 +519,19 @@ insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay
 insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Genre) values ('2022-10-22', @AdminId, 0, N'Doraemon: Nobita to Sora no Utopia', 120, '2023-03', 'Japan', 'Doyama Takumi', 1)
 insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Genre, Description) values ('2022-10-22', @AdminId, 0, N'Stand by me Doraemon', 120, '2014-08-08', 'Japan', 'Yamazaki Takashi Yagi Ryūichi', 1, N'Dựa trên nhiều mẩu truyện ngắn khác nhau trong manga Doraemon gốc, tác phẩm được biên tập lại thành phim hoàn chỉnh phát hành nhân dịp kỉ niệm 80 năm ngày sinh cố tác giả Fujiko F. Fujio.Nội dung phim kể về Doraemon, một chú mèo máy không tai đến từ tương lai trở về những năm 70 để giúp một cậu bé "vô tích sự" Nobi Nobita thay đổi tương lai đen tối sang một viễn cảnh tương lai tươi sáng vốn sẽ thay đổi số phận của con cháu Nobita về sau và khi Doraemon hoàn tất nhiệm vụ chia tay Nobita cùng với đó là cuộc hội ngộ bất ngờ của họ do chính Nobita tạo ra.')
 insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Genre, Description) values ('2022-10-22', @AdminId, 0, N'Stand by me Doraemon 2', 120, '2020-11-20', 'Japan', 'Yamazaki Takashi Yagi Ryūichi', 1, N'Đây là phần phim 3D tiếp nối sau Stand by Me Doraemon phát hành năm 2014, được sản xuất nhằm kỉ niệm 50 năm bộ truyện Doraemon ra đời, chủ yếu lấy cảm hứng từ các chương truyện tranh ngắn do tác giả Fujiko F. Fujio sáng tác và do nhà xuất bản Shogakukan ấn hành, các chương này sau đó từng được chuyển thể thành phim ngắn năm 2000 Kỉ niệm về bà và phim ngắn năm 2002 Ngày tớ ra đời.')
+--insert showtimes
+declare @AId uniqueidentifier = (select Id from (select top 1 * from Account) a)
+declare @n int = 1;
+while @n < 10
+begin
+	declare @MovieId uniqueidentifier = (select Id from (select row_number() over(order by Name asc) as row, * from Movie) m where row = @n)
+	declare @m int = 1;
+	while @m < 7
+	begin
+		declare @RoomId uniqueidentifier = (select Id from (select row_number() over(order by Name asc) as row, * from Room) r where row = @m)
+		insert into Showtimes(CreationTime, CreatorUserId, IsDeleted, MovieId, TimeStart, FormatMovieScreen, RoomId) values ('2022-10-22', @AId, 0, @MovieId, '2022-10-22 10:00:00', 2, @RoomId)
+	set @m = @m + 1;
+	end
+	set @n = @n + 1;
+end
 go

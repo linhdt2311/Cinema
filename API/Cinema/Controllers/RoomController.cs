@@ -1,6 +1,7 @@
-﻿using Cinema.DTO;
+﻿using Cinema.DTO.DtoRoom;
 using Cinema.Services;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -32,7 +33,7 @@ namespace Cinema.Controllers
             return roomList.ToList();
         }
         [HttpPost("create")]
-        public bool CreateRoom(int name, int creatorUserId)
+        public bool CreateRoom(int name, Guid creatorUserId)
         {
             conn.Open();
             string sql = string.Format("exec CreateRoom @CreatorUserId = " + creatorUserId + ", @Name = " + name);
@@ -42,20 +43,20 @@ namespace Cinema.Controllers
             return false;
         }
         [HttpPut("update")]
-        public bool UpdateRoom(int rId, int name, int status, int lastModifierUserId)
+        public bool UpdateRoom(Guid Id, int name, int status, Guid lastModifierUserId)
         {
             conn.Open();
-            string sql = string.Format("exec UpdateRoom @LastModifierUserId = " + lastModifierUserId + ", @Id = " + rId + ", @Name = " + name + ", @Status = " + status);
+            string sql = string.Format("exec UpdateRoom @LastModifierUserId = " + lastModifierUserId + ", @Id = " + Id + ", @Name = " + name + ", @Status = " + status);
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();
             return false;
         }
         [HttpDelete("delete")]
-        public bool DeleteRoom(int rId, int deleterUserId)
+        public bool DeleteRoom(Guid id, Guid deleterUserId)
         {
             conn.Open();
-            string sql = string.Format("exec DeleteRoom @DeleterUserId = " + deleterUserId + ", @RId = " + rId);
+            string sql = string.Format("update Room set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = " + deleterUserId + " where Id = " + id);
 
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;

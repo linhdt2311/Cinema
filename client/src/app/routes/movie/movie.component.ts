@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { catchError, of } from 'rxjs';
 import { MovieService } from 'src/app/services/movie.service';
 
@@ -13,7 +14,8 @@ export class MovieComponent implements OnInit {
   loading = false;
   constructor(
     private movieService: MovieService,
-  ) { }
+    protected router: Router,
+    ) { }
 
   ngOnInit(): void {
     this.movieData();
@@ -37,5 +39,8 @@ export class MovieComponent implements OnInit {
       this.url = 'https://i.pinimg.com/originals/85/9f/52/859f5219ba0b8d67f399c0db5a648694.jpg';
     }
     return this.url
+  }
+  onViewShowtimes(movieName: string): any {
+    this.router.navigate(['movie/', movieName]);
   }
 }

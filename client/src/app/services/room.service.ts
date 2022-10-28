@@ -11,8 +11,8 @@ export class RoomService {
 
   constructor(private http: HttpClient) { }
 
-  getAllRoom():Observable<any>{
-    return this.http.get(this.baseUrl + '/getall');
+  getAllRoom(payload: any):Observable<any>{
+    return this.http.get(this.baseUrl + '/getall/?cinemaId=' + payload);
    }
   createRoom(payload:any):Observable<any>{
     return this.http.post(this.baseUrl + '/create', payload);

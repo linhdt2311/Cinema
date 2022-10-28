@@ -5,7 +5,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RoomComponent } from './routes/room/room.component';
 import { NavbarComponent } from './routes/navbar/navbar.component';
@@ -26,6 +26,11 @@ import { ShowtimesComponent } from './routes/showtimes/showtimes.component';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
+import { PageNotFoundComponent } from './routes/page-not-found/page-not-found.component';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { MovieShowtimesComponent } from './routes/movie/movie-showtimes/movie-showtimes.component';
+import { NzAffixModule } from 'ng-zorro-antd/affix';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,6 +39,8 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
     MovieComponent,
     LoginComponent,
     ShowtimesComponent,
+    PageNotFoundComponent,
+    MovieShowtimesComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,8 +66,13 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
     NzImageModule,
     NzModalModule,
     NzNotificationModule,
+    NzTableModule,
+    NzAffixModule,
+    NzDividerModule,
   ],
-  providers: [],
+  providers: [
+    DatePipe,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -3,18 +3,18 @@ using System.Data;
 
 namespace Cinema.DTO.DtoRoom
 {
-    public class Room
+    public class RoomDto
     {
-        public Room(DataRow row)
+        public RoomDto(DataRow row)
         {
             Id = (Guid)row["Id"];
-            Name = (int)row["Name"];
-            CinemaId = (Guid)row["CinemaId"];
+            Name = (int)row["Room"];
+            Cinema = row["Cinema"].ToString();
             Status = (int)row["Status"];
         }
         public Guid Id { get; set; }
         public int Name { get; set; }
-        public Guid CinemaId { get; set; }
+        public string Cinema { get; set; }
         public int Status { get; set; }
     }
 }

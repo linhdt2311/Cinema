@@ -1,0 +1,30 @@
+<nz-affix [nzOffsetTop]="100">
+    <nz-content>
+        <div class="inner-content">
+            <nz-divider nzText="Cinema"></nz-divider>
+            <div nz-row [nzGutter]="1">
+                <div nz-col [nzSpan]="3" *ngFor="let cinema of cinemas" (click)="onFilterCinema(cinema.id)" style="text-align: center;">
+                    <button nz-button nzType="default" style="width: 80%;">{{ cinema.name }}</button>
+                </div>
+            </div>
+            <nz-divider nzText="Date"></nz-divider>
+            <div nz-row [nzGutter]="1">
+                <div nz-col [nzSpan]="3" *ngFor="let d of date" (click)="onFilterDate(d.value)" style="text-align: center;">
+                    <button nz-button nzType="default" style="width: 80%;">{{ d.value | date: 'dd/MM' }}</button>
+                </div>
+            </div>
+            <nz-divider nzText="Format Screen"></nz-divider>
+            <div nz-row [nzGutter]="1">
+                <div nz-col [nzSpan]="3" *ngFor="let format of formatMovieScreen" (click)="onFilterScreen(format.value)" style="text-align: center;">
+                    <button nz-button nzType="default" style="width: 80%;">{{ format.viewValue }}</button>
+                </div>
+            </div>
+            <nz-divider nzText="Showtimes"></nz-divider>
+            <div nz-row [nzGutter]="1">
+                <div nz-col [nzSpan]="3" *ngFor="let s of showtimes" style="text-align: center;">
+                    <button nz-button nzType="default" (click)="openViewBookSeat(s.id)" style="width: 80%;">{{ s.timeStart | date: 'hh:mm' }}</button>
+                </div>
+            </div>
+        </div>
+    </nz-content>
+</nz-affix>

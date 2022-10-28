@@ -14,7 +14,7 @@ namespace Cinema.Controllers
     public class RoomController : DBConnect
     {
         [HttpGet("getall")]
-        public List<Room> GetAllRoom(Guid cinemaId)
+        public List<RoomDto> GetAllRoom(Guid cinemaId)
         {
             conn.Open();
             string sql = string.Format("exec GetAllRoomByCinema @CinemaId = '" + cinemaId + "'");
@@ -23,10 +23,10 @@ namespace Cinema.Controllers
             DataTable data = new DataTable();
             SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
             adapter.Fill(data);
-            var roomList = new List<Room>();
+            var roomList = new List<RoomDto>();
             foreach (DataRow i in data.Rows)
             {
-                Room room = new Room(i);
+                RoomDto room = new RoomDto(i);
                 roomList.Add(room);
             }
             conn.Close();

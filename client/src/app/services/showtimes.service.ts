@@ -11,8 +11,13 @@ export class ShowtimesService {
 
   constructor(private http: HttpClient) { }
 
-  getAllShowtimes():Observable<any>{
-    return this.http.get(this.baseUrl + '/getall');
+  getAllShowtimes(payload: any):Observable<any>{
+    let movieName, timeStart, formatMovieScreen, cinemaId
+    movieName = payload.movieName ? 'movieName=' + payload.movieName : ''
+    timeStart = payload.timeStart ? '&timeStart=' + payload.timeStart : ''
+    formatMovieScreen = payload.formatMovieScreen ? '&formatMovieScreen=' + payload.formatMovieScreen : ''
+    cinemaId = payload.cinemaId ? '&cinemaId=' + payload.cinemaId : ''
+    return this.http.get(this.baseUrl + '/getall?' + movieName + timeStart + formatMovieScreen + cinemaId);
    }
   createShowtimes(payload:any):Observable<any>{
     return this.http.post(this.baseUrl + '/create', payload);

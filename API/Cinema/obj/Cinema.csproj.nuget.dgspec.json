@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\codeDoAn\\API\\Cinema\\Cinema.csproj": {}
+    "D:\\S\\Cinema\\API\\Cinema\\Cinema.csproj": {}
   },
   "projects": {
-    "E:\\codeDoAn\\API\\Cinema\\Cinema.csproj": {
+    "D:\\S\\Cinema\\API\\Cinema\\Cinema.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\codeDoAn\\API\\Cinema\\Cinema.csproj",
+        "projectUniqueName": "D:\\S\\Cinema\\API\\Cinema\\Cinema.csproj",
         "projectName": "Cinema",
-        "projectPath": "E:\\codeDoAn\\API\\Cinema\\Cinema.csproj",
-        "packagesPath": "C:\\Users\\S_member\\.nuget\\packages\\",
-        "outputPath": "E:\\codeDoAn\\API\\Cinema\\obj\\",
+        "projectPath": "D:\\S\\Cinema\\API\\Cinema\\Cinema.csproj",
+        "packagesPath": "C:\\Users\\linhd\\.nuget\\packages\\",
+        "outputPath": "D:\\S\\Cinema\\API\\Cinema\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\S_member\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\linhd\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -43,6 +40,10 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[5.0.17, )"
+            },
             "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
               "target": "Package",
               "version": "[1.17.0, )"
@@ -62,7 +63,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -74,7 +76,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
         }
       }
     }

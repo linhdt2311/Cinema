@@ -16,7 +16,7 @@ const routes: Routes = [
     children: [
       { path: 'movie', component: MovieComponent },
       //{ path: 'movie/movie-detail-view', component: RoomComponent },
-      { path: 'movie/:m', component: MovieShowtimesComponent },
+      { path: 'movie/:id', component: MovieShowtimesComponent },
       { path: 'movie/showtimes/:id', component: RoomComponent },
       { path: 'showtimes', component: ShowtimesComponent },
       { path: '**', pathMatch: 'full', component: PageNotFoundComponent },

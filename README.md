@@ -187,19 +187,10 @@ create table Bill(
 	constraint FK_Bill_Ticket foreign key (TicketId) references Ticket(Id),
 )
 go
---poster
-create table Poster(
-	Id uniqueidentifier primary key default newid(),
-	Url nvarchar(max),
-	IsMain bit,
-	MovieId uniqueidentifier,
-	constraint FK_PosterMovie foreign key (MovieId) references Movie(Id),
-)
-go
 --view danh sách các mã khuyến mãi
 create view GetAllPromotion
 as
-	select Id, Code, Discount, StartDate, EndDate from Promotion
+	select Id, Code, Discount, StartDate, EndDate from Promotion where IsDeleted <> 1
 go
 --proc getall food in cinema
 create proc GetAllFoodByCinema
@@ -207,24 +198,27 @@ create proc GetAllFoodByCinema
 as
 	select c.Name as Cinema, f.Name as Food, f.Size, f.Price from Food f
 	join Cinema c on c.Id = f.CinemaId
-	where c.Id = @CinemaId
+	where c.Id = @CinemaId and f.IsDeleted <> 1
+    option (recompile) --Cải thiện hiệu suất xử lý proc
 go
 --proc getall room in cinema
 create proc GetAllRoomByCinema
 @CinemaId uniqueidentifier
 as
-	select r.Name as Room, r.Status, c.Name as Cinema from Room r
-	join Cinema c on c.Id = r.CinemaId
-	where c.Id = @CinemaId
+	select r.Id, r.Name as Room, r.Status, c.Name as Cinema from Room r 
+	join Cinema c on c.Id = r.CinemaId 
+	where c.Id = @CinemaId and r.IsDeleted <> 1
+    option (recompile)
 go
---proc getall ghế trong 1 phòng
-create proc GetAllSeatByRoom
+--proc getall ghế trong 1 phòng 
+create proc GetAllSeatByRoom 
 @ShowtimesId uniqueidentifier
 as
-	select r.Name as Room, r.Status, s.Id as ShowtimesId, s.Name as Seat, s.Type, s.Price, s.Status as SeatStatus from Room r
+	select t.Id as ShowtimesId, r.Name as Room, r.Status, s.Id as SeatId, s.Name as Seat, s.Type, s.Price, s.Status as SeatStatus from Room r
 	join Showtimes t on t.RoomId = r.Id
 	join Seat s on t.Id = s.ShowtimesId
-	where t.Id = @ShowtimesId
+	where t.Id = @ShowtimesId order by Seat asc
+    option (recompile)
 go
 --proc view Movie nếu có tìm kiếm sẽ tìm theo yêu cầu không thì sẽ hiện full
 create proc GetViewMovie
@@ -240,13 +234,31 @@ as
 go
 --proc view Showtimes nếu có tìm kiếm sẽ tìm theo yêu cầu không thì sẽ hiện full
 create proc GetViewShowtimes
-@MovieId uniqueidentifier, @TimeStart datetime, @FormatMovieScreen int
+@CinemaId uniqueidentifier, @MovieId uniqueidentifier, @TimeStart datetime, @FormatMovieScreen int
 as
-	select * from Showtimes t where t.IsDeleted <> 1 
-		and (isnull(@MovieId, '') = '' or upper(t.MovieId) like '%' + upper(@MovieId) + '%')
+	if(@CinemaId = '00000000-0000-0000-0000-000000000000' and @MovieId = '00000000-0000-0000-0000-000000000000')
+		select * from Showtimes t join Movie m on m.Id = t.MovieId join Room r on r.Id = t.RoomId 
+		join Cinema c on c.Id = r.CinemaId where t.IsDeleted <> 1
         and (isnull(@TimeStart, '') = '' or upper(t.TimeStart) like '%' + upper(@TimeStart) + '%')
         and (isnull(@FormatMovieScreen, '') = '' or upper(t.FormatMovieScreen) like '%' + upper(@FormatMovieScreen) + '%')
-        option (recompile)
+	else if(@CinemaId = '00000000-0000-0000-0000-000000000000')
+		select * from Showtimes t join Movie m on m.Id = t.MovieId join Room r on r.Id = t.RoomId 
+		join Cinema c on c.Id = r.CinemaId where t.IsDeleted <> 1 and t.MovieId = @MovieId
+        and (isnull(@TimeStart, '') = '' or upper(t.TimeStart) like '%' + upper(@TimeStart) + '%')
+        and (isnull(@FormatMovieScreen, '') = '' or upper(t.FormatMovieScreen) like '%' + upper(@FormatMovieScreen) + '%')
+		option (recompile)
+	else if(@MovieId = '00000000-0000-0000-0000-000000000000')
+		select * from Showtimes t join Movie m on m.Id = t.MovieId join Room r on r.Id = t.RoomId 
+		join Cinema c on c.Id = r.CinemaId where t.IsDeleted <> 1 and c.Id = @CinemaId
+        and (isnull(@TimeStart, '') = '' or upper(t.TimeStart) like '%' + upper(@TimeStart) + '%')
+        and (isnull(@FormatMovieScreen, '') = '' or upper(t.FormatMovieScreen) like '%' + upper(@FormatMovieScreen) + '%')
+		option (recompile)
+	else
+		select * from Showtimes t join Movie m on m.Id = t.MovieId join Room r on r.Id = t.RoomId 
+		join Cinema c on c.Id = r.CinemaId where t.IsDeleted <> 1 and c.Id = @CinemaId and t.MovieId = @MovieId
+        and (isnull(@TimeStart, '') = '' or upper(t.TimeStart) like '%' + upper(@TimeStart) + '%')
+        and (isnull(@FormatMovieScreen, '') = '' or upper(t.FormatMovieScreen) like '%' + upper(@FormatMovieScreen) + '%')
+		option (recompile)
 go
 --proc view Account nếu có tìm kiếm sẽ tìm theo yêu cầu không thì sẽ hiện full
 create proc GetViewAccount
@@ -265,10 +277,21 @@ go
 create proc GetViewTicket
 @AccountId uniqueidentifier, @Date datetime, @PromotionId uniqueidentifier
 as
-	select * from Ticket b where b.IsDeleted <> 1
-		and (isnull(@AccountId, '') = '' or upper(b.AccountId) like '%' + upper(@AccountId) + '%')
-		and (isnull(@Date, '') = '' or upper(b.Date) like '%' + upper(@Date) + '%')
-		and (isnull(@PromotionId, '') = '' or upper(b.PromotionId) like '%' + upper(@PromotionId) + '%')
+	if(@AccountId = '00000000-0000-0000-0000-000000000000' and @PromotionId = '00000000-0000-0000-0000-000000000000')
+		select * from Ticket t where t.IsDeleted <> 1
+		and (isnull(@Date, '') = '' or upper(t.Date) like '%' + upper(@Date) + '%')
+		option (recompile)
+	else if(@AccountId = '00000000-0000-0000-0000-000000000000')
+		select * from Ticket t where t.IsDeleted <> 1 and t.AccountId = @AccountId
+		and (isnull(@Date, '') = '' or upper(t.Date) like '%' + upper(@Date) + '%')
+		option (recompile)
+	else if(@PromotionId = '00000000-0000-0000-0000-000000000000')
+		select * from Ticket t where t.IsDeleted <> 1 and t.PromotionId = @PromotionId
+		and (isnull(@Date, '') = '' or upper(t.Date) like '%' + upper(@Date) + '%')
+		option (recompile)
+	else
+		select * from Ticket t where t.IsDeleted <> 1 and t.PromotionId = @PromotionId and t.AccountId = @AccountId
+		and (isnull(@Date, '') = '' or upper(t.Date) like '%' + upper(@Date) + '%')
         option (recompile)
 go
 --proc add movie
@@ -393,9 +416,9 @@ as
 	declare @ShowtimesId uniqueidentifier = (select Id from Inserted)
 	declare @CreatorUserId uniqueidentifier = (select CreatorUserId from Inserted)
 	declare @i int = 1;
-	while @i < 61
+	while @i < 65
 	begin
-	if((@i > 12 and @i < 19) or (@i > 22 and @i < 29) or (@i > 32 and @i < 39) or (@i > 42 and @i < 49) or (@i > 52 and @i < 59))
+	if((@i > 18 and @i < 23) or (@i > 26 and @i < 31) or (@i > 34 and @i < 39) or (@i > 42 and @i < 47))
 		insert into Seat(CreationTime, CreatorUserId, IsDeleted, Name, Price, Status, Type, ShowtimesId) values (GETDATE(), @CreatorUserId, 0, @i, 60000, 1, 1, @ShowtimesId)
 	else
 		insert into Seat(CreationTime, CreatorUserId, IsDeleted, Name, Price, Status, Type, ShowtimesId) values (GETDATE(), @CreatorUserId, 0, @i, 50000, 1, 2, @ShowtimesId)
@@ -448,7 +471,7 @@ declare @AdminId uniqueidentifier = (select Id from (select top 1 * from Account
 insert into Cinema(CreationTime, CreatorUserId, IsDeleted, Name) values ('2022-10-22', @AdminId, 0, N'CGV')
 insert into Cinema(CreationTime, CreatorUserId, IsDeleted, Name) values ('2022-10-22', @AdminId, 0, N'Beta')
 insert into Cinema(CreationTime, CreatorUserId, IsDeleted, Name) values ('2022-10-22', @AdminId, 0, N'BHD')
-insert into Cinema(CreationTime, CreatorUserId, IsDeleted, Name) values ('2022-10-22', @AdminId, 0, N'Rạp chiếu phim quốc gia')
+insert into Cinema(CreationTime, CreatorUserId, IsDeleted, Name) values ('2022-10-22', @AdminId, 0, N'Lotte')
 --insert room
 declare @j int = 1;
 while @j < 5
@@ -519,17 +542,22 @@ insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay
 insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Genre) values ('2022-10-22', @AdminId, 0, N'Doraemon: Nobita to Sora no Utopia', 120, '2023-03', 'Japan', 'Doyama Takumi', 1)
 insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Genre, Description) values ('2022-10-22', @AdminId, 0, N'Stand by me Doraemon', 120, '2014-08-08', 'Japan', 'Yamazaki Takashi Yagi Ryūichi', 1, N'Dựa trên nhiều mẩu truyện ngắn khác nhau trong manga Doraemon gốc, tác phẩm được biên tập lại thành phim hoàn chỉnh phát hành nhân dịp kỉ niệm 80 năm ngày sinh cố tác giả Fujiko F. Fujio.Nội dung phim kể về Doraemon, một chú mèo máy không tai đến từ tương lai trở về những năm 70 để giúp một cậu bé "vô tích sự" Nobi Nobita thay đổi tương lai đen tối sang một viễn cảnh tương lai tươi sáng vốn sẽ thay đổi số phận của con cháu Nobita về sau và khi Doraemon hoàn tất nhiệm vụ chia tay Nobita cùng với đó là cuộc hội ngộ bất ngờ của họ do chính Nobita tạo ra.')
 insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Genre, Description) values ('2022-10-22', @AdminId, 0, N'Stand by me Doraemon 2', 120, '2020-11-20', 'Japan', 'Yamazaki Takashi Yagi Ryūichi', 1, N'Đây là phần phim 3D tiếp nối sau Stand by Me Doraemon phát hành năm 2014, được sản xuất nhằm kỉ niệm 50 năm bộ truyện Doraemon ra đời, chủ yếu lấy cảm hứng từ các chương truyện tranh ngắn do tác giả Fujiko F. Fujio sáng tác và do nhà xuất bản Shogakukan ấn hành, các chương này sau đó từng được chuyển thể thành phim ngắn năm 2000 Kỉ niệm về bà và phim ngắn năm 2002 Ngày tớ ra đời.')
+go
 --insert showtimes
 declare @AId uniqueidentifier = (select Id from (select top 1 * from Account) a)
 declare @n int = 1;
-while @n < 10
+while @n < 41
 begin
 	declare @MovieId uniqueidentifier = (select Id from (select row_number() over(order by Name asc) as row, * from Movie) m where row = @n)
 	declare @m int = 1;
 	while @m < 7
 	begin
 		declare @RoomId uniqueidentifier = (select Id from (select row_number() over(order by Name asc) as row, * from Room) r where row = @m)
-		insert into Showtimes(CreationTime, CreatorUserId, IsDeleted, MovieId, TimeStart, FormatMovieScreen, RoomId) values ('2022-10-22', @AId, 0, @MovieId, '2022-10-22 10:00:00', 2, @RoomId)
+		insert into Showtimes(CreationTime, CreatorUserId, IsDeleted, MovieId, TimeStart, FormatMovieScreen, RoomId) values ('2022-10-22', @AId, 0, @MovieId, '2022-10-29 01:00:00', 2, @RoomId)
+		insert into Showtimes(CreationTime, CreatorUserId, IsDeleted, MovieId, TimeStart, FormatMovieScreen, RoomId) values ('2022-10-22', @AId, 0, @MovieId, '2022-10-29 04:00:00', 2, @RoomId)
+		insert into Showtimes(CreationTime, CreatorUserId, IsDeleted, MovieId, TimeStart, FormatMovieScreen, RoomId) values ('2022-10-22', @AId, 0, @MovieId, '2022-10-29 09:00:00', 2, @RoomId)
+		insert into Showtimes(CreationTime, CreatorUserId, IsDeleted, MovieId, TimeStart, FormatMovieScreen, RoomId) values ('2022-10-22', @AId, 0, @MovieId, '2022-10-29 12:00:00', 2, @RoomId)
+		insert into Showtimes(CreationTime, CreatorUserId, IsDeleted, MovieId, TimeStart, FormatMovieScreen, RoomId) values ('2022-10-22', @AId, 0, @MovieId, '2022-10-29 15:00:00', 2, @RoomId)
 	set @m = @m + 1;
 	end
 	set @n = @n + 1;

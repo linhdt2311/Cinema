@@ -42,7 +42,7 @@ export class MovieShowtimesComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.getAllShowtimes.movieName = params['m'];
+      this.getAllShowtimes.movieId = params['id'];
     })
     this.showtimesData();
     this.movieData();
@@ -64,7 +64,7 @@ export class MovieShowtimesComponent implements OnInit {
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.movies = response;
-        this.m = this.movies.find(m => m.name == this.getAllShowtimes.movieName)
+        this.m = this.movies.find(m => m.id == this.getAllShowtimes.movieId)
       });
   }
 

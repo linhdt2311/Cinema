@@ -15,10 +15,13 @@ namespace Cinema.Controllers
     public class ShowTimesController : DBConnect
     {
         [HttpGet("getall")]
-        public List<ShowTimesDto> GetAllShowTimes(string movieName, DateTime? timeStart, int? formatMovieScreen, string CinemaName)
+        public List<ShowTimesDto> GetAllShowTimes(Guid? cinemaId, Guid? movieId, DateTime? timeStart, int? formatMovieScreen)
         {
             conn.Open();
-            string sql = string.Format("exec GetViewShowtimes @CinemaName = '" + CinemaName + "', @MovieName = '" + movieName + "', @TimeStart = '" + timeStart + "', @FormatMovieScreen = '" + formatMovieScreen + "'");
+            string id = string.Format("00000000-0000-0000-0000-000000000000");
+            if (cinemaId == null) cinemaId = new Guid(id);
+            if (movieId == null) movieId = new Guid(id);
+            string sql = string.Format("exec GetViewShowtimes @CinemaId = '" + cinemaId + "', @MovieId = '" + movieId + "', @TimeStart = '" + timeStart + "', @FormatMovieScreen = '" + formatMovieScreen + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             DataTable data = new DataTable();
             SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);

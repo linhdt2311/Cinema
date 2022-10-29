@@ -1,8 +1,8 @@
 <div style="background: #ECECEC;padding:30px;">
     <div nz-row [nzGutter]="1">
         <div nz-col [nzSpan]="3" *ngFor="let seat of seats">
-                <span *ngIf="seat.type == 1" nz-icon nzType="box-plot" nzTheme="outline"></span>
-                <span *ngIf="seat.type == 2" nz-icon nzType="box-plot" nzTheme="fill"></span>
+            <div *ngIf="seat.type == 1" style="background-color: red;">{{ seat.seat }}</div>
+            <div *ngIf="seat.type == 2" style="background-color: blue;">{{ seat.seat }}</div>
       </div>
     </div>
   </div>

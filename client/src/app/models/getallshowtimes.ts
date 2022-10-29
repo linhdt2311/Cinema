@@ -1,6 +1,6 @@
 export class GetAllShowtimes{
     id!: string;
-    movieName!: string;
+    movieId!: string;
     timeStart!: Date;
     formatMovieScreen!: number;
     roomId!: string;

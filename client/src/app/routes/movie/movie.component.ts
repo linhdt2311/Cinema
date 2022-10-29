@@ -40,7 +40,7 @@ export class MovieComponent implements OnInit {
     }
     return this.url
   }
-  onViewShowtimes(movieName: string): any {
-    this.router.navigate(['movie/', movieName]);
+  onViewShowtimes(movieId: string): any {
+    this.router.navigate(['movie/', movieId]);
   }
 }

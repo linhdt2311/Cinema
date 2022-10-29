@@ -1,4 +1,4 @@
-<nav class="wrapper">
+<nz-affix [nzOffsetTop]="0">
   <ul nz-menu nzMode="horizontal" nzTheme="dark" [nzInlineCollapsed]="isCollapsed" style="text-align: center;">
     <img src="../../../assets/HBQHM.png" alt="LogoHBQHM" class="logo">
     <img src="../../../assets/LogoText.png" alt="LogoHBQHM" class="logo_text nav-item">
@@ -18,25 +18,9 @@
       <span>Support</span>
     </li>
     <div class="avatar">
-      <nz-avatar [nzSize]="50" nzIcon="user"></nz-avatar>
+      <nz-avatar [nzSize]="50"></nz-avatar>
       <span style="margin: 0 5px;">Username</span>
-      <span nz-icon nzType="caret-down" nzTheme="outline"></span>
     </div>
   </ul>
-</nav>
-<div class="content">
-  <router-outlet></router-outlet>
-</div>
-<div class="footer">
-  <ul nz-menu nzMode="horizontal" nzTheme="dark" [nzInlineCollapsed]="isCollapsed" style="text-align: center;">
-    <li nz-menu-item routerLink="movie">
-      <span>Movie</span>
-    </li>
-    <li nz-menu-item routerLink="showtimes">
-      <span>Showtimes</span>
-    </li>
-    <li nz-menu-item routerLink="promotion">
-      <span>Promotion</span>
-    </li>
-  </ul>
-</div>
+</nz-affix>
+<router-outlet></router-outlet>

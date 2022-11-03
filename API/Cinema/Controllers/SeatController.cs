@@ -14,7 +14,7 @@ namespace Cinema.Controllers
     public class SeatController : DBConnect
     {
         [HttpGet("getall")]
-        public List<SeatDto> GetAllRoom(Guid showtimesId)
+        public List<SeatDto> GetAllSeat(Guid showtimesId)
         {
             conn.Open();
             string sql = string.Format("exec GetAllSeatByRoom @ShowtimesId = '" + showtimesId + "'");

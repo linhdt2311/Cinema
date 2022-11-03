@@ -163,8 +163,8 @@ create table Food(
 	constraint FK_FoodCinema foreign key (CinemaId) references Cinema(Id),
 )
 go
---hóa đơn đồ ăn
-create table FoodDetail(
+--hóa đơn
+create table Bill(
 	Id uniqueidentifier primary key default newid(),
 	CreationTime datetime not null,
 	CreatorUserId uniqueidentifier not null,
@@ -175,16 +175,10 @@ create table FoodDetail(
 	DeleterUserId uniqueidentifier null,
 	FoodId uniqueidentifier not null,
 	FoodNum int,
-	constraint FK_FoodDetail_Food foreign key (FoodId) references Food(Id),
-)
-go
---Hóa đơn
-create table Bill(
 	TicketId uniqueidentifier not null,
-	FoodDetailId uniqueidentifier,
 	Cost int,
-	constraint FK_Bill_FoodDetail foreign key (FoodDetailId) references FoodDetail(Id),
-	constraint FK_Bill_Ticket foreign key (TicketId) references Ticket(Id),
+	constraint FK_Bill_Food foreign key (FoodId) references Food(Id),
+	constraint FK_Bill_Ticket foreign key (FoodId) references Food(Id),
 )
 go
 --view danh sách các mã khuyến mãi
@@ -373,17 +367,17 @@ create proc UpdateFood
 as
 	update Food set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, CinemaId = @CinemaId, Name = @Name, Size = @Size, Price = @Price where Id = @Id
 go
---proc add FoodDetail
-create proc CreateFoodDetail
-@CreatorUserId uniqueidentifier, @FoodId uniqueidentifier, @FoodNum int
+--proc add Bill
+create proc CreateBill
+@CreatorUserId uniqueidentifier, @FoodId uniqueidentifier, @FoodNum int, @TicketId uniqueidentifier, @Cost int
 as
-	insert into FoodDetail(CreationTime, CreatorUserId, IsDeleted, FoodId, FoodNum) values (getdate(), @CreatorUserId, 0, @FoodId, @FoodNum)
+	insert into Bill(CreationTime, CreatorUserId, IsDeleted, FoodId, FoodNum, TicketId, Cost) values (getdate(), @CreatorUserId, 0, @FoodId, @FoodNum, @TicketId, @Cost)
 go
---proc update FoodDetail
-create proc UpdateFoodDetail
-@LastModifierUserId uniqueidentifier, @Id uniqueidentifier, @FoodId uniqueidentifier, @FoodNum int
+--proc update Bill
+create proc UpdateBill
+@LastModifierUserId uniqueidentifier, @Id uniqueidentifier, @FoodId uniqueidentifier, @FoodNum int, @TicketId uniqueidentifier, @Cost int
 as
-	update FoodDetail set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, FoodId = @FoodId, FoodNum = @FoodNum where Id = @Id
+	update Bill set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, FoodId = @FoodId, FoodNum = @FoodNum, TicketId = @TicketId, Cost = @Cost where Id = @Id
 go
 --proc login
 create proc Login
@@ -394,19 +388,6 @@ as
 		print 'Login success!'
 	else
 		print 'Login fail -_-'
-go
---proc add poster
-create proc AddPosterMovie
-@Url nvarchar(max), @MovieId uniqueidentifier
-as
-	begin
-	insert into Poster(Url, MovieId) values (@Url, @MovieId)
-	select MovieId, IsMain from Poster where IsMain = 1 group by MovieId, IsMain
-	if(@@rowcount = 0)
-		update Poster set IsMain = 1 where MovieId = @MovieId and Url = @Url
-	else
-		update Poster set IsMain = 0 where MovieId = @MovieId and Url = @Url
-	end
 go
 --trigger add seat in 1 room
 create trigger AddSeatInRoom
@@ -555,9 +536,6 @@ begin
 		declare @RoomId uniqueidentifier = (select Id from (select row_number() over(order by Name asc) as row, * from Room) r where row = @m)
 		insert into Showtimes(CreationTime, CreatorUserId, IsDeleted, MovieId, TimeStart, FormatMovieScreen, RoomId) values ('2022-10-22', @AId, 0, @MovieId, '2022-10-29 01:00:00', 2, @RoomId)
 		insert into Showtimes(CreationTime, CreatorUserId, IsDeleted, MovieId, TimeStart, FormatMovieScreen, RoomId) values ('2022-10-22', @AId, 0, @MovieId, '2022-10-29 04:00:00', 2, @RoomId)
-		insert into Showtimes(CreationTime, CreatorUserId, IsDeleted, MovieId, TimeStart, FormatMovieScreen, RoomId) values ('2022-10-22', @AId, 0, @MovieId, '2022-10-29 09:00:00', 2, @RoomId)
-		insert into Showtimes(CreationTime, CreatorUserId, IsDeleted, MovieId, TimeStart, FormatMovieScreen, RoomId) values ('2022-10-22', @AId, 0, @MovieId, '2022-10-29 12:00:00', 2, @RoomId)
-		insert into Showtimes(CreationTime, CreatorUserId, IsDeleted, MovieId, TimeStart, FormatMovieScreen, RoomId) values ('2022-10-22', @AId, 0, @MovieId, '2022-10-29 15:00:00', 2, @RoomId)
 	set @m = @m + 1;
 	end
 	set @n = @n + 1;

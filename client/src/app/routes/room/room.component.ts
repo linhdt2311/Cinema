@@ -11,9 +11,10 @@ import { ShowtimesService } from 'src/app/services/showtimes.service';
   styleUrls: ['./room.component.css']
 })
 export class RoomComponent implements OnInit {
-  rooms: any;
-  showtimes: any;
-  seats: any;
+  rooms: any[] = [];
+  showtimes: any[] = [];
+  seats: any[] = [];
+  seat: any;
   showtimesId: string = '';
   cinemaId: string = '';
   constructor(
@@ -47,6 +48,12 @@ export class RoomComponent implements OnInit {
       .subscribe((response) => {
         this.seats = response;
       });
+  }
+
+  seatInfo(id: any){
+    this.seat = this.seats.find(s => s.seatId === id)
+    console.log(this.seat)
+    return this.seat
   }
 
   // showtimesData() {

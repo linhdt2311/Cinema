@@ -14,11 +14,13 @@ namespace Cinema.Controllers
     public class RoomController : DBConnect
     {
         [HttpGet("getall")]
-        public List<RoomDto> GetAllRoom(Guid cinemaId)
+        public List<RoomDto> GetAllRoom(Guid? cinemaId, Guid? roomId)
         {
             conn.Open();
-            string sql = string.Format("exec GetAllRoomByCinema @CinemaId = '" + cinemaId + "'");
-
+            string id = string.Format("00000000-0000-0000-0000-000000000000");
+            if (cinemaId == null) cinemaId = new Guid(id);
+            if (roomId == null) roomId = new Guid(id);
+            string sql = string.Format("exec GetAllRoomByCinema @CinemaId = '" + cinemaId + "', @RoomId = '" + roomId + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             DataTable data = new DataTable();
             SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);

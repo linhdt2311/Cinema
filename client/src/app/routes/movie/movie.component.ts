@@ -10,6 +10,7 @@ import { MovieService } from 'src/app/services/movie.service';
 })
 export class MovieComponent implements OnInit {
   movies:any[]=[];
+  array = [1, 2, 3, 4];
   url: any;
   loading = false;
   constructor(

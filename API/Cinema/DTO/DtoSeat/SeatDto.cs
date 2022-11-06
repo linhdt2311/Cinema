@@ -11,7 +11,7 @@ namespace Cinema.DTO.DtoSeat
             Name = (int)row["Room"];
             Status = (int)row["Status"];
             SeatId = (Guid)row["SeatId"];
-            Seat = (int)row["Seat"];
+            Seat = (string)row["Seat"];
             Type = (int)row["Type"];
             Price = (int)row["Price"];
             SeatStatus = (int)row["SeatStatus"];
@@ -20,7 +20,7 @@ namespace Cinema.DTO.DtoSeat
         public int Name { get; set; }
         public int Status { get; set; }
         public Guid SeatId { get; set; }
-        public int Seat { get; set; }
+        public string Seat { get; set; }
         public int Type { get; set; }
         public int Price { get; set; }
         public int SeatStatus { get; set; }

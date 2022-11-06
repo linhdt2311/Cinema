@@ -7,7 +7,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RoomComponent } from './routes/room/room.component';
 import { NavbarComponent } from './routes/navbar/navbar.component';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
@@ -21,7 +20,6 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzGridModule } from 'ng-zorro-antd/grid';
-import { ShowtimesComponent } from './routes/showtimes/showtimes.component';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
@@ -30,16 +28,18 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { MovieShowtimesComponent } from './routes/movie/movie-showtimes/movie-showtimes.component';
 import { NzAffixModule } from 'ng-zorro-antd/affix';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { SharedModuleModule } from './routes/shared-module/shared-module.module';
+import { NzCarouselModule } from 'ng-zorro-antd/carousel';
+import { CinemaComponent } from './routes/cinema/cinema.component';
 @NgModule({
   declarations: [
     AppComponent,
-    RoomComponent,
     NavbarComponent,
     MovieComponent,
     LoginComponent,
-    ShowtimesComponent,
     PageNotFoundComponent,
     MovieShowtimesComponent,
+    CinemaComponent,
   ],
   imports: [
     BrowserModule,
@@ -67,6 +67,8 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
     NzTableModule,
     NzAffixModule,
     NzDividerModule,
+    SharedModuleModule,
+    NzCarouselModule,
   ],
   providers: [
     DatePipe,

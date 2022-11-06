@@ -12,6 +12,9 @@
   float: right;
   margin-right: 50px;
 }
+.login:hover {
+  text-decoration: underline;
+}
 @media(max-width: 900px) {
   .nav-item{
     display: none;

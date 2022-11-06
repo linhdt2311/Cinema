@@ -1,22 +1,31 @@
-<form nz-form [nzLayout]="'inline'" [formGroup]="loginForm" (ngSubmit)="submitForm()">
-    <nz-form-item>
-        <nz-form-control nzErrorTip="Please input your username!">
-            <nz-input-group nzPrefixIcon="user">
-                <input formControlName="email" nz-input placeholder="Username" />
-            </nz-input-group>
-        </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-        <nz-form-control nzErrorTip="Please input your Password!">
-            <nz-input-group nzPrefixIcon="lock">
-                <input formControlName="password" nz-input type="password" placeholder="Password" (keydown.enter)="onSubmit($event)"/>
-            </nz-input-group>
-        </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-        <nz-form-control>
-            <button nz-button nzType="primary" (click)="onSubmit()"
-            (keyup.enter)="onSubmit()">Log in</button>
-        </nz-form-control>
-    </nz-form-item>
-</form>
+<nz-modal [nzStyle]="{ width: '20rem' }" [(nzVisible)]="isVisible" [nzTitle]="modalTitle" [nzContent]="modalContent"
+    [nzFooter]="modalFooter" (nzOnCancel)="handleCancel()" style="width: 1100px;">
+    <ng-template #modalTitle>
+        <div style="text-align: center;">Login</div>
+    </ng-template>
+    <ng-template #modalContent>
+        <form nz-form [nzLayout]="'inline'" [formGroup]="loginForm" (ngSubmit)="submitForm()">
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Please input your username!">
+                    <nz-input-group nzPrefixIcon="user">
+                        <input formControlName="email" nz-input placeholder="Username" />
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Please input your Password!">
+                    <nz-input-group nzPrefixIcon="lock">
+                        <input formControlName="password" nz-input type="password" placeholder="Password"
+                            (keydown.enter)="onSubmit($event)" />
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control>
+                    <button nz-button nzType="primary" (click)="onSubmit()" (keyup.enter)="onSubmit()">Log in</button>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </ng-template>
+    <ng-template #modalFooter><span>Book Tickets</span></ng-template>
+</nz-modal>

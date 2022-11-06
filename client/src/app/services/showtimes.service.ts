@@ -11,21 +11,22 @@ export class ShowtimesService {
 
   constructor(private http: HttpClient) { }
 
-  getAllShowtimes(payload: any):Observable<any>{
-    let movieId, timeStart, formatMovieScreen, cinemaId
-    movieId = payload.movieId ? 'movieId=' + payload.movieId : ''
+  getAllShowtimes(payload?: any): Observable<any> {
+    let id, movieId, timeStart, formatMovieScreen, cinemaId
+    id = payload.id ? 'showtimesId=' + payload.id : ''
+    movieId = payload.movieId ? '&movieId=' + payload.movieId : ''
     timeStart = payload.timeStart ? '&timeStart=' + payload.timeStart : ''
     formatMovieScreen = payload.formatMovieScreen ? '&formatMovieScreen=' + payload.formatMovieScreen : ''
     cinemaId = payload.cinemaId ? '&cinemaId=' + payload.cinemaId : ''
-    return this.http.get(this.baseUrl + '/getall?' + movieId + timeStart + formatMovieScreen + cinemaId);
-   }
-  createShowtimes(payload:any):Observable<any>{
+    return this.http.get(this.baseUrl + '/getall?' + id + movieId + timeStart + formatMovieScreen + cinemaId);
+  }
+  createShowtimes(payload: any): Observable<any> {
     return this.http.post(this.baseUrl + '/create', payload);
   }
-  updateShowtimes(payload:any):Observable<any>{
+  updateShowtimes(payload: any): Observable<any> {
     return this.http.put(this.baseUrl + '/update', payload);
   }
-  deleteShowtimes(payload:any):Observable<any>{
+  deleteShowtimes(payload: any): Observable<any> {
     return this.http.delete(this.baseUrl + '/delete', payload);
   }
 }

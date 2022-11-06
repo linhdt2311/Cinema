@@ -6,21 +6,21 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class RoomService {
-  baseUrl = environment.baseUrl + 'room';
+export class TicketService {
+  baseUrl = environment.baseUrl + 'ticket';
 
   constructor(private http: HttpClient) { }
 
-  getAllRoom(payload?: any): Observable<any> {
+  getAllTicket(payload?: any): Observable<any> {
     return this.http.get(this.baseUrl + '/getall?' + payload);
   }
-  createRoom(payload: any): Observable<any> {
+  createTicket(payload: any): Observable<any> {
     return this.http.post(this.baseUrl + '/create', payload);
   }
-  updateRoom(payload: any): Observable<any> {
+  updateTicket(payload: any): Observable<any> {
     return this.http.put(this.baseUrl + '/update', payload);
   }
-  deleteRoom(payload: any): Observable<any> {
+  deleteTicket(payload: any): Observable<any> {
     return this.http.delete(this.baseUrl + '/delete', payload);
   }
 }

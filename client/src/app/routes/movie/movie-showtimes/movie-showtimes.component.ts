@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, of } from 'rxjs';
 import { FormatMovieScreen } from 'src/app/helpers/FormatMovieScreen';
@@ -7,6 +7,7 @@ import { GetAllShowtimes } from 'src/app/models/getallshowtimes';
 import { CinemaService } from 'src/app/services/cinema.service';
 import { MovieService } from 'src/app/services/movie.service';
 import { ShowtimesService } from 'src/app/services/showtimes.service';
+import { ModalRoomComponent } from '../../shared-module/modal-room/modal-room.component';
 
 @Component({
   selector: 'app-movie-showtimes',
@@ -14,10 +15,13 @@ import { ShowtimesService } from 'src/app/services/showtimes.service';
   styleUrls: ['./movie-showtimes.component.css']
 })
 export class MovieShowtimesComponent implements OnInit {
+  @ViewChild('modalRoom', {static: true}) modalRoom!: ModalRoomComponent;
   showtimes: any[] = [];
   movies: any[] = [];
   cinemas: any[] = [];
+  isVisible: boolean = false;
   m: any;
+  sId: string = '';
   getAllShowtimes: GetAllShowtimes = new GetAllShowtimes();
   date: any[] = [{ value: new Date() },
   { value: new Date(new Date().getTime() + 24 * 60 * 60 * 1000) },
@@ -95,5 +99,18 @@ export class MovieShowtimesComponent implements OnInit {
   onFilterScreen(format: any){
     this.getAllShowtimes.formatMovieScreen = format;
     this.showtimesData();
+  }
+
+  showModal(id: any): void {
+    this.sId = id;
+    this.isVisible = true;
+  }
+
+  handleSubmit(){
+    this.isVisible = false;
+  }
+
+  handleCancel(){
+    this.isVisible = false;
   }
 }

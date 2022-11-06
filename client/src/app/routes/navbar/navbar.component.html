@@ -2,11 +2,11 @@
   <ul nz-menu nzMode="horizontal" nzTheme="dark" [nzInlineCollapsed]="isCollapsed" style="text-align: center;">
     <img src="../../../assets/HBQHM.png" alt="LogoHBQHM" class="logo">
     <img src="../../../assets/LogoText.png" alt="LogoHBQHM" class="logo_text nav-item">
+    <li nz-menu-item routerLink="cinema" class="nav-item">
+      <span>Cinema</span>
+    </li>
     <li nz-menu-item routerLink="movie" class="nav-item">
       <span>Movie</span>
-    </li>
-    <li nz-menu-item routerLink="showtimes" class="nav-item">
-      <span>Showtimes</span>
     </li>
     <li nz-menu-item routerLink="promotion" class="nav-item">
       <span>Promotion</span>
@@ -17,10 +17,15 @@
     <li nz-menu-item routerLink="support" class="nav-item">
       <span>Support</span>
     </li>
-    <div class="avatar">
-      <nz-avatar [nzSize]="50"></nz-avatar>
-      <span style="margin: 0 5px;">Username</span>
+    <div *ngIf="checkUser == false" class="avatar">
+      <span>Welcome </span>
+      <span style="margin: 0 5px;">{{ user.name }}</span> | 
+      <span (click)="logout()">Log out</span>
+    </div>
+    <div *ngIf="checkUser == true" class="avatar">
+      <span class="login" (click)="openLogin()">Login</span> | <span class="login">Register</span>
     </div>
   </ul>
 </nz-affix>
 <router-outlet></router-outlet>
+<app-login #modalLogin [isVisible]="isVisible" (cancel)="handleCancel()" (submit)="handleSumit()"></app-login>

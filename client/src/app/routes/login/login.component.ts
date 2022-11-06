@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
@@ -11,6 +11,10 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  @Input() isVisible: boolean | undefined;
+  @Input() showtimesId: any;
+  @Output() submit = new EventEmitter();
+  @Output() cancel = new EventEmitter();
   loginForm!: UntypedFormGroup;
   loggedIn: boolean = false;
   constructor(
@@ -22,7 +26,6 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-    localStorage.clear();
   }
 
   initForm() {
@@ -58,10 +61,8 @@ export class LoginComponent implements OnInit {
               'Login success!',
               ''
             );
-            setTimeout(() => {
-              // this.spinner.hide();
-              this.router.navigateByUrl('movie');
-            }, 2500);
+            this.submit.emit();
+            document.location.href;
           }
           else {
             this.notification.create('error','Email or password not correct!', '');
@@ -70,14 +71,15 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  logout() {
-    this.authenticationService.logout();
-  }
-
-
   getCurrentUser() {
-    this.authenticationService.currentUser.pipe(catchError((err) => of(err))).subscribe(user => {
+    this.authenticationService
+    .currentUser
+    .pipe(catchError((err) => of(err)))
+    .subscribe(user => {
       this.loggedIn = !!user;
     })
+  }
+  handleCancel(){
+    this.cancel.emit();
   }
 }

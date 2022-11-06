@@ -1,0 +1,154 @@
+.frame {
+  width: 90%;
+  margin: 40px auto;
+  text-align: center;
+}
+
+button {
+  margin: 5px;
+  outline: none;
+}
+
+.custom-btn {
+  width: 130px;
+  height: 40px;
+  padding: 10px 25px;
+  border: 2px solid #000;
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+}
+
+/* seat */
+.seat {
+  border-top-left-radius: 20%;
+  border-top-right-radius: 20%;
+  width: 5rem;
+  line-height: 42px;
+  padding: 0;
+  border: none;
+}
+
+.seat span {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.seat:before,
+.seat:after {
+  position: absolute;
+  content: "";
+  height: 0%;
+  width: 2px;
+  background: #000;
+}
+
+.seat:before {
+  right: 0;
+  top: 0;
+  transition: all 500ms ease;
+}
+
+.seat:after {
+  left: 0;
+  bottom: 0;
+  transition: all 500ms ease;
+}
+
+.seat:hover {
+  color: #000;
+  background: transparent;
+}
+
+.seat:hover:before {
+  transition: all 500ms ease;
+  height: 100%;
+}
+
+.seat:hover:after {
+  transition: all 500ms ease;
+  height: 100%;
+}
+
+.seat span:before,
+.seat span:after {
+  position: absolute;
+  content: "";
+  background: #000;
+}
+
+.seat span:before {
+  left: 0;
+  top: 0;
+  width: 0%;
+  height: 2px;
+  transition: all 500ms ease;
+}
+
+.seat span:after {
+  right: 0;
+  bottom: 0;
+  width: 0%;
+  height: 2px;
+  transition: all 500ms ease;
+}
+
+.seat span:hover:before {
+  width: 100%;
+}
+
+.seat span:hover:after {
+  width: 100%;
+}
+
+/* screen */
+.screen {
+  font-weight: bold;
+  width: 30rem;
+  background: #fff;
+  color: #000;
+  z-index: 1;
+}
+
+.screen:after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  background: #000;
+  transition: all 0.3s ease;
+}
+
+.screen:hover {
+  color: #fff;
+}
+
+.screen:hover:after {
+  top: 0;
+  height: 100%;
+}
+
+.screen:active {
+  top: 2px;
+}
+
+.anotate {
+  height: 32px; 
+  width: 50px;
+  border-top-left-radius: 25%; 
+  border-top-right-radius: 25%; 
+  margin-left: 1rem;
+  display: block;
+}
+.text-anotate {
+  margin: 0.45rem 0.75rem;
+}

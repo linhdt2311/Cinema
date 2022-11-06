@@ -1,19 +1,37 @@
-.header{
+.header {
     color: #fff;
     font-weight: bold;
     font-size: 2rem;
 }
-.card{
+
+.card {
     width: 240px;
     border-radius: 5%;
     margin: 20px 0;
 }
-.poster{
+
+.poster {
     border-top-left-radius: 5%;
     border-top-right-radius: 5%;
 }
+
+[nz-carousel-content] {
+    text-align: center;
+    height: 160px;
+    line-height: 160px;
+    background: #364d79;
+    color: #fff;
+    overflow: hidden;
+}
+
+h3 {
+    color: #fff;
+    margin-bottom: 0;
+    user-select: none;
+}
+
 @media(max-width: 1000px) {
-    .sider{
+    .sider {
         display: none;
     }
 }

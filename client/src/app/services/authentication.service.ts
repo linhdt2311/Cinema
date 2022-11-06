@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, ReplaySubject, subscribeOn } from 'rxjs';
+import { map, Observable, ReplaySubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../models/user';
 @Injectable({
@@ -25,11 +25,12 @@ export class AuthenticationService {
     }
     setCurrentUser(user: User) {
       localStorage.setItem('user', JSON.stringify(user));
-      //this.currentUserSource.next(user);
+      this.currentUserSource.next(user);
   }
   logout() {
     localStorage.removeItem('user');
-    //this.currentUserSource.next(null);
+    localStorage.clear();
+    //this.currentUserSource.next();
   }
   register(payload:any):Observable<any>{
     return this.http.post(this.baseUrl + '/register', payload);

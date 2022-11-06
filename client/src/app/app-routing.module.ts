@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CinemaComponent } from './routes/cinema/cinema.component';
-import { LoginComponent } from './routes/login/login.component';
+import { LoginComponent } from './routes/shared-module/login/login.component';
 import { MovieShowtimesComponent } from './routes/movie/movie-showtimes/movie-showtimes.component';
 import { MovieComponent } from './routes/movie/movie.component';
 import { NavbarComponent } from './routes/navbar/navbar.component';

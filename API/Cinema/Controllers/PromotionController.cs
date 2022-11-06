@@ -6,6 +6,8 @@ using Cinema.Services;
 using Cinema.DTO.DtoCode;
 using System.Linq;
 using System;
+using Cinema.DTO.DtoPromotion;
+using Cinema.DTO;
 
 namespace Cinema.Controllers
 {
@@ -33,30 +35,30 @@ namespace Cinema.Controllers
             return promotionList.ToList();
         }
         [HttpPost("create")]
-        public bool CreatePromotion(string code, Guid creatorUserId, int discount, DateTime startDate, DateTime endDate)
+        public bool CreatePromotion(CreatePromotionDto input)
         {
             conn.Open();
-            string sql = string.Format("exec CreatePromotion @CreatorUserId = '" + creatorUserId + "', @Code = '" + code + "', @Discount = '" + discount + "', @StartDay = '" + startDate + "', @EndDay = '" + endDate + "'");
+            string sql = string.Format("exec CreatePromotion @CreatorUserId = '" + input.CreatorUserId + "', @Code = '" + input.Code + "', @Discount = '" + input.Discount + "', @StartDay = '" + input.StartDate + "', @EndDay = '" + input.EndDate + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();
             return false;
         }
         [HttpPut("update")]
-        public bool UpdatePromotion(Guid lastModifierUserId, Guid id, string code, int discount, DateTime startDate, DateTime endDate)
+        public bool UpdatePromotion(UpdatePromotionDto input)
         {
             conn.Open();
-            string sql = string.Format("exec UpdatePromotion @LastModifierUserId = '" + lastModifierUserId + "', @Id = '" + id + "', @Code = '" + code + "', @Discount = '" + discount + "', @StartDay = '" + startDate + "', @EndDay = '" + endDate + "'");
+            string sql = string.Format("exec UpdatePromotion @LastModifierUserId = '" + input.LastModifierUserId + "', @Id = '" + input.Id + "', @Code = '" + input.Code + "', @Discount = '" + input.Discount + "', @StartDay = '" + input.StartDate + "', @EndDay = '" + input.EndDate + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();
             return false;
         }
         [HttpDelete("delete")]
-        public bool DeletePromotion(Guid deleterUserId, Guid id)
+        public bool DeletePromotion(DeleteDto input)
         {
             conn.Open();
-            string sql = string.Format("update Promotion set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = '" + deleterUserId + "' where Id = '" + id + "'");
+            string sql = string.Format("update Promotion set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = '" + input.DeleterUserId + "' where Id = '" + input.Id + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();

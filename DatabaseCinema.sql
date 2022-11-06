@@ -268,9 +268,9 @@ as
 go
 --proc add movie
 create proc CreateMovie
-@CreatorUserId uniqueidentifier, @Name nvarchar(max), @Time int, @OpeningDay datetime, @Country nvarchar(50), @Director nvarchar(50), @Genre int, @Description nvarchar(max)
+@CreatorUserId uniqueidentifier, @Name nvarchar(max), @Time int, @OpeningDay datetime, @Country nvarchar(50), @Director nvarchar(50), @Genre int, @Description nvarchar(max), @Poster nvarchar(max)
 as
-	insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Genre, Description) values (getdate(), @CreatorUserId, 0, @Name, @Time, @OpeningDay, @Country, @Director, @Genre, @Description)
+	insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Genre, Description, Poster) values (getdate(), @CreatorUserId, 0, @Name, @Time, @OpeningDay, @Country, @Director, @Genre, @Description, @Poster)
 go
 --proc update movie
 create proc UpdateMovie
@@ -422,9 +422,14 @@ create trigger NoUpdateStatusSeat
 on Seat
 for update
 as
-	if((select Status from Inserted) = 1)
-		rollback transaction
-		print 'This seat has been booked. You cannot be selected'
+	if((select Status from Seat where Id = (select Id from Inserted)) = 2)
+		begin
+		if((select Status from Inserted) = 2)
+			begin
+			rollback transaction
+			print 'This seat has been booked. You cannot be selected'
+			end
+		end
 go
 
 

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { LoginComponent } from '../shared-module/login/login.component';
 
 @Component({
   selector: 'app-navbar',
@@ -8,6 +9,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+  @ViewChild('modalLogin', {static: true}) modalLogin!: LoginComponent;
   isVisible: boolean = false;
   isCollapsed = false;
   user: User;
@@ -17,10 +19,12 @@ export class NavbarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+  }
+
+  ngDoCheck() {
     this.user = JSON.parse(localStorage.getItem('user') || '{}');
     this.checkUser = Object.keys(this.user).length === 0
   }
-
   
   openLogin(){
     this.isVisible = true;
@@ -31,14 +35,10 @@ export class NavbarComponent implements OnInit {
   }
 
   handleSumit(){
-    this.user = JSON.parse(localStorage.getItem('user') || '{}');
-    this.checkUser = Object.keys(this.user).length === 0
     this.isVisible = false;
   }
   
   logout() {
     this.authenticationService.logout();
-    this.user = JSON.parse(localStorage.getItem('user') || '{}');
-    this.checkUser = Object.keys(this.user).length === 0
   }
 }

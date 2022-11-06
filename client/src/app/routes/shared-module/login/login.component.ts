@@ -19,7 +19,6 @@ export class LoginComponent implements OnInit {
   loggedIn: boolean = false;
   constructor(
     private fb: UntypedFormBuilder,
-    private router: Router,
     private authenticationService: AuthenticationService,
     private notification: NzNotificationService,
     ) { }
@@ -71,14 +70,6 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  getCurrentUser() {
-    this.authenticationService
-    .currentUser
-    .pipe(catchError((err) => of(err)))
-    .subscribe(user => {
-      this.loggedIn = !!user;
-    })
-  }
   handleCancel(){
     this.cancel.emit();
   }

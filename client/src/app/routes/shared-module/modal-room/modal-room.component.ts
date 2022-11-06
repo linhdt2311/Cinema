@@ -9,6 +9,7 @@ import { AccountService } from 'src/app/services/account.service';
 import { MovieService } from 'src/app/services/movie.service';
 import { SeatService } from 'src/app/services/seat.service';
 import { ShowtimesService } from 'src/app/services/showtimes.service';
+import { NavbarComponent } from '../../navbar/navbar.component';
 
 @Component({
   selector: 'app-modal-room',
@@ -20,6 +21,7 @@ export class ModalRoomComponent implements OnInit {
   @Input() showtimesId: any;
   @Output() submit = new EventEmitter();
   @Output() cancel = new EventEmitter();
+  showLogin: boolean = false;
   getAllShowtimes: GetAllShowtimes = new GetAllShowtimes();
   screen: boolean = true;
   movies: any[] = [];
@@ -34,7 +36,8 @@ export class ModalRoomComponent implements OnInit {
   times: any;
   checkUser: boolean = true;
   cinemaId: string = '';
-  openCount: number = 0;
+  total: number = 0;
+  money: any;
   formatMovieScreen: any[] = [{ value: FormatMovieScreen.IMax, viewValue: 'IMAX' },
   { value: FormatMovieScreen.TwoD, viewValue: '2D' },
   { value: FormatMovieScreen.ThreeD, viewValue: '3D' },
@@ -127,21 +130,31 @@ export class ModalRoomComponent implements OnInit {
 
   bookingSeat(id: any) {
     this.seat = this.seats.find(s => s.seatId === id)
-    if (!this.booking.find(b => b.seatId === id)) {
-      if (this.booking.length < 6) {
-        this.booking.push(this.seat);
-        this.openCount = this.openCount + this.seat.price
-      }
-      else {
-        this.notification.create(
-          'warning',
-          'You cannot book more than 6 seat!',
-          ''
-        );
+    if(this.seat.seatStatus == 1){
+      if (!this.booking.find(b => b.seatId === id)) {
+        if (this.booking.length < 6) {
+          this.booking.push(this.seat);
+          this.total = this.total + this.seat.price
+          this.money = new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'VND' }).format(this.total)
+        }
+        else {
+          this.notification.create(
+            'warning',
+            'You cannot book more than 6 seat!',
+            ''
+          );
+        }
+      } else {
+        this.booking.splice(this.booking.indexOf(this.seat), 1)
+        this.total = this.total - this.seat.price
+        this.money = new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'VND' }).format(this.total)
       }
     } else {
-      this.booking.splice(this.booking.indexOf(this.seat), 1)
-      this.openCount = this.openCount - this.seat.price
+      this.notification.create(
+        'warning',
+        'This seat has been booked. You cannot be selected!',
+        ''
+        )
     }
     return this.booking
   }
@@ -152,8 +165,26 @@ export class ModalRoomComponent implements OnInit {
   }
 
   handleOk(): void {
-    console.log('Button ok clicked!');
-    this.booking = [];
-    this.submit.emit();
+    if(this.checkUser == true){
+      this.notification.create(
+        'warning',
+        'You must be login!',
+        ''
+      );
+      this.showLogin = true;
+    } else {
+      this.booking = [];
+      this.submit.emit();
+    }
+  }
+
+  CancelLogin(){
+    this.showLogin = false;
+  }
+
+  SumitLogin(){
+    this.user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.checkUser = Object.keys(this.user).length === 0
+    this.showLogin = false;
   }
 }

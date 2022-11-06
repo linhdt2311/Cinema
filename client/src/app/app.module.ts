@@ -11,7 +11,6 @@ import { NavbarComponent } from './routes/navbar/navbar.component';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { MovieComponent } from './routes/movie/movie.component';
-import { LoginComponent } from './routes/login/login.component';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
@@ -36,7 +35,6 @@ import { CinemaComponent } from './routes/cinema/cinema.component';
     AppComponent,
     NavbarComponent,
     MovieComponent,
-    LoginComponent,
     PageNotFoundComponent,
     MovieShowtimesComponent,
     CinemaComponent,

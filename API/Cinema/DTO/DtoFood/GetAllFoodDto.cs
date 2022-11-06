@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Cinema.DTO.DtoFood
 {
-    public class GetAllDtoFood
+    public class GetAllFoodDto
     {
-        public GetAllDtoFood(DataRow row)
+        public GetAllFoodDto(DataRow row)
         {
             this.Cinema = row["Cinema"].ToString();
             this.Food = row["Food"].ToString();

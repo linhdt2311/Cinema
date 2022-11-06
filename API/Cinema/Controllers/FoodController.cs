@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Data;
+using Cinema.DTO;
 
 namespace Cinema.Controllers
 {
@@ -15,7 +16,7 @@ namespace Cinema.Controllers
     public class FoodController : DBConnect
     {
         [HttpGet("getall")]
-        public List<GetAllDtoFood> GetAll(string name)
+        public List<GetAllFoodDto> GetAll(string name)
         {
             conn.Open();
             string sql = string.Format("exec GetAllFoodByCinema @CinemaId = '" + name+ "'");
@@ -23,40 +24,40 @@ namespace Cinema.Controllers
             DataTable data = new DataTable();
             SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
             adapter.Fill(data);
-            var list = new List<GetAllDtoFood>();
+            var list = new List<GetAllFoodDto>();
             foreach (DataRow i in data.Rows)
             {
-                GetAllDtoFood dto = new GetAllDtoFood(i);
+                GetAllFoodDto dto = new GetAllFoodDto(i);
                 list.Add(dto);
             }
             conn.Close();
             return list.ToList();
         }
         [HttpPost("create")]
-        public bool Create(Guid creatorUserId, Guid cinemaId,string name , int size , int price)
+        public bool Create(CreateFoodDto input)
         {
             conn.Open();
-            string sql = string.Format("exec CreateFood @CreatorUserId = '" + creatorUserId + "', @CinemaId = '" + cinemaId + "', @Name = '" + name + "', @Size = " + size + ", @Price = " + price);
+            string sql = string.Format("exec CreateFood @CreatorUserId = '" + input.CreatorUserId + "', @CinemaId = '" + input.CinemaId + "', @Name = '" + input.Name + "', @Size = " + input.Size + ", @Price = " + input.Price);
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();
             return false;
         }
         [HttpPut("update")]
-        public bool Update(Guid lastModifierUserId,Guid id, Guid cinemaId, string name , int size , int price)
+        public bool Update(UpdateFoodDto input)
         {
             conn.Open();
-            string sql = string.Format("exec UpdateFood @LastModifierUserId = '" + lastModifierUserId + "', @Id = '" + id + "', @CinemaId = '" + cinemaId + "', @Name = '" + name + "', @Size = "+ size + ", @Price = " + price);
+            string sql = string.Format("exec UpdateFood @LastModifierUserId = '" + input.LastModifierUserId + "', @Id = '" + input.Id + "', @CinemaId = '" + input.CinemaId + "', @Name = '" + input.Name + "', @Size = "+ input.Size + ", @Price = " + input.Price);
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();
             return false;
         }
         [HttpDelete("delete")]
-        public bool Delete(Guid id, Guid deleterUserId)
+        public bool Delete(DeleteDto input)
         {
             conn.Open();
-            string sql = string.Format("update Food set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = '" + deleterUserId + "' where Id = '" + id + "'");
+            string sql = string.Format("update Food set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = '" + input.DeleterUserId + "' where Id = '" + input.Id + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();

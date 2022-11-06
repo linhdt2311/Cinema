@@ -1,4 +1,5 @@
 ﻿using Cinema.DTO;
+using Cinema.DTO.DtoShowTimes;
 using Cinema.Enum;
 using Cinema.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -37,30 +38,30 @@ namespace Cinema.Controllers
             return showtimesList.ToList();
         }
         [HttpPost("create")]
-        public bool CreateShowTime(Guid movieId, Guid creatorUserId, DateTime timeStart, int formatMovieScreen, Guid roomId)
+        public bool CreateShowTime(CreateShowtimesDto input)
         {
             conn.Open();
-            string sql = string.Format("exec CreateShowtimes @CreatorUserId = '" + creatorUserId + "', @MovieId = '" + movieId + "', @TimeStart = '" + timeStart + "', @FormatMovieScreen = '" + formatMovieScreen + "', @RoomId = '" + roomId + "'");
+            string sql = string.Format("exec CreateShowtimes @CreatorUserId = '" + input.CreatorUserId + "', @MovieId = '" + input.MovieId + "', @TimeStart = '" + input.TimeStart + "', @FormatMovieScreen = '" + input.FormatMovieScreen + "', @RoomId = '" + input.RoomId + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();
             return false;
         }
         [HttpPut("update")]
-        public bool UpdateShowTime(Guid lastModifierUserId, Guid id, Guid movieId, DateTime timeStart, int formatMovieScreen, Guid roomId)
+        public bool UpdateShowTime(UpdateShowtimesDto input)
         {
             conn.Open();
-            string sql = string.Format("exec UpdateShowtimes @LastModifierUserId = '" + lastModifierUserId + "', @Id = '" + id + "', @MovieId = '" + movieId + "', @TimeStart = '" + timeStart + "', @FormatMovieScreen = '" + formatMovieScreen + "', @RoomId = '" + roomId + "'");
+            string sql = string.Format("exec UpdateShowtimes @LastModifierUserId = '" + input.LastModifierUserId + "', @Id = '" + input.Id + "', @MovieId = '" + input.MovieId + "', @TimeStart = '" + input.TimeStart + "', @FormatMovieScreen = '" + input.FormatMovieScreen + "', @RoomId = '" + input.RoomId + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();
             return false;
         }
         [HttpDelete("delete")]
-        public bool DeleteShowTime(Guid id, Guid deleterUserId)
+        public bool DeleteShowTime(DeleteDto input)
         {
             conn.Open();
-            string sql = string.Format("update Showtimes set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = '" + deleterUserId + "' where Id = '" + id + "'");
+            string sql = string.Format("update Showtimes set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = '" + input.DeleterUserId + "' where Id = '" + input.Id + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();

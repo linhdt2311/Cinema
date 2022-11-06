@@ -6,10 +6,8 @@ using System.Data;
 using System;
 using Cinema.DTO.DtoAccount;
 using System.Linq;
-using Cinema.Enum;
-using System.IO;
-using System.Xml.Linq;
 using Microsoft.AspNetCore.Authorization;
+using Cinema.DTO;
 
 namespace Cinema.Controllers
 {
@@ -38,30 +36,30 @@ namespace Cinema.Controllers
             return accountList.ToList();
         }
         [HttpPost("create")]
-        public bool CreateAccount(Guid creatorUserId, string email, string password, int role, string name, string identityCard, DateTime dob, string address, string phone)
+        public bool CreateAccount(CreateAccountDto input)
         {
             conn.Open();
-            string sql = string.Format("exec CreateAccount @CreatorUserId = '" + creatorUserId + "', @Email = '" + email + "', @Password = '" + password + "', @Role = '" + role + "', @Name = '" + name + "', @IdentityCard = '" + identityCard + "', @DoB = '" + dob + "', @Address = '" + address + "', @Phone = '" + phone + "'");
+            string sql = string.Format("exec CreateAccount @CreatorUserId = '" + input.CreatorUserId + "', @Email = '" + input.Email + "', @Password = '" + input.Password + "', @Role = '" + input.Role + "', @Name = '" + input.Name + "', @IdentityCard = '" + input.IdentityCard + "', @DoB = '" + input.Dob + "', @Address = '" + input.Address + "', @Phone = '" + input.Phone + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();
             return false;
         }
         [HttpPut("update")]
-        public bool UpdateAccount(Guid lastModifierUserId, Guid id, string email, string password, int role, string name, string identityCard, DateTime dob, string address, string phone, int point)
+        public bool UpdateAccount(UpdateAccountDto input)
         {
             conn.Open();
-            string sql = string.Format("exec UpdateAccount @LastModifierUserId = '" + lastModifierUserId + "', @Id = '" + id + "', @Email = '" + email + "', @Password = '" + password + "', @Role = '" + role + "', @Name = '" + name + "', @IdentityCard = '" + identityCard + "', @DoB = '" + dob + "', @Address = '" + address, "', @Phone = '" + phone + "', @Point = '" + point + "'");
+            string sql = string.Format("exec UpdateAccount @LastModifierUserId = '" + input.LastModifierUserId + "', @Id = '" + input.Id + "', @Email = '" + input.Email + "', @Password = '" + input.Password + "', @Role = '" + input.Role + "', @Name = '" + input.Name + "', @IdentityCard = '" + input.IdentityCard + "', @DoB = '" + input.Dob + "', @Address = '" + input.Address, "', @Phone = '" + input.Phone + "', @Point = '" + input.Point + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();
             return false;
         }
         [HttpDelete("delete")]
-        public bool DeleteAccount(Guid deleterUserId, Guid id)
+        public bool DeleteAccount(DeleteDto input)
         {
             conn.Open();
-            string sql = string.Format("update Account set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = '" + deleterUserId + "' where Id = '" + id + "'");
+            string sql = string.Format("update Account set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = '" + input.DeleterUserId + "' where Id = '" + input.Id + "'");
 
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;

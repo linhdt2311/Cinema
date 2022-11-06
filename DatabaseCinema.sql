@@ -52,6 +52,23 @@ create table Room(
 	constraint FK_RoomCinema foreign key (CinemaId) references Cinema(Id),
 )
 go
+--Đồ ăn
+create table Food(
+	Id uniqueidentifier primary key default newid(),
+	CreationTime datetime not null,
+	CreatorUserId uniqueidentifier not null,
+	LastModificationTime datetime null,
+	LastModifierUserId uniqueidentifier null ,
+	IsDeleted bit not null,
+	DeleteTime datetime null,
+	DeleterUserId uniqueidentifier null,
+	Name nvarchar(50) not null,
+	Size int not null,
+	Price int not null,
+	CinemaId uniqueidentifier not null,
+	constraint FK_FoodCinema foreign key (CinemaId) references Cinema(Id),
+)
+go
 --Bảng lịch chiếu phim
 create table Showtimes(
 	Id uniqueidentifier primary key default newid(),
@@ -125,6 +142,21 @@ create table Promotion(
 	EndDate datetime not null,
 )
 go
+--hóa đơn
+create table Bill(
+	Id uniqueidentifier primary key default newid(),
+	CreationTime datetime not null,
+	CreatorUserId uniqueidentifier not null,
+	LastModificationTime datetime null,
+	LastModifierUserId uniqueidentifier null ,
+	IsDeleted bit not null,
+	DeleteTime datetime null,
+	DeleterUserId uniqueidentifier null,
+	AccountId uniqueidentifier not null,
+	Cost int,
+	constraint FK_TicketAccount foreign key (AccountId) references Account(Id),
+)
+go
 --Bảng vé
 create table Ticket(
 	Id uniqueidentifier primary key default newid(),
@@ -140,45 +172,18 @@ create table Ticket(
 	SeatId uniqueidentifier not null,
 	Price int not null,
 	PromotionId uniqueidentifier not null,
-	BillId uniqueidentifier null,
-	constraint FK_TicketAccount foreign key (AccountId) references Account(Id),
+	BillId uniqueidentifier not null,
+	constraint FK_TicketBill foreign key (BillId) references Bill(Id),
 	constraint FK_TicketSeat foreign key (SeatId) references Seat(Id),
 	constraint FK_TicketPromotion foreign key (PromotionId) references Promotion(Id),
 )
 go
---Đồ ăn
-create table Food(
-	Id uniqueidentifier primary key default newid(),
-	CreationTime datetime not null,
-	CreatorUserId uniqueidentifier not null,
-	LastModificationTime datetime null,
-	LastModifierUserId uniqueidentifier null ,
-	IsDeleted bit not null,
-	DeleteTime datetime null,
-	DeleterUserId uniqueidentifier null,
-	Name nvarchar(50) not null,
-	Size int not null,
-	Price int not null,
-	CinemaId uniqueidentifier not null,
-	constraint FK_FoodCinema foreign key (CinemaId) references Cinema(Id),
-)
-go
---hóa đơn
-create table Bill(
-	Id uniqueidentifier primary key default newid(),
-	CreationTime datetime not null,
-	CreatorUserId uniqueidentifier not null,
-	LastModificationTime datetime null,
-	LastModifierUserId uniqueidentifier null ,
-	IsDeleted bit not null,
-	DeleteTime datetime null,
-	DeleterUserId uniqueidentifier null,
+create table BillDetail (
 	FoodId uniqueidentifier not null,
-	FoodNum int,
-	TicketId uniqueidentifier not null,
-	Cost int,
-	constraint FK_Bill_Food foreign key (FoodId) references Food(Id),
-	constraint FK_Bill_Ticket foreign key (FoodId) references Food(Id),
+	BillId uniqueidentifier not null,
+	Quantity int not null,
+	constraint FK_Bill_Detail foreign key (BillId) references Bill(Id),
+	constraint FK_Food_Detail foreign key (FoodId) references Food(Id),
 )
 go
 --view danh sách các mã khuyến mãi
@@ -240,9 +245,6 @@ as
         and (isnull(@TimeStart, '') = '' or upper(t.TimeStart) like '%' + upper(@TimeStart) + '%')
         and (isnull(@FormatMovieScreen, '') = '' or upper(t.FormatMovieScreen) like '%' + upper(@FormatMovieScreen) + '%')
 go
-select * from Showtimes
-exec GetViewShowtimes @CinemaId = '00000000-0000-0000-0000-000000000000', @CinemaId = '00000000-0000-0000-0000-000000000000', @MovieId = '00000000-0000-0000-0000-000000000000', @TimeStart = '', @FormatMovieScreen = ''
-exec GetViewShowtimes @ShowtimesId='7F64584E-3B2C-4534-BCDF-0014A26F204B',@CinemaId='00000000-0000-0000-0000-000000000000',@MovieId='00000000-0000-0000-0000-000000000000',@TimeStart='',@FormatMovieScreen=''
 --proc view Account nếu có tìm kiếm sẽ tìm theo yêu cầu không thì sẽ hiện full
 create proc GetViewAccount
 @Name nvarchar(50), @Email nvarchar(50), @IdentityCard nvarchar(12), @DoB datetime, @Address nvarchar(max), @Phone nvarchar(10)
@@ -317,15 +319,15 @@ as
 go
 --proc add Ticket
 create proc CreateTicket
-@CreatorUserId uniqueidentifier, @AccountId uniqueidentifier, @SeatId uniqueidentifier, @Price int, @PromotionId uniqueidentifier
+@CreatorUserId uniqueidentifier, @SeatId uniqueidentifier, @Price int, @PromotionId uniqueidentifier, @BillId uniqueidentifier
 as
-	insert into Ticket(CreationTime, CreatorUserId, IsDeleted, AccountId, Date, SeatId, Price, PromotionId) values (getdate(), @CreatorUserId, 0, @AccountId, getdate(), @SeatId, @Price, @PromotionId)
+	insert into Ticket(CreationTime, CreatorUserId, IsDeleted, BillId, Date, SeatId, Price, PromotionId) values (getdate(), @CreatorUserId, 0, @BillId, getdate(), @SeatId, @Price, @PromotionId)
 go
 --proc update Ticket
 create proc UpdateTicket
-@LastModifierUserId uniqueidentifier, @Id uniqueidentifier, @AccountId uniqueidentifier, @Date datetime, @SeatId uniqueidentifier, @Price int, @PromotionId uniqueidentifier
+@LastModifierUserId uniqueidentifier, @Id uniqueidentifier, @Date datetime, @SeatId uniqueidentifier, @Price int, @PromotionId uniqueidentifier
 as
-	update Ticket set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, AccountId = @AccountId, Date = @Date, SeatId = @SeatId, Price = @Price, PromotionId = @PromotionId where Id = @Id
+	update Ticket set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, Date = @Date, SeatId = @SeatId, Price = @Price, PromotionId = @PromotionId where Id = @Id
 go
 --proc add Food
 create proc CreateFood
@@ -341,15 +343,15 @@ as
 go
 --proc add Bill
 create proc CreateBill
-@CreatorUserId uniqueidentifier, @FoodId uniqueidentifier, @FoodNum int, @TicketId uniqueidentifier, @Cost int
+@CreatorUserId uniqueidentifier, @AccountId uniqueidentifier
 as
-	insert into Bill(CreationTime, CreatorUserId, IsDeleted, FoodId, FoodNum, TicketId, Cost) values (getdate(), @CreatorUserId, 0, @FoodId, @FoodNum, @TicketId, @Cost)
+	insert into Bill(CreationTime, CreatorUserId, IsDeleted, AccountId, Cost) values (getdate(), @CreatorUserId, 0, @AccountId, 0)
 go
 --proc update Bill
 create proc UpdateBill
-@LastModifierUserId uniqueidentifier, @Id uniqueidentifier, @FoodId uniqueidentifier, @FoodNum int, @TicketId uniqueidentifier, @Cost int
+@LastModifierUserId uniqueidentifier, @Id uniqueidentifier, @Cost int
 as
-	update Bill set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, FoodId = @FoodId, FoodNum = @FoodNum, TicketId = @TicketId, Cost = @Cost where Id = @Id
+	update Bill set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, Cost = @Cost where Id = @Id
 go
 --proc login
 create proc Login

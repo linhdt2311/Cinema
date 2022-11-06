@@ -1,10 +1,8 @@
-﻿using Cinema.DTO.DtoSeat;
-using Cinema.Services;
+﻿using Cinema.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
-using System;
 using Cinema.DTO.DtoCinema;
 using System.Linq;
 

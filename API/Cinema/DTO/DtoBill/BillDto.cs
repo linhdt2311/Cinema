@@ -3,9 +3,9 @@ using System.Data;
 
 namespace Cinema.DTO.DtoBill
 {
-    public class DtoBill
+    public class BillDto
     {
-        public DtoBill(DataRow row)
+        public BillDto(DataRow row)
         {
             this.Id = (Guid)row["Id"];
             this.FoodId = (Guid)row["FoodId"];

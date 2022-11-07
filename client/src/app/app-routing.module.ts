@@ -8,7 +8,7 @@ import { NavbarComponent } from './routes/navbar/navbar.component';
 import { PageNotFoundComponent } from './routes/page-not-found/page-not-found.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/movie', pathMatch: 'full' },
+  { path: '', redirectTo: '/cinema', pathMatch: 'full' },
   {
     path: '', component: NavbarComponent,
     children: [

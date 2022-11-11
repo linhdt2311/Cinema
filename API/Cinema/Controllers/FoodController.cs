@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data;
 using Cinema.DTO;
+using System;
 
 namespace Cinema.Controllers
 {
@@ -14,10 +15,10 @@ namespace Cinema.Controllers
     public class FoodController : DBConnect
     {
         [HttpGet("getall")]
-        public List<GetAllFoodDto> GetAll(string name)
+        public List<GetAllFoodDto> GetAll(Guid cinemaId, string? name, int? size)
         {
             conn.Open();
-            string sql = string.Format("exec GetAllFoodByCinema @CinemaId = '" + name+ "'");
+            string sql = string.Format("exec GetAllFoodByCinema @CinemaId = '" + cinemaId + "', @Name = '" + name + "', @Size = '" + size + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             DataTable data = new DataTable();
             SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);

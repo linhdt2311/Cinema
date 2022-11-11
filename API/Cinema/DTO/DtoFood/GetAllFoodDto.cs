@@ -10,12 +10,14 @@ namespace Cinema.DTO.DtoFood
     {
         public GetAllFoodDto(DataRow row)
         {
-            this.Cinema = row["Cinema"].ToString();
+            this.CinemaId = (Guid)row["CinemaId"];
+            this.Id = (Guid)row["Id"];
             this.Food = row["Food"].ToString();
             this.Size = (int)row["Size"];
             this.Price = (int)row["Price"];
         }
-        public string Cinema { get; set; }
+        public Guid Id { get; set; }
+        public Guid CinemaId { get; set; }
         public string Food { get; set; }
         public int Size { get; set; }
         public int Price { get; set; }

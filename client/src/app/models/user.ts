@@ -1,7 +1,7 @@
 import { Role } from "../helpers/RoleEnum";
 
 export interface User {
-  aId: number,
+  id: number,
   address: string,
   doB: Date,
   email: string,

@@ -7,7 +7,7 @@ namespace Cinema.DTO.DtoTicket
         public Guid CreatorUserId { get; set; }
         public Guid SeatId { get; set; }
         public int Price { get; set; }
-        public Guid PromotionId { get; set; }
+        public Guid? PromotionId { get; set; }
         public Guid BillId { get; set; }
     }
 }

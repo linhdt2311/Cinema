@@ -41,7 +41,7 @@
             <span style="font-weight: normal;" *ngIf="booking[booking.length-1] == book">[{{ book.seat }}]</span>
           </span>
         </div>
-        <div><span>Price: </span>{{ money }}</div>
+        <div><span>Price: </span>{{ changeToVND(money) }}</div>
       </div>
     </div>
   </ng-template>
@@ -64,4 +64,5 @@
     </div>
   </ng-template>
 </nz-modal>
-<app-login #modalLogin [isVisible]="showLogin" (cancel)="CancelLogin()" (submit)="SumitLogin()"></app-login>
+<app-login #modalLogin [isVisible]="showLogin" (cancel)="close()" (submit)="loginSubmit()"></app-login>
+<app-food #modalFood [isVisible]="showFood" (cancel)="close()" (submit)="foodSubmit()" [createDate]="createDate" [booking]="booking" [cinemaId]="cinemaId" [money]="money"></app-food>

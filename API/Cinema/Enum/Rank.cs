@@ -1,6 +1,6 @@
 ﻿namespace Cinema.Enum
 {
-    public enum Level
+    public enum Rank
     {
         Bronze = 1,
         Silver = 2,

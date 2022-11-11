@@ -31,7 +31,7 @@ export class MovieShowtimesComponent implements OnInit {
   { value: new Date(new Date().getTime() + 24 * 60 * 60 * 1000 * 5) },
   { value: new Date(new Date().getTime() + 24 * 60 * 60 * 1000 * 6) },
   { value: new Date(new Date().getTime() + 24 * 60 * 60 * 1000 * 7) }];
-  formatMovieScreen: any[] = [{ value: FormatMovieScreen.IMax, viewValue: 'IMAX' },
+  formatMovieScreen: any[] = [{ value: FormatMovieScreen.IMAX, viewValue: 'IMAX' },
   { value: FormatMovieScreen.TwoD, viewValue: '2D' },
   { value: FormatMovieScreen.ThreeD, viewValue: '3D' },
   { value: FormatMovieScreen.FourD, viewValue: '4D' }];

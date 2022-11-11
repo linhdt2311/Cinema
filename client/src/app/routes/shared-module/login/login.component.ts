@@ -12,7 +12,6 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 })
 export class LoginComponent implements OnInit {
   @Input() isVisible: boolean | undefined;
-  @Input() showtimesId: any;
   @Output() submit = new EventEmitter();
   @Output() cancel = new EventEmitter();
   loginForm!: UntypedFormGroup;

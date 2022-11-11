@@ -15,10 +15,10 @@ namespace Cinema.Controllers
     public class MovieController : DBConnect
     {
         [HttpGet("getall")]
-        public List<MovieDto> GetAllMovie(string name, string country, int? genre, string director)
+        public List<MovieDto> GetAllMovie(string name, string country, string director)
         {
             conn.Open();
-            string sql = string.Format("exec GetViewMovie @Name = '" + name + "',@Country ='" + country + "', @Genre = '" + genre + "', @Director = '" + director + "'");
+            string sql = string.Format("exec GetViewMovie @Name = '" + name + "',@Country ='" + country + "', @Director = '" + director + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             DataTable data = new DataTable();
             SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
@@ -36,7 +36,7 @@ namespace Cinema.Controllers
         public bool CreateMovie(CreateMovieDto input)
         {
             conn.Open();
-            string sql = string.Format("exec CreateMovie @CreatorUserId = '" + input.CreatorUserId + "', @Name = '" + input.Name + "', @Time = '" + input.Time + "', @OpeningDay = '" + input.OpeningDay + "', @Country = '" + input.Country + "', @Director = '" + input.Director + "', @Genre = '" + input.Genre + "', @Description = '" + input.Description + "', @Poster = '" + input.Poster + "'");
+            string sql = string.Format("exec CreateMovie @CreatorUserId = '" + input.CreatorUserId + "', @Name = '" + input.Name + "', @Time = '" + input.Time + "', @OpeningDay = '" + input.OpeningDay + "', @Country = '" + input.Country + "', @Director = '" + input.Director + "', @Description = '" + input.Description + "', @Poster = '" + input.Poster + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();
@@ -46,7 +46,7 @@ namespace Cinema.Controllers
         public bool UpdateMovie(UpdateMovieDto input)
         {
             conn.Open();
-            string sql = string.Format("exec UpdateMovie @LastModifierUserId = '" + input.LastModifierUserId + "', @Id = '" + input.Id + "', @Name = '" + input.Name + "', @Time = '" + input.Time + "', @OpeningDay = '" + input.OpeningDay + "', @Country = '" + input.Country + "', @Director = '" + input.Director + "', @Genre = '" + input.Genre + "', @Description = '" + input.Description + "', @Poster = '" + input.Poster + "'");
+            string sql = string.Format("exec UpdateMovie @LastModifierUserId = '" + input.LastModifierUserId + "', @Id = '" + input.Id + "', @Name = '" + input.Name + "', @Time = '" + input.Time + "', @OpeningDay = '" + input.OpeningDay + "', @Country = '" + input.Country + "', @Director = '" + input.Director + "', @Description = '" + input.Description + "', @Poster = '" + input.Poster + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();

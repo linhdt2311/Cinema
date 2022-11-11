@@ -13,14 +13,14 @@ namespace Cinema.DTO.DtoCode
             this.Id = (Guid)row["Id"];
             this.Code = row["Code"].ToString();
             this.Discount = (int)row["Discount"];
-            this.StartDay = (DateTime)row["StartDay"];
-            this.EndDay = (DateTime)row["EndDay"];
+            this.StartDate = (DateTime)row["StartDate"];
+            this.EndDate = (DateTime)row["EndDate"];
 
         }
         public Guid Id { get; set; }
         public string Code { get; set; }
         public int Discount { get; set; }
-        public DateTime StartDay { get; set; }
-        public DateTime EndDay { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
     }
 }

@@ -10,7 +10,6 @@ namespace Cinema.DTO.DtoMovie
         public DateTime OpeningDay { get; set; }
         public string Country { get; set; }
         public string Director { get; set; }
-        public int Genre { get; set; }
         public string Description { get; set; }
         public string Poster { get; set; }
     }

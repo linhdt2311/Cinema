@@ -16,13 +16,12 @@ namespace Cinema.Controllers
     public class TicketController : DBConnect
     {
         [HttpGet("getall")]
-        public List<GetAllTicketDto> GetAllTicket(Guid? accountId, DateTime date, Guid? promotionId)
+        public List<GetAllTicketDto> GetAllTicket(DateTime date, Guid? promotionId)
         {
             conn.Open();
             string id = string.Format("00000000-0000-0000-0000-000000000000");
-            if (accountId == null) accountId = new Guid(id);
             if (promotionId == null) promotionId = new Guid(id);
-            string sql = string.Format("exec GetViewTicket @AccountId = '" + accountId + "', @Date = '" + date + "', @PromotionId = '" + promotionId + "'");
+            string sql = string.Format("exec GetViewTicket @Date = '" + date + "', @PromotionId = '" + promotionId + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             DataTable data = new DataTable();
             SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
@@ -40,7 +39,9 @@ namespace Cinema.Controllers
         public bool CreateTicket(CreateTicketDto input)
         {
             conn.Open();
-            string sql = string.Format("exec CreateTicket @CreatorUserId = '" + input.CreatorUserId + "', @SeatId = '" + input.SeatId + "', @Price = '" + input.Price + "', @PromotionId = '" + input.PromotionId + "', @BillId = '" + input.BillId + "'");
+            string id = string.Format("00000000-0000-0000-0000-000000000000");
+            if (input.PromotionId == null) input.PromotionId = new Guid(id);
+            string sql = string.Format("exec CreateTicket @CreatorUserId = '" + input.CreatorUserId + "', @SeatId = '" + input.SeatId + "', @Price = " + input.Price + ", @PromotionId = '" + input.PromotionId + "', @BillId = '" + input.BillId + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();

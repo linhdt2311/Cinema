@@ -14,13 +14,22 @@ export class BillService {
   getAllBill(payload?: any): Observable<any> {
     return this.http.get(this.baseUrl + '/getall?' + payload);
   }
+  getBill(payload?: any): Observable<any> {
+    return this.http.get(this.baseUrl + '/getbill?creationTime=' + payload);
+  }
   createBill(payload: any): Observable<any> {
     return this.http.post(this.baseUrl + '/create', payload);
+  }
+  createBillDetail(payload: any): Observable<any> {
+    return this.http.post(this.baseUrl + '/create-billdetail', payload);
   }
   updateBill(payload: any): Observable<any> {
     return this.http.put(this.baseUrl + '/update', payload);
   }
   deleteBill(payload: any): Observable<any> {
     return this.http.delete(this.baseUrl + '/delete', payload);
+  }
+  delete(payload: any): Observable<any> {
+    return this.http.delete(this.baseUrl + '/deletebill?id=' + payload);
   }
 }

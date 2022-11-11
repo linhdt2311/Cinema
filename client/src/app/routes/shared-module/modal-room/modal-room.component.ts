@@ -62,6 +62,7 @@ export class ModalRoomComponent implements OnInit {
       this.user = JSON.parse(localStorage.getItem('user') || '{}');
       this.checkUser = Object.keys(this.user).length === 0;
       this.getAllShowtimes.id = this.showtimesId
+      this.checkBooking = true;
       this.showtimesData();
       this.seatData();
       this.movieData();

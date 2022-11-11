@@ -83,6 +83,7 @@ export class FoodComponent implements OnInit {
     this.discount = 0;
     this.billDetail = [];
     this.getAllFood.size = null;
+    this.warningCode = '';
     this.billService
       .delete(this.billId)
       .pipe(
@@ -166,7 +167,7 @@ export class FoodComponent implements OnInit {
           setTimeout(() => {
             this.notification.create(
               'success',
-              'SuccessFully!',
+              'Successfully!',
               ''
             );
             this.isLoading = false;
@@ -186,6 +187,7 @@ export class FoodComponent implements OnInit {
     this.getAllFood.size = null;
     this.isPromotion = false;
     this.discount = 0;
+    this.warningCode = '';
     this.submit.emit();
   }
 

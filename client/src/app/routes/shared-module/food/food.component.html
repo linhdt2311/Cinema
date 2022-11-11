@@ -12,7 +12,7 @@
     <div style="text-align: center; padding: 1rem; border-top: 0.5px solid rgb(178, 178, 178);">
       <div>Promotion: 
         <input nz-input placeholder="Enter code discount" [ngModel]="" id="codePromotion"/>
-        <button *ngIf="isPromotion == false" nz-button nzType="default" nzSize="small" style="height: 28px; width: 75px;" (click)="checkPromotion()">Check</button>
+        <button *ngIf="isPromotion == false" nz-button nzType="default" nzSize="small" style="height: 28px; width: 75px;" (click)="checkPromotion()" [nzLoading]="isLoading">Check</button>
         <button *ngIf="isPromotion == true" nz-button nzType="primary" nzSize="small" style="height: 28px; width: 75px;"><i class="fa-solid fa-check"></i></button><br>
         <span *ngIf="isPromotion == false" style="font-weight: normal; color: red;">{{ warningCode }}</span>
       </div>
@@ -68,6 +68,6 @@
     </div>
   </ng-template>
   <ng-template #modalFooter>
-    <button nz-button nzType="primary" style="width: 145.59px;" (click)="ok()">OK</button>
+    <button nz-button nzType="primary" style="width: 145.59px;" (click)="ok()" [nzLoading]="isLoading">OK</button>
   </ng-template>
 </nz-modal>

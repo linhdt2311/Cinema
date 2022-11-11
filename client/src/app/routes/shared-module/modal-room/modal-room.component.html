@@ -58,8 +58,12 @@
         <span class="text-anotate">Choose</span>
       </div>
       <div nz-col [nzSpan]="9">
-        <button nz-button nzType="default" style="width: 145.59px;" (click)="handleCancel()"><i class="fa-sharp fa-solid fa-rotate-left" style="margin-right: 0.3rem;"></i>Cancel</button>
-        <button nz-button nzType="primary" style="width: 145.59px;" (click)="handleOk()"><i class="fa-solid fa-user-check" style="margin-right: 0.3rem;"></i>Continue</button>
+        <button nz-button nzType="default" style="width: 145.59px;" (click)="handleCancel()">
+          <i class="fa-sharp fa-solid fa-rotate-left" style="margin-right: 0.3rem;"></i>Cancel
+        </button>
+        <button nz-button nzType="primary" style="width: 145.59px;" (click)="handleOk()" disabled="{{ checkBooking }}" [nzLoading]="isLoading"> 
+          <i class="fa-solid fa-user-check" style="margin-right: 0.3rem;"></i>Continue
+        </button>
       </div>
     </div>
   </ng-template>

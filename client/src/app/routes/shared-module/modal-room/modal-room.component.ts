@@ -23,6 +23,8 @@ export class ModalRoomComponent implements OnInit {
   @Output() cancel = new EventEmitter();
   showLogin: boolean = false;
   showFood: boolean = false;
+  checkBooking: boolean = true;
+  isLoading: boolean = false;
   getAllShowtimes: GetAllShowtimes = new GetAllShowtimes();
   screen: boolean = true;
   movies: any[] = [];
@@ -58,7 +60,7 @@ export class ModalRoomComponent implements OnInit {
   ngOnChanges(): void {
     if (this.isVisible == true) {
       this.user = JSON.parse(localStorage.getItem('user') || '{}');
-      this.checkUser = Object.keys(this.user).length === 0
+      this.checkUser = Object.keys(this.user).length === 0;
       this.getAllShowtimes.id = this.showtimesId
       this.showtimesData();
       this.seatData();
@@ -159,6 +161,11 @@ export class ModalRoomComponent implements OnInit {
         ''
       )
     }
+    if (this.booking.length > 0) {
+      this.checkBooking = false;
+    } else {
+      this.checkBooking = true;
+    }
     return this.booking
   }
 
@@ -169,12 +176,14 @@ export class ModalRoomComponent implements OnInit {
   }
 
   handleOk(): void {
+    this.isLoading = true;
     if (this.checkUser == true) {
       this.notification.create(
         'warning',
         'You must be login!',
         ''
       );
+      this.isLoading = false;
       this.showLogin = true;
     } else {
       this.cinemaId = this.times.cinemaId;
@@ -192,9 +201,15 @@ export class ModalRoomComponent implements OnInit {
         .subscribe((response) => {
           this.createDate = this.datepipe.transform(new Date(), 'YYYY-MM-dd%20HH%3Amm%3Ass');
           if (response) {
-            console.log("create bill successfully!")
+            setTimeout(() => {
+              console.log("create bill successfully!")
+              this.isLoading = false;
+            }, 1000);
           } else {
-            console.log("create bill failed!")
+            setTimeout(() => {
+              console.log("create bill failed!")
+              this.isLoading = false;
+            }, 1000);
           }
         });
       this.showFood = true;
@@ -214,6 +229,7 @@ export class ModalRoomComponent implements OnInit {
 
   foodSubmit() {
     this.showFood = false;
+    this.money = 0;
     this.booking = [];
     this.submit.emit();
   }

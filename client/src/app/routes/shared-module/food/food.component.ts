@@ -21,6 +21,7 @@ export class FoodComponent implements OnInit {
   @Input() money: any;
   @Output() submit = new EventEmitter();
   @Output() cancel = new EventEmitter();
+  isLoading: boolean = false;
   getAllFood: GetAllFood = new GetAllFood();
   foods: any[] = [];
   user: User;
@@ -32,6 +33,7 @@ export class FoodComponent implements OnInit {
   isPromotion: boolean = false;
   warningCode: string = '';
   discount: number = 0;
+  promotionId: string;
   constructor(
     private billService: BillService,
     private promotionService: PromotionService,
@@ -100,25 +102,33 @@ export class FoodComponent implements OnInit {
 
   ok() {
     for (let i = 0; i < this.booking.length; i++) {
+    this.isLoading = true;
       const payload = {
         billId: this.billId,
         creatorUserId: this.user.id,
         seatId: this.booking[i].seatId,
         price: this.booking[i].price,
-        promotionId: null,
+        promotionId: this.isPromotion ? this.promotionId : null,
       }
       this.ticketService
         .createTicket(payload)
         .pipe(catchError((err) => of(err)))
         .subscribe((response) => {
           if (response) {
-            console.log("Add ticket success" + payload.seatId)
+            setTimeout(() => {
+              console.log("Add ticket success" + payload.seatId)
+              this.isLoading = false;
+            }, 1000);
           } else {
-            console.log("Add ticket fail" + payload.seatId)
+            setTimeout(() => {
+              console.log("Add ticket fail" + payload.seatId)
+              this.isLoading = false;
+            }, 1000);
           }
         })
     }
     for (let i = 0; i < this.billDetail.length; i++) {
+      this.isLoading = true;
       const payload = {
         billId: this.billId,
         creatorUserId: this.user.id,
@@ -130,12 +140,19 @@ export class FoodComponent implements OnInit {
         .pipe(catchError((err) => of(err)))
         .subscribe((response) => {
           if (response) {
-            console.log("Add food success" + payload.foodId)
+            setTimeout(() => {
+              console.log("Add food success" + payload.foodId)
+              this.isLoading = false;
+            }, 1000);
           } else {
-            console.log("Add food fail" + payload.foodId)
+            setTimeout(() => {
+              console.log("Add food fail" + payload.foodId)
+              this.isLoading = false;
+            }, 1000);
           }
         })
     }
+    this.isLoading = true;
     const payload = {
       lastModifierUserId: this.user.id,
       id: this.billId,
@@ -145,18 +162,24 @@ export class FoodComponent implements OnInit {
       .updateBill(payload)
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
-        if(response) {
-          this.notification.create(
-            'success',
-            'SuccessFully!',
-            ''
-          );
+        if (response) {
+          setTimeout(() => {
+            this.notification.create(
+              'success',
+              'SuccessFully!',
+              ''
+            );
+            this.isLoading = false;
+          }, 1000);
         } else {
-          this.notification.create(
-            'error',
-            'Failed!',
-            ''
-          );
+          setTimeout(() => {
+            this.notification.create(
+              'error',
+              'Failed!',
+              ''
+            );
+            this.isLoading = false;
+          }, 1000);
         }
       })
     this.billDetail = [];
@@ -220,23 +243,31 @@ export class FoodComponent implements OnInit {
   }
 
   checkPromotion() {
+    this.isLoading = true;
     const code = (<HTMLInputElement>document.getElementById('codePromotion')).value
-      this.promotionService
-        .getAllPromotion()
-        .pipe(catchError((err) => of(err)))
-        .subscribe((response) => {
-          this.promotion = response
-          if(this.promotion.find(p => p.code == code)){
-            const p = this.promotion.find(p => p.code == code)
-            if (new Date(p.startDate) < new Date() && new Date() < new Date(p.endDate)) {
-              this.total = this.total - p.discount;
-              this.discount = p.discount;
+    this.promotionService
+      .getAllPromotion()
+      .pipe(catchError((err) => of(err)))
+      .subscribe((response) => {
+        this.promotion = response
+        if (this.promotion.find(p => p.code == code)) {
+          const p = this.promotion.find(p => p.code == code)
+          if (new Date(p.startDate) < new Date() && new Date() < new Date(p.endDate)) {
+            this.total = this.total - p.discount;
+            this.promotionId = p.id;
+            this.discount = p.discount;
+            setTimeout(() => {
               this.isPromotion = true;
-            }
-          } else {
+              this.isLoading = false;
+            }, 1000);
+          }
+        } else {
+          setTimeout(() => {
+            this.isLoading = false;
             this.isPromotion = false;
             this.warningCode = "*The discount code is incorrect or has expired!*"
-          }
-        })
+          }, 1000);
+        }
+      })
   }
 }

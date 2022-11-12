@@ -6,6 +6,7 @@ import { MovieShowtimesComponent } from './routes/movie/movie-showtimes/movie-sh
 import { MovieComponent } from './routes/movie/movie.component';
 import { NavbarComponent } from './routes/navbar/navbar.component';
 import { PageNotFoundComponent } from './routes/page-not-found/page-not-found.component';
+import { MembershipComponent } from './routes/membership/membership.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/cinema', pathMatch: 'full' },
@@ -14,7 +15,8 @@ const routes: Routes = [
     children: [
       { path: 'cinema', component: CinemaComponent },
       { path: 'movie', component: MovieComponent },
-      { path: 'movie/:id', component: MovieShowtimesComponent, },
+      { path: 'movie/:id', component: MovieShowtimesComponent },
+      { path: 'membership', component: MembershipComponent },
       { path: '**', pathMatch: 'full', component: PageNotFoundComponent },
     ],
   },

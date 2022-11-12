@@ -1,0 +1,60 @@
+<form nz-form [nzLayout]="'inline'" [formGroup]="registerForm" (ngSubmit)="submitForm()">
+    <nz-form-item>
+        <nz-form-control nzErrorTip="Please input your username!">
+            <nz-input-group nzSuffix="$" nzPrefix="ggf">
+                <input formControlName="email" nz-input placeholder="Email" />
+            </nz-input-group>
+            <ng-template #prefixTemplateUser><span nz-icon nzType="user"></span></ng-template>
+            <ng-template #suffixTemplateInfo>
+                <span nz-icon nz-tooltip nzTooltipTitle="Extra information" nzType="info-circle"></span>
+            </ng-template>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control nzErrorTip="Please input your password!">
+            <nz-input-group>
+                <input formControlName="password" nz-input type="password" placeholder="Password" />
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control nzErrorTip="Please input your name!">
+            <nz-input-group>
+                <input formControlName="name" nz-input placeholder="Name" />
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control nzErrorTip="Please input your identity card!">
+            <nz-input-group>
+                <input formControlName="identityCard" nz-input placeholder="Identity card" />
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control nzErrorTip="Please input your address!">
+            <nz-input-group>
+                <input formControlName="address" nz-input placeholder="Address" />
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control nzErrorTip="Please input your phone!">
+            <nz-input-group>
+                <input formControlName="phone" nz-input placeholder="Phone" />
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control nzErrorTip="Please input your birthday!">
+            <nz-input-group>
+                <input formControlName="dob" nz-input placeholder="Birthday" />
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control>
+            <button nz-button nzType="primary" (click)="onSubmit()" (keyup.enter)="onSubmit()">Register</button>
+        </nz-form-control>
+    </nz-form-item>
+</form>

@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { catchError, of } from 'rxjs';
+import { catchError, finalize, of } from 'rxjs';
 import { GetAllFood } from 'src/app/models/getallfood';
 import { User } from 'src/app/models/user';
 import { BillService } from 'src/app/services/bill.service';
@@ -113,18 +113,16 @@ export class FoodComponent implements OnInit {
       }
       this.ticketService
         .createTicket(payload)
-        .pipe(catchError((err) => of(err)))
+        .pipe(catchError((err) => of(err)),finalize(() => 
+        setTimeout(() => {
+            this.isLoading = false
+          }, 1000)
+        ))
         .subscribe((response) => {
           if (response) {
-            setTimeout(() => {
               console.log("Add ticket success" + payload.seatId)
-              this.isLoading = false;
-            }, 1000);
           } else {
-            setTimeout(() => {
               console.log("Add ticket fail" + payload.seatId)
-              this.isLoading = false;
-            }, 1000);
           }
         })
     }
@@ -138,18 +136,16 @@ export class FoodComponent implements OnInit {
       }
       this.billService
         .createBillDetail(payload)
-        .pipe(catchError((err) => of(err)))
+        .pipe(catchError((err) => of(err)),finalize(() => 
+        setTimeout(() => {
+            this.isLoading = false
+          }, 1000)
+        ))
         .subscribe((response) => {
           if (response) {
-            setTimeout(() => {
               console.log("Add food success" + payload.foodId)
-              this.isLoading = false;
-            }, 1000);
           } else {
-            setTimeout(() => {
               console.log("Add food fail" + payload.foodId)
-              this.isLoading = false;
-            }, 1000);
           }
         })
     }
@@ -161,26 +157,24 @@ export class FoodComponent implements OnInit {
     }
     this.billService
       .updateBill(payload)
-      .pipe(catchError((err) => of(err)))
+      .pipe(catchError((err) => of(err)),finalize(() => 
+      setTimeout(() => {
+          this.isLoading = false
+        }, 1000)
+      ))
       .subscribe((response) => {
         if (response) {
-          setTimeout(() => {
             this.notification.create(
               'success',
               'Successfully!',
               ''
             );
-            this.isLoading = false;
-          }, 1000);
         } else {
-          setTimeout(() => {
             this.notification.create(
               'error',
               'Failed!',
               ''
             );
-            this.isLoading = false;
-          }, 1000);
         }
       })
     this.billDetail = [];

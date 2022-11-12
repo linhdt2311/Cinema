@@ -133,7 +133,6 @@ go
 create table Account(
 	Id uniqueidentifier primary key default newid(),
 	CreationTime datetime not null,
-	CreatorUserId uniqueidentifier null,
 	LastModificationTime datetime null,
 	LastModifierUserId uniqueidentifier null,
 	IsDeleted bit not null,
@@ -349,9 +348,9 @@ as
 go
 --proc add account
 create proc CreateAccount
-@CreatorUserId uniqueidentifier, @Email nvarchar(50), @Password nvarchar(30), @Role int, @Name nvarchar(50), @IdentityCard varchar(12), @DoB datetime, @Address nvarchar(max), @Phone varchar(10)
+@Email nvarchar(50), @Password nvarchar(30), @Role int, @Name nvarchar(50), @IdentityCard varchar(12), @DoB datetime, @Address nvarchar(max), @Phone varchar(10)
 as
-	insert into Account(CreationTime, CreatorUserId, IsDeleted, Email, Password, Role, Name, IdentityCard, DoB, Address, Phone, Point) values (getdate(), @CreatorUserId, 0, @Email, @Password, @Role, @Name, @IdentityCard, @DoB, @Address, @Phone, 0)
+	insert into Account(CreationTime, IsDeleted, Email, Password, Role, Name, IdentityCard, DoB, Address, Phone, Point) values (getdate(), 0, @Email, @Password, @Role, @Name, @IdentityCard, @DoB, @Address, @Phone, 0)
 go
 --proc update account
 create proc UpdateAccount
@@ -509,8 +508,6 @@ as
 	delete from Ticket where BillId = (select Id from deleted)
 	delete from Bill where Id = (select Id from deleted)
 go
-exec CreateTicket @CreatorUserId = '64a74fc3-cf7f-4a22-b1d1-d6b7b17c494a', @SeatId = '00175e10-a855-4374-a06b-259168033780', @Price = 60000, @PromotionId = '00000000-0000-0000-0000-000000000000', @BillId = 'cfcb6f07-8d41-45c0-85ee-437aa0ff8936'
-select * from Seat where Status = 2
 
 
 

@@ -30,6 +30,7 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { SharedModuleModule } from './routes/shared-module/shared-module.module';
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import { CinemaComponent } from './routes/cinema/cinema.component';
+import { MembershipComponent } from './routes/membership/membership.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,15 +39,16 @@ import { CinemaComponent } from './routes/cinema/cinema.component';
     PageNotFoundComponent,
     MovieShowtimesComponent,
     CinemaComponent,
+    MembershipComponent,
   ],
   imports: [
     BrowserModule,
+    SharedModuleModule,
     HttpClientModule,
     CommonModule,
     FormsModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    FormsModule,
     ReactiveFormsModule,
     NzButtonModule,
     NzLayoutModule,
@@ -65,7 +67,6 @@ import { CinemaComponent } from './routes/cinema/cinema.component';
     NzTableModule,
     NzAffixModule,
     NzDividerModule,
-    SharedModuleModule,
     NzCarouselModule,
   ],
   providers: [

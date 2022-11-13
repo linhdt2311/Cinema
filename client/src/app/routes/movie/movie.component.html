@@ -1,31 +1,35 @@
 <nz-layout>
     <nz-carousel nzAutoPlay>
         <div nz-carousel-content *ngFor="let index of array">
-          <h3>{{ index }}</h3>
+            <h3>{{ index }}</h3>
         </div>
-      </nz-carousel>
+    </nz-carousel>
     <nz-header class="header">Movie</nz-header>
-    <nz-layout>
-        <nz-sider class="sider"></nz-sider>
-        <nz-content>
-            <div style="background: #001529;">
-                <div nz-row [nzGutter]="20">
-                    <div *ngFor="let movie of movies">
-                        <div nz-col [nzSpan]="8" (click)="onViewShowtimes(movie.id)">
-                            <nz-card nzHoverable class="card" [nzCover]="coverTemplate" [nzLoading]="loading">
-                                <nz-card-meta nzTitle="{{ movie.name }}"
-                                    nzDescription="{{ movie.time }} phút | {{ movie.openingDay | date: 'dd/MM/yyyy' }}">
-                                </nz-card-meta>
-                            </nz-card>
-                            <ng-template #coverTemplate>
-                                <img alt="Poster" src="{{ getPoster(movie.mId) }}"
-                                    class="poster" (mousemove)="onClick()" (mouseout)="clear()"/>
-                            </ng-template>
+    <img width="100%" height="100%" style="object-fit:cover" src="../../../assets/background.webp" alt="background">
+    <img width="100%" height="100%" style="object-fit:cover" src="../../../assets/background.webp" alt="background">
+    <div class="content">
+        <div nz-row [nzGutter]="20">
+            <div *ngFor="let movie of movies">
+                <div nz-col [nzSpan]="8">
+                    <nz-card nzHoverable class="card" [nzCover]="coverTemplate" [nzLoading]="loading">
+                        <nz-card-meta nzTitle="{{ movie.name }}"
+                            nzDescription="{{ movie.time }} phút | {{ movie.openingDay | date: 'dd/MM/yyyy' }}">
+                        </nz-card-meta>
+                    </nz-card>
+                    <ng-template #coverTemplate>
+                        <div class="detail">
+                            sakdgksadg
                         </div>
-                    </div>
+                        <div class="poster">
+                            <img alt="Poster" src="{{ getPoster(movie.mId) }}" class="poster"/>
+                            <div class="shadow_swhow_mini">
+                                <button nz-button nzType="default" [nzSize]="'small'" nzShape="round" nzGhost class="btn-detail">Movie Details</button>
+                                <button nz-button nzType="default" [nzSize]="'small'" nzShape="round" nzGhost class="btn-booking" (click)="onViewShowtimes(movie.id)">Book Tickets</button>
+                            </div>
+                          </div>
+                    </ng-template>
                 </div>
             </div>
-        </nz-content>
-        <nz-sider class="sider"></nz-sider>
-    </nz-layout>
+        </div>
+    </div>
 </nz-layout>

@@ -61,12 +61,11 @@ h3 {
 .poster .shadow_swhow_mini {
     background-color: rgba(19, 30, 33, 0);
     position: absolute;
-    z-index: 1000;
+    z-index: 1;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-
 }
 
 .poster:hover .shadow_swhow_mini {
@@ -76,7 +75,7 @@ h3 {
 .poster .btn-detail {
     position: absolute;
     font-weight: bold;
-    z-index: 1000;
+    z-index: 1;
     top: 20%;
     left: -100%;
     width: 80%;

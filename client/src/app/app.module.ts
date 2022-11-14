@@ -31,6 +31,7 @@ import { SharedModuleModule } from './routes/shared-module/shared-module.module'
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import { CinemaComponent } from './routes/cinema/cinema.component';
 import { MembershipComponent } from './routes/membership/membership.component';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 @NgModule({
   declarations: [
     AppComponent,
@@ -68,6 +69,7 @@ import { MembershipComponent } from './routes/membership/membership.component';
     NzAffixModule,
     NzDividerModule,
     NzCarouselModule,
+    NzDatePickerModule,
   ],
   providers: [
     DatePipe,

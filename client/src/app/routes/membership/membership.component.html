@@ -13,7 +13,7 @@
     <div class="part">2. Hướng dẫn thể lệ tích điểm</div>
     <div><span>1.000 đồng = 1 điểm</span></div>
     Bạn có thể dễ dàng kiểm tra điểm của mình trên Website HBQHM Cinema hoặc Ứng dụng HBQHM Cinema trên điện thoại
-        (Với điều kiện phải thực hiện kích hoạt thành viên online)<br>
+    (Với điều kiện phải thực hiện kích hoạt thành viên online)<br>
     HBQHM Member (điểm tích lũy từ 0 – 3499 điểm).<br>
     Khách hàng đăng kí mới khi hoàn tất thanh toán giao dịch đầu tiên được cộng ngay 100 điểm.<br>
     Cộng điểm đổi thưởng thêm 3% số tiền chi tiêu cho bắp nước và 5% số tiền chi tiêu cho vé<br>
@@ -43,17 +43,19 @@
     Phần quà sinh nhật không có giá trị quy đổi thành tiền mặt<br>
     <div class="part">4. Điều kiện sử dụng điểm</div>
     <ul>
-        <li>Điểm tích lũy là điểm dùng để xét cấp bậc hạng thẻ. Điểm thưởng là điểm dùng để đổi các phần quà tương ứng với số điểm.</li>
+        <li>Điểm tích lũy là điểm dùng để xét cấp bậc hạng thẻ. Điểm thưởng là điểm dùng để đổi các phần quà tương ứng
+            với số điểm.</li>
         <li>Khi đổi thưởng, điểm tích lũy sẽ vẫn được giữ nguyên, chỉ có điểm thưởng bị trừ đi</li>
-        <li>Điểm thành viên bao gồm điểm tích lũy và điểm thưởng chỉ có giá trị sử dụng trong năm. Toàn bộ điểm sẽ được reset về 0 vào 23h59’ ngày 31/12 hàng năm.</li>
+        <li>Điểm thành viên bao gồm điểm tích lũy và điểm thưởng chỉ có giá trị sử dụng trong năm. Toàn bộ điểm sẽ được
+            reset về 0 vào 23h59’ ngày 31/12 hàng năm.</li>
         <li>Khách hàng thành viên có thể sử dụng điểm thưởng để đổi các phần quà tương ứng như sau:</li>
     </ul>
     <ul>
-        <li>450 điểm  = 1 nước Aquafina</li>
+        <li>450 điểm = 1 nước Aquafina</li>
         <li>500 điểm = 1 nước ngọt</li>
         <li>550 điểm = 1 nước ngọt lớn</li>
         <li>700 điểm = 1 bắp ngọt</li>
-        <li>800 điểm  = 1 bắp phô mai/ caramel</li>
+        <li>800 điểm = 1 bắp phô mai/ caramel</li>
         <li>1100 điểm = 1 nước ngọt + 1 bắp ngọt</li>
         <li>1150 điểm = 1 nước ngọt lớn + 1 bắp ngọt</li>
         <li>1200 điểm = 1 nước ngọt + 1 bắp phô mai/ caramel</li>
@@ -69,66 +71,192 @@
         <li>Quà tặng được đổi tại quầy hoặc đổi online ngay trong giao dịch</li>
         <li>Không quy đổi quà ra tiền mặt hay chuyển nhượng sang tài khoản khác.</li>
         <li>Thành viên phải cung cấp CMND hoặc thẻ thành viên để nhận quà.</li>
-        <li>Thông tin chương trình, quà thưởng và các ưu đãi dành cho thành viên có thể được thay đổi và cập nhật thường xuyên mà không báo trước.</li>
+        <li>Thông tin chương trình, quà thưởng và các ưu đãi dành cho thành viên có thể được thay đổi và cập nhật thường
+            xuyên mà không báo trước.</li>
     </ul>
-    <div class="part">* Đăng kí thành viên: </div>
-    <div class="register">
-        <form nz-form [nzLayout]="'inline'" [formGroup]="registerForm" (ngSubmit)="submitForm()">
-            <nz-form-item>
-                <nz-form-control nzErrorTip="Please input your username!">
-                    <nz-input-group>
-                        <input formControlName="email" nz-input placeholder="Email" />
-                    </nz-input-group>
-                </nz-form-control>
-            </nz-form-item>
-            <nz-form-item>
-                <nz-form-control nzErrorTip="Please input your password!">
-                    <nz-input-group>
-                        <input formControlName="password" nz-input type="password" placeholder="Password" />
-                    </nz-input-group>
-                </nz-form-control>
-            </nz-form-item>
-            <nz-form-item>
-                <nz-form-control nzErrorTip="Please input your name!">
-                    <nz-input-group>
-                        <input formControlName="name" nz-input placeholder="Name" />
-                    </nz-input-group>
-                </nz-form-control>
-            </nz-form-item>
-            <nz-form-item>
-                <nz-form-control nzErrorTip="Please input your identity card!">
-                    <nz-input-group>
-                        <input formControlName="identityCard" nz-input placeholder="Identity card" />
-                    </nz-input-group>
-                </nz-form-control>
-            </nz-form-item>
-            <nz-form-item>
-                <nz-form-control nzErrorTip="Please input your address!">
-                    <nz-input-group>
-                        <input formControlName="address" nz-input placeholder="Address" />
-                    </nz-input-group>
-                </nz-form-control>
-            </nz-form-item>
-            <nz-form-item>
-                <nz-form-control nzErrorTip="Please input your phone!">
-                    <nz-input-group>
-                        <input formControlName="phone" nz-input placeholder="Phone" />
-                    </nz-input-group>
-                </nz-form-control>
-            </nz-form-item>
-            <nz-form-item>
-                <nz-form-control nzErrorTip="Please input your birthday!">
-                    <nz-input-group>
-                        <input formControlName="dob" nz-input placeholder="Birthday" />
-                    </nz-input-group>
-                </nz-form-control>
-            </nz-form-item>
-            <nz-form-item>
-                <nz-form-control>
-                    <button nz-button nzType="primary" (click)="onSubmit()" (keyup.enter)="onSubmit()">Register</button>
-                </nz-form-control>
-            </nz-form-item>
-        </form>
+    <div *ngIf="checkUser == true">
+        <div class="part">* Đăng kí thành viên: </div>
+        <div class="register">
+            <form nz-form [nzLayout]="'inline'" [formGroup]="registerForm" (ngSubmit)="submitForm()">
+                <nz-row nzJustify="space-evenly" style="width: 100%; color: #fff;">
+                    <div nz-col nzSpan="5" style="text-align: left;">
+                        <i class="icon fa-solid fa-user"></i>
+                        <span>Name</span>
+                    </div>
+                    <div nz-col nzSpan="7">
+                        <nz-form-item>
+                            <nz-form-control nzErrorTip="Please input your name!">
+                                <nz-input-group>
+                                    <input formControlName="name" nz-input placeholder="Name" />
+                                </nz-input-group>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSpan="5" style="text-align: left;">
+                        <i class="icon fa-solid fa-envelope"></i>
+                        <span>Email</span>
+                    </div>
+                    <div nz-col nzSpan="7">
+                        <nz-form-item>
+                            <nz-form-control nzErrorTip="Please input your email!">
+                                <nz-input-group>
+                                    <input formControlName="email" nz-input placeholder="Email" />
+                                </nz-input-group>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </nz-row>
+                <nz-row nzJustify="space-evenly" style="width: 100%; color: #fff;">
+                    <div nz-col nzSpan="5" style="text-align: left;">
+                        <i class="icon fa-solid fa-location-dot"></i>
+                        <span>Address</span>
+                    </div>
+                    <div nz-col nzSpan="7">
+                        <nz-form-item>
+                            <nz-form-control nzErrorTip="Please input your address!">
+                                <nz-input-group>
+                                    <input formControlName="address" nz-input placeholder="Address" />
+                                </nz-input-group>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSpan="5" style="text-align: left;">
+                        <i class="icon fa-solid fa-id-card"></i>
+                        <span>Identity Card</span>
+                    </div>
+                    <div nz-col nzSpan="7">
+                        <nz-form-item>
+                            <nz-form-control nzErrorTip="Please input your id card!">
+                                <nz-input-group>
+                                    <input formControlName="identityCard" nz-input placeholder="Identity card" />
+                                </nz-input-group>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </nz-row>
+                <nz-row nzJustify="space-evenly" style="width: 100%; color: #fff;">
+                    <div nz-col nzSpan="5" style="text-align: left;">
+                        <i class="icon fa-solid fa-cake-candles"></i>
+                        <span>Birthday</span>
+                    </div>
+                    <div nz-col nzSpan="7">
+                        <nz-form-item>
+                            <nz-form-control nzErrorTip="Please input your birthday!">
+                                <nz-input-group>
+                                    <nz-date-picker style="width: 182.4px; height: 28px; margin-top: 2px;"
+                                        formControlName="dob" [nzFormat]="dateFormat"></nz-date-picker>
+                                </nz-input-group>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzSpan="5" style="text-align: left;">
+                        <i class="icon fa-solid fa-phone"></i>
+                        <span>Phone</span>
+                    </div>
+                    <div nz-col nzSpan="7">
+                        <nz-form-item>
+                            <nz-form-control nzErrorTip="Please input your phone!">
+                                <nz-input-group>
+                                    <input formControlName="phone" nz-input placeholder="Phone" />
+                                </nz-input-group>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </nz-row>
+                <nz-form-item style="width: 100%; text-align: center; margin-top: 10px;">
+                    <nz-form-control>
+                        <button nz-button nzType="primary" (click)="showModal()">Continue</button>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-modal [(nzVisible)]="isVisible" [nzTitle]="modalTitle" [nzContent]="modalContent"
+                    [nzFooter]="modalFooter" (nzOnCancel)="handleCancel()">
+                    <ng-template #modalTitle>Register</ng-template>
+                    <ng-template #modalContent>
+                        <div>
+                            <input formControlName="email" nz-input/>
+                        </div>
+                        <div style="display: flex;">
+                            <i style="margin-right: 7px; margin-top: 2px;" class="fa-solid fa-lock"></i>
+                            <span>Password: </span>
+                            <nz-form-item>
+                                <nz-form-control nzErrorTip="Please input your password!">
+                                    <nz-input-group>
+                                        <input formControlName="password" nz-input type="password"
+                                            placeholder="Password" />
+                                    </nz-input-group>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                    </ng-template>
+                    <ng-template #modalFooter>
+                        <button nz-button nzType="default" (click)="handleCancel()">Cancel</button>
+                        <button nz-button nzType="primary" (click)="onSubmit()">Register</button>
+                    </ng-template>
+                </nz-modal>
+            </form>
+        </div>
+    </div>
+    <div *ngIf="checkUser == false">
+        <div class="part">* Thông tin thành viên:</div>
+        <div class="information">
+            <nz-row nzJustify="space-evenly">
+                <div nz-col nzSpan="4">
+                    <i style="float: left; margin-right: 7px; margin-top: 2px;" class="fa-solid fa-user"></i>
+                    <span style="float: left;">Name</span>
+                    <span style="float: right;">:</span>
+                </div>
+                <div nz-col nzSpan="4" style="text-align: left;">{{ user.name }}</div>
+                <div nz-col nzSpan="4">
+                    <i style="float: left; margin-right: 7px; margin-top: 2px;" class="fa-solid fa-envelope"></i>
+                    <span style="float: left;">Email</span>
+                    <span style="float: right;">:</span>
+                </div>
+                <div nz-col nzSpan="4" style="text-align: left;">{{ user.email }}</div>
+            </nz-row>
+            <nz-row nzJustify="space-evenly">
+                <div nz-col nzSpan="4">
+                    <i style="float: left; margin-right: 7px; margin-top: 2px;" class="fa-solid fa-location-dot"></i>
+                    <span style="float: left;">Address</span>
+                    <span style="float: right;">:</span>
+                </div>
+                <div nz-col nzSpan="4" style="text-align: left;">{{ user.address }}</div>
+                <div nz-col nzSpan="4">
+                    <i style="float: left; margin-right: 7px; margin-top: 2px;" class="fa-solid fa-id-card"></i>
+                    <span style="float: left;">Identity Card</span>
+                    <span style="float: right;">:</span>
+                </div>
+                <div nz-col nzSpan="4" style="text-align: left;">{{ user.identityCard }}</div>
+            </nz-row>
+            <nz-row nzJustify="space-evenly">
+                <div nz-col nzSpan="4">
+                    <i style="float: left; margin-right: 7px; margin-top: 2px;" class="fa-solid fa-cake-candles"></i>
+                    <span style="float: left;">Birthday</span>
+                    <span style="float: right;">:</span>
+                </div>
+                <div nz-col nzSpan="4" style="text-align: left;">{{ user.doB | date: 'YYYY/MM/dd' }}</div>
+                <div nz-col nzSpan="4">
+                    <i style="float: left; margin-right: 7px; margin-top: 2px;" class="fa-solid fa-phone"></i>
+                    <span style="float: left;">Phone</span>
+                    <span style="float: right;">:</span>
+                </div>
+                <div nz-col nzSpan="4" style="text-align: left;">{{ user.phone }}</div>
+            </nz-row>
+            <nz-row nzJustify="space-evenly">
+                <div nz-col nzSpan="4">
+                    <i style="float: left; margin-right: 7px; margin-top: 2px;"
+                        class="fa-solid fa-money-bill-transfer"></i>
+                    <span style="float: left;">Point</span>
+                    <span style="float: right;">:</span>
+                </div>
+                <div nz-col nzSpan="4" style="text-align: left;">{{ user.point }}</div>
+                <div nz-col nzSpan="4">
+                    <i style="float: left; margin-right: 7px; margin-top: 2px;" class="fa-solid fa-chart-simple"></i>
+                    <span style="float: left;">Rank</span>
+                    <span style="float: right;">:</span>
+                </div>
+                <div nz-col nzSpan="4" style="text-align: left;">{{ user.rank }}</div>
+            </nz-row>
+        </div>
     </div>
 </div>
 <div class="footer">

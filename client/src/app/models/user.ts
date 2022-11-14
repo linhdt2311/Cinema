@@ -11,4 +11,5 @@ export interface User {
   phone: string,
   point: number,
   role: Role,
+  rank: number,
 }

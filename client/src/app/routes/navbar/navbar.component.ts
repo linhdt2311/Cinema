@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { LoginComponent } from '../shared-module/login/login.component';
@@ -15,7 +16,8 @@ export class NavbarComponent implements OnInit {
   user: User;
   checkUser: boolean = true;
   constructor(
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -36,6 +38,10 @@ export class NavbarComponent implements OnInit {
 
   handleSumit(){
     this.isVisible = false;
+    this.user = JSON.parse(localStorage.getItem('user') || '{}');
+    if(this.user.role == 2){
+      this.router.navigate(['statistics']);
+    }
   }
   
   logout() {

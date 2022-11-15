@@ -9,6 +9,7 @@
   margin-top: 0.75rem;
 }
 .avatar{
+  cursor: pointer;
   float: right;
   margin-right: 50px;
 }

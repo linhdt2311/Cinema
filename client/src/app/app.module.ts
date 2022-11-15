@@ -32,6 +32,8 @@ import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import { CinemaComponent } from './routes/cinema/cinema.component';
 import { MembershipComponent } from './routes/membership/membership.component';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { StatisticsComponent } from './routes/statistics/statistics.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,6 +43,7 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
     MovieShowtimesComponent,
     CinemaComponent,
     MembershipComponent,
+    StatisticsComponent,
   ],
   imports: [
     BrowserModule,
@@ -70,6 +73,7 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
     NzDividerModule,
     NzCarouselModule,
     NzDatePickerModule,
+    NzSpaceModule,
   ],
   providers: [
     DatePipe,

@@ -17,6 +17,9 @@ export class BillService {
   getBill(payload?: any): Observable<any> {
     return this.http.get(this.baseUrl + '/getbill?creationTime=' + payload);
   }
+  getAllBillDetail(payload?: any): Observable<any> {
+    return this.http.get(this.baseUrl + '/getbilldetail?' + payload);
+  }
   createBill(payload: any): Observable<any> {
     return this.http.post(this.baseUrl + '/create', payload);
   }

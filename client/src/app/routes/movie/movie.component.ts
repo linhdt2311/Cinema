@@ -15,7 +15,7 @@ export class MovieComponent implements OnInit {
   loading = false;
   constructor(
     private movieService: MovieService,
-    protected router: Router,
+    private router: Router,
     ) { }
 
   ngOnInit(): void {

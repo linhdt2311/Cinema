@@ -11,19 +11,26 @@
     <li nz-menu-item routerLink="promotion" class="nav-item">
       <span>Promotion</span>
     </li>
-    <li nz-menu-item routerLink="membership" class="nav-item">
+    <li *ngIf="user.role != 2" nz-menu-item routerLink="membership" class="nav-item">
       <span>Membership</span>
     </li>
     <li nz-menu-item routerLink="support" class="nav-item">
       <span>Support</span>
     </li>
+    <li *ngIf="user.role == 2" nz-submenu nzPlacement="bottomCenter" nzTitle="Staff">
+      <ul>
+        <li nz-menu-item routerLink="statistics">Statistics</li>
+        <li nz-menu-item routerLink="management">Management</li>
+      </ul>
+    </li>
     <div *ngIf="checkUser == false" class="avatar">
       <span>Welcome </span>
-      <span style="margin: 0 5px;">{{ user.name }}</span> | 
+      <span style="margin: 0 5px;">{{ user.name }}</span> |
       <span (click)="logout()">Log out</span>
     </div>
     <div *ngIf="checkUser == true" class="avatar">
-      <span class="login" (click)="openLogin()">Login</span> | <span class="login">Register</span>
+      <span class="login" (click)="openLogin()">Login</span> | 
+      <span class="login" href="membership">Register</span>
     </div>
   </ul>
 </nz-affix>

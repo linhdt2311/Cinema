@@ -3,6 +3,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { Router } from '@angular/router';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { catchError, of } from 'rxjs';
+import { User } from 'src/app/models/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
@@ -14,6 +15,7 @@ export class LoginComponent implements OnInit {
   @Input() isVisible: boolean | undefined;
   @Output() submit = new EventEmitter();
   @Output() cancel = new EventEmitter();
+  user: User;
   loginForm!: UntypedFormGroup;
   loggedIn: boolean = false;
   constructor(
@@ -54,13 +56,8 @@ export class LoginComponent implements OnInit {
         .subscribe((response) => {
           if (!response) {
             this.loggedIn = true;
-            this.notification.create(
-              'success',
-              'Login success!',
-              ''
-            );
+            this.notification.create('success', 'Login success!', '');
             this.submit.emit();
-            document.location.href;
           }
           else {
             this.notification.create('error','Email or password not correct!', '');

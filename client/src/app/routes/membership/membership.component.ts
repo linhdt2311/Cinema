@@ -16,7 +16,8 @@ export class MembershipComponent implements OnInit {
   user: User;
   isVisible = false;
   checkUser: boolean = true;
-  dateFormat = "YYYY-MM-dd"
+  dateFormat = "YYYY-MM-dd";
+  email: any;
   constructor(
     private fb: UntypedFormBuilder,
     private accountService: AccountService,
@@ -47,6 +48,41 @@ export class MembershipComponent implements OnInit {
     });
   }
 
+  checkRegister(){
+    const phone = /([+]?84|0[3|5|7|8|9])+([0-9]{8})/
+    const email = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+    const identityCard = /0([0-9]{11})/
+    if(phone.test(this.registerForm.get('phone')?.value) == false){
+      this.notification.create('error', 'Register failed!','This phone is invalid');
+      this.registerForm.get('phone')?.setValue(null)
+    } else if(email.test(this.registerForm.get('email')?.value) == false){
+      this.notification.create('error', 'Register failed!','This email is invalid');
+      this.registerForm.get('email')?.setValue(null)
+    } else if(identityCard.test(this.registerForm.get('identityCard')?.value) == false){
+      this.notification.create('error', 'Register failed!','This identity card is invalid');
+      this.registerForm.get('identityCard')?.setValue(null)
+    } else {
+      this.accountService
+        .getAllAccount()
+        .pipe(catchError((err) => of(err)))
+        .subscribe((response) => {
+          if (response) {
+            const acc = response
+            if(acc.find((a:any) => a.email == this.registerForm.get('email')?.value)){
+              this.notification.create('error', 'Register failed!','This email is registered');
+              this.registerForm.get('email')?.setValue(null)
+            }
+            if(acc.find((a:any) => a.identityCard === this.registerForm.get('identityCard')?.value)){
+              this.notification.create('error', 'Register failed!','This identity card is registered');
+              this.registerForm.get('identityCard')?.setValue(null)
+            }
+          } else {
+            this.notification.create('error', 'Failed!','');
+          }
+        })
+    }
+  }
+
   submitForm(): void {
     console.log('registerForm', this.registerForm.value);
   }
@@ -58,22 +94,15 @@ export class MembershipComponent implements OnInit {
         .pipe(catchError((err) => of(err)))
         .subscribe((response) => {
           if (response) {
-            this.notification.create(
-              'success',
-              'Successfully!',
-              ''
-            );
+            this.notification.create('success', 'Successfully!', '');
           } else {
-            this.notification.create(
-              'error',
-              'Failed!',
-              ''
-            );
+            this.notification.create('error', 'Failed!', '');
           }
         })
+    } else {
+      this.notification.create('error', 'Warning', 'You need to enter in all the information to register!');
     }
     this.isVisible = false;
-    this.registerForm.get('email')?.enable();
     this.registerForm.reset();
   }
 
@@ -84,15 +113,17 @@ export class MembershipComponent implements OnInit {
       this.registerForm.controls[i].markAsDirty();
       this.registerForm.controls[i].updateValueAndValidity();
     }
+    this.checkRegister();
     if (this.registerForm.valid) {
       this.isVisible = true;
       this.registerForm.get('password')?.setValue(null);
-      this.registerForm.get('email')?.disable();
+      this.email = this.registerForm.get('email')?.value
+    } else {
+      this.notification.create('error', 'Warning', 'You need to enter in all the information to register!');
     }
   }
 
   handleCancel(): void {
     this.isVisible = false;
-    this.registerForm.get('email')?.enable();
   }
 }

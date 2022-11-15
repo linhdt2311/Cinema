@@ -11,7 +11,7 @@ export class FoodService {
 
   constructor(private http: HttpClient) { }
 
-  getAllFood(payload: any): Observable<any> {
+  getAllFood(payload?: any): Observable<any> {
     let cinemaId, name, size
     cinemaId = payload.cinemaId ? 'cinemaId=' + payload.cinemaId : ''
     name = payload.name ? '&name=' + payload.name : ''

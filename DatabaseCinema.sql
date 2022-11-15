@@ -240,12 +240,23 @@ create view GetAllPromotion
 as
 	select Id, Code, Discount, StartDate, EndDate from Promotion where IsDeleted <> 1
 go
+--proc getall billDetail in cinema
+create or alter proc GetAllBillDetail
+@FoodId uniqueidentifier, @BillId uniqueidentifier, @Quantity int
+as
+	select * from BillDetail where IsDeleted <> 1
+	and (isnull(@FoodId, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or FoodId = @FoodId) 
+	and (isnull(@BillId, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or BillId = @BillId) 
+	and (isnull(@Quantity, '') = '' or upper(Quantity) like '%' + upper(@Quantity) + '%')
+    option (recompile) --Cải thiện hiệu suất xử lý proc
+go
 --proc getall food in cinema
 create or alter proc GetAllFoodByCinema
 @CinemaId uniqueidentifier, @Name nvarchar(50), @Size int
 as
 	select c.Id as CinemaId, f.Id, f.Name as Food, f.Size, f.Price from Food f
-	join Cinema c on c.Id = f.CinemaId where c.Id = @CinemaId and f.IsDeleted <> 1
+	join Cinema c on c.Id = f.CinemaId where f.IsDeleted <> 1
+	and (isnull(@CinemaId, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or c.Id = @CinemaId) 
 	and (isnull(@Name, '') = '' or upper(f.Name) like '%' + upper(@Name) + '%')
 	and (isnull(@Size, '') = '' or upper(f.Size) like '%' + upper(@Size) + '%')
     option (recompile) --Cải thiện hiệu suất xử lý proc
@@ -308,12 +319,12 @@ as
         option (recompile)
 go
 --proc view Ticket nếu có tìm kiếm sẽ tìm theo yêu cầu không thì sẽ hiện full
-create proc GetViewTicket
+create or alter proc GetViewTicket
 @Date datetime, @PromotionId uniqueidentifier
 as
 	select * from Ticket t where t.IsDeleted <> 1 
 		and (isnull(@PromotionId, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or t.PromotionId = @PromotionId) 
-		and (isnull(@Date, '') = '' or upper(t.Date) like '%' + upper(@Date) + '%')
+		and (isnull(@Date, '') = '' or t.Date between convert(datetime, @Date,110) and convert(datetime, cast(@Date as datetime) + 0.0000001, 110))
         option (recompile)
 go
 --proc view Bill nếu có tìm kiếm sẽ tìm theo yêu cầu không thì sẽ hiện full

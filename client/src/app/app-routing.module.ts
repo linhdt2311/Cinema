@@ -7,6 +7,7 @@ import { MovieComponent } from './routes/movie/movie.component';
 import { NavbarComponent } from './routes/navbar/navbar.component';
 import { PageNotFoundComponent } from './routes/page-not-found/page-not-found.component';
 import { MembershipComponent } from './routes/membership/membership.component';
+import { StatisticsComponent } from './routes/statistics/statistics.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/cinema', pathMatch: 'full' },
@@ -17,6 +18,7 @@ const routes: Routes = [
       { path: 'movie', component: MovieComponent },
       { path: 'movie/:id', component: MovieShowtimesComponent },
       { path: 'membership', component: MembershipComponent },
+      { path: 'statistics', component: StatisticsComponent },
       { path: '**', pathMatch: 'full', component: PageNotFoundComponent },
     ],
   },

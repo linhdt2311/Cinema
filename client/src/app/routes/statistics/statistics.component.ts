@@ -51,7 +51,7 @@ export class StatisticsComponent implements OnInit {
       listOfFilter: [],
       filterFn: null,
       filterMultiple: true
-
+      
     },
   ];
   constructor(
@@ -65,6 +65,7 @@ export class StatisticsComponent implements OnInit {
 
   ngOnInit(): void {
     this.billData();
+    this.billDetailData();
     this.ticketData();
   }
 

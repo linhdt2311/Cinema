@@ -11,7 +11,7 @@ export class SeatService {
 
   constructor(private http: HttpClient) { }
 
-  getAllSeat(payload: any):Observable<any>{
+  getAllSeat(payload?: any):Observable<any>{
     return this.http.get(this.baseUrl + '/getall?showtimesId=' + payload);
   }
 }

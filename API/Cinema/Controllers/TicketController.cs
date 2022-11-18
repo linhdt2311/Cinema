@@ -21,7 +21,8 @@ namespace Cinema.Controllers
             conn.Open();
             string id = string.Format("00000000-0000-0000-0000-000000000000");
             if (promotionId == null) promotionId = new Guid(id);
-            string sql = string.Format("exec GetViewTicket @Date = '" + date + "', @PromotionId = '" + promotionId + "'");
+            string res  = date.ToString("yyyy-MM-dd HH:mm:ss") == string.Format("0001-01-01 00:00:00") ? "null" : string.Format("'" + date + "'");
+            string sql = string.Format("exec GetViewTicket @Date = " + res + ", @PromotionId = '" + promotionId + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             DataTable data = new DataTable();
             SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);

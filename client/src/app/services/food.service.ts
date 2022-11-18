@@ -12,11 +12,15 @@ export class FoodService {
   constructor(private http: HttpClient) { }
 
   getAllFood(payload?: any): Observable<any> {
-    let cinemaId, name, size
-    cinemaId = payload.cinemaId ? 'cinemaId=' + payload.cinemaId : ''
-    name = payload.name ? '&name=' + payload.name : ''
-    size = payload.size ? '&size=' + payload.size : ''
-    return this.http.get(this.baseUrl + '/getall?' + cinemaId + name + size);
+    if(payload){
+      let cinemaId, name, size
+      cinemaId = payload.cinemaId ? 'cinemaId=' + payload.cinemaId : ''
+      name = payload.name ? '&name=' + payload.name : ''
+      size = payload.size ? '&size=' + payload.size : ''
+      return this.http.get(this.baseUrl + '/getall?' + cinemaId + name + size);
+    } else {
+      return this.http.get(this.baseUrl + '/getall');
+    }
   }
   createFood(payload: any): Observable<any> {
     return this.http.post(this.baseUrl + '/create', payload);

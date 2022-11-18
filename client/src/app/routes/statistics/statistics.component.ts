@@ -8,6 +8,7 @@ import { ShowtimesService } from 'src/app/services/showtimes.service';
 import { TicketService } from 'src/app/services/ticket.service';
 import { ColumnItem } from 'src/app/models/columnItem'
 import { DataItem } from 'src/app/models/dataitem';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-statistics',
@@ -17,6 +18,11 @@ import { DataItem } from 'src/app/models/dataitem';
 export class StatisticsComponent implements OnInit {
   bills: any[] = [];
   foods: any[] = [];
+  billDetails: any[] = [];
+  movies: any[] = [];
+  seats: any[] = [];
+  showtimes: any[] = [];
+  accounts: any[] = [];
   tickets: DataItem[] = [];
   listOfColumns: ColumnItem[] = [
     {
@@ -61,42 +67,104 @@ export class StatisticsComponent implements OnInit {
     private movieService: MovieService,
     private seatService: SeatService,
     private showtimesService: ShowtimesService,
+    private accountService: AccountService,
   ) { }
 
   ngOnInit(): void {
     this.billData();
     this.ticketData();
+    this.foodData();
+    this.billDetailData();
+    this.accountData();
+    this.movieData();
+    this.seatData();
+    this.showtimesData();
   }
 
-  billData(){
+  billData() {
     this.billService
       .getAllBill()
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
-        if(response){
+        if (response) {
           this.bills = response
         }
       })
   }
 
-  billDetailData(){
+  billDetailData() {
     this.billService
       .getAllBillDetail()
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
-        if(response){
+        if (response) {
+          this.billDetails = response
+        }
+      })
+  }
+
+  ticketData() {
+    this.ticketService
+      .getAllTicket()
+      .pipe(catchError((err) => of(err)))
+      .subscribe((response) => {
+        if (response) {
+          this.tickets = response
+        }
+      })
+  }
+
+  foodData() {
+    this.foodService
+      .getAllFood()
+      .pipe(catchError((err) => of(err)))
+      .subscribe((response) => {
+        if (response) {
           this.foods = response
         }
       })
   }
 
-  ticketData(){
-    this.ticketService
-      .getAllTicket()
+  movieData() {
+    this.movieService
+      .getAllMovie()
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
-        if(response){
-          this.tickets = response
+        if (response) {
+          this.movies = response
+        }
+      })
+  }
+
+  seatData() {
+    this.seatService
+      .getAllSeat()
+      .pipe(catchError((err) => of(err)))
+      .subscribe((response) => {
+        if (response) {
+          this.seats = response
+        }
+      })
+  }
+
+  showtimesData() {
+    this.showtimesService
+      .getAllShowtimes()
+      .pipe(catchError((err) => of(err)))
+      .subscribe((response) => {
+        if (response) {
+          this.showtimes = response
+        }
+      })
+  }
+
+  accountData() {
+    this.accountService
+      .getAllAccount()
+      .pipe(catchError((err) => of(err)))
+      .subscribe((response) => {
+        if (response) {
+          this.accounts = response
         }
       })
   }

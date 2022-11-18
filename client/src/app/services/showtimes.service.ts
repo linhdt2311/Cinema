@@ -12,13 +12,17 @@ export class ShowtimesService {
   constructor(private http: HttpClient) { }
 
   getAllShowtimes(payload?: any): Observable<any> {
-    let id, movieId, timeStart, formatMovieScreen, cinemaId
-    id = payload.id ? 'showtimesId=' + payload.id : ''
-    movieId = payload.movieId ? '&movieId=' + payload.movieId : ''
-    timeStart = payload.timeStart ? '&timeStart=' + payload.timeStart : ''
-    formatMovieScreen = payload.formatMovieScreen ? '&formatMovieScreen=' + payload.formatMovieScreen : ''
-    cinemaId = payload.cinemaId ? '&cinemaId=' + payload.cinemaId : ''
-    return this.http.get(this.baseUrl + '/getall?' + id + movieId + timeStart + formatMovieScreen + cinemaId);
+    if(payload){
+      let id, movieId, timeStart, formatMovieScreen, cinemaId
+      id = payload.id ? 'showtimesId=' + payload.id : ''
+      movieId = payload.movieId ? '&movieId=' + payload.movieId : ''
+      timeStart = payload.timeStart ? '&timeStart=' + payload.timeStart : ''
+      formatMovieScreen = payload.formatMovieScreen ? '&formatMovieScreen=' + payload.formatMovieScreen : ''
+      cinemaId = payload.cinemaId ? '&cinemaId=' + payload.cinemaId : ''
+      return this.http.get(this.baseUrl + '/getall?' + id + movieId + timeStart + formatMovieScreen + cinemaId);
+    } else {
+      return this.http.get(this.baseUrl + '/getall');
+    }
   }
   createShowtimes(payload: any): Observable<any> {
     return this.http.post(this.baseUrl + '/create', payload);

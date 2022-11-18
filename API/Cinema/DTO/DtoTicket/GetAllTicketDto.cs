@@ -8,7 +8,6 @@ namespace Cinema.DTO.DtoTicket
         public GetAllTicketDto(DataRow row)
         {
             this.Id = (Guid)row["Id"];
-            this.AccountId = (Guid)row["AccountId"];
             this.Date = (DateTime)row["Date"];
             this.SeatId = (Guid)row["SeatId"];
             this.Price = (int)row["Price"];
@@ -16,7 +15,6 @@ namespace Cinema.DTO.DtoTicket
             this.BillId = (Guid)row["BillId"];
         }
         public Guid Id { get; set; }
-        public Guid AccountId { get; set; }
         public DateTime Date { get; set; }
         public Guid SeatId { get; set; }
         public int Price { get; set; }

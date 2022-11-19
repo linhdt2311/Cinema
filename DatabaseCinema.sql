@@ -314,31 +314,6 @@ as
         and (isnull(@TimeStart, '') = '' or cast (t.TimeStart  as date) =@TimeStart)
         and (isnull(@FormatMovieScreen, '') = '' or upper(t.FormatMovieScreen) like '%' + upper(@FormatMovieScreen) + '%')
 go
-select * from Showtimes where cast (TimeStart as date) = '2022-11-19' 
-select * from Cinema where cast (Id as uniqueidentifier) ='7926D163-5803-4024-A23F-5B0D741EA446'
-select * from Cinema where id ='7926D163-5803-4024-A23F-5B0D741EA446'
-	select * from Showtimes t 
-	join Movie m on m.Id = t.MovieId 
-	join Room r on r.Id = t.RoomId 
-	join Cinema c on c.Id = r.CinemaId where t.IsDeleted <> 1 
-		and c.id ='7926D163-5803-4024-A23F-5B0D741EA446'
-		select * from Room a 
-		join Cinema b on a.CinemaId =  b.id
-		where a.CinemaId ='7926D163-5803-4024-A23F-5B0D741EA446'
-
-		select * from Showtimes a 
-		join Room b on a.RoomId = b.id
-		join Cinema c on c.Id =   b.Id
-		where b.CinemaId ='7926D163-5803-4024-A23F-5B0D741EA446'
-
-		select * from Room a 
-		join Showtimes b on a.Id =  b.RoomId
-		where a.CinemaId ='7926D163-5803-4024-A23F-5B0D741EA446'
-		select * from Showtimes
-		select * from room where id= '960DCF02-C656-46D4-A640-20D425A9F2B6'
-		select * from  Cinema where id ='AA50D68E-F6F8-4D81-8390-EDB25B95EAEC'
-
-exec GetViewShowtimes   @ShowtimesId = '00000000-0000-0000-0000-000000000000', @CinemaId ='7926D163-5803-4024-A23F-5B0D741EA446', @MovieId ='00000000-0000-0000-0000-000000000000', @TimeStart ='2022-11-19', @FormatMovieScreen =2
 
 
 --proc view Account nếu có tìm kiếm sẽ tìm theo yêu cầu không thì sẽ hiện full

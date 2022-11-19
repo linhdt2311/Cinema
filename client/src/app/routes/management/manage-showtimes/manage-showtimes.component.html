@@ -1,1 +1,29 @@
-<p>manage-showtimes works!</p>
+<div>
+
+</div>
+<nz-table #rowSelectionTable nzShowSizeChanger [nzData]="showtimes"
+    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
+    <thead>
+        <tr>
+            <th>Movie</th>
+            <th>TimeStart</th>
+            <th>Format</th>
+            <th>Cinema</th>
+            <th>Room</th>
+            <th nzRight>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let s of rowSelectionTable.data">
+            <td>{{ s.movieId }}</td>
+            <td>{{ s.timeStart | date: 'HH:mm:ss YYYY/MM/dd' }}</td>
+            <td>{{ s.formatMovieScreen }}</td>
+            <td>{{ s.cinemaId }}</td>
+            <td>{{ s.roomId }}</td>
+            <td nzRight>
+                <button nz-button type="default">Edit</button>
+                <button nz-button type="default">Delete</button>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>

@@ -9,6 +9,7 @@ import { PageNotFoundComponent } from './routes/page-not-found/page-not-found.co
 import { MembershipComponent } from './routes/membership/membership.component';
 import { StatisticsComponent } from './routes/statistics/statistics.component';
 import { ManagementComponent } from './routes/management/management.component';
+import { SupportComponent } from './routes/support/support.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/cinema', pathMatch: 'full' },
@@ -21,6 +22,7 @@ const routes: Routes = [
       { path: 'membership', component: MembershipComponent },
       { path: 'statistics', component: StatisticsComponent },
       { path: 'management', component: ManagementComponent },
+      { path: 'support', component: SupportComponent },
       { path: '**', pathMatch: 'full', component: PageNotFoundComponent },
     ],
   },

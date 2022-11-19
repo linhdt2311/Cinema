@@ -6,8 +6,6 @@ import { MovieService } from 'src/app/services/movie.service';
 import { SeatService } from 'src/app/services/seat.service';
 import { ShowtimesService } from 'src/app/services/showtimes.service';
 import { TicketService } from 'src/app/services/ticket.service';
-import { ColumnItem } from 'src/app/models/columnItem'
-import { DataItem } from 'src/app/models/dataitem';
 import { AccountService } from 'src/app/services/account.service';
 
 @Component({
@@ -16,7 +14,7 @@ import { AccountService } from 'src/app/services/account.service';
   styleUrls: ['./statistics.component.css']
 })
 export class StatisticsComponent implements OnInit {
-  bills: DataItem[] = [];
+  bills: any[] = [];
   foods: any[] = [];
   billDetails: any[] = [];
   movies: any[] = [];
@@ -24,47 +22,6 @@ export class StatisticsComponent implements OnInit {
   showtimes: any[] = [];
   accounts: any[] = [];
   tickets: any[] = [];
-  listOfColumns: ColumnItem[] = [
-    {
-      name: 'customerId',
-      sortOrder: null,
-      sortFn: (a: DataItem, b: DataItem) => a.customerId.localeCompare(b.customerId),
-      sortDirections: ['ascend', 'descend', null],
-      filterMultiple: true,
-      listOfFilter: [
-        { text: 'Joe', value: 'Joe' },
-        { text: 'Jim', value: 'Jim' }
-      ],
-      filterFn: (list: string[], item: DataItem) => list.some(customerId => item.customerId.indexOf(customerId) !== -1)
-    },
-    {
-      name: 'Id',
-      sortOrder: null,
-      sortDirections: ['ascend', 'descend', null],
-      sortFn: null,
-      filterMultiple: false,
-      listOfFilter: [],
-      filterFn: null
-    },
-    {
-      name: 'foodId',
-      sortOrder: null,
-      sortFn: null,
-      sortDirections: ['ascend', 'descend', null],
-      listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true,
-    },
-    {
-      name: 'ticketId',
-      sortOrder: null,
-      sortFn: null,
-      sortDirections: ['ascend', 'descend', null],
-      listOfFilter: [],
-      filterFn: null,
-      filterMultiple: true,
-    },
-  ];
   constructor(
     private billService: BillService,
     private ticketService: TicketService,

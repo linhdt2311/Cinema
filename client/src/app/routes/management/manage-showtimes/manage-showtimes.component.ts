@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { catchError, of } from 'rxjs';
+import { ShowtimesDataItem } from 'src/app/models/showtimesDataItem';
 import { ShowtimesService } from 'src/app/services/showtimes.service';
 
 @Component({
@@ -9,7 +10,10 @@ import { ShowtimesService } from 'src/app/services/showtimes.service';
 })
 export class ManageShowtimesComponent implements OnInit {
   showtimes: any[] = [];
-  
+  checked = false;
+  indeterminate = false;
+  listOfCurrentPageData: readonly ShowtimesDataItem[] = [];
+  setOfCheckedId = new Set<string>();
   constructor(
     private showtimesService: ShowtimesService,
   ) { }
@@ -25,5 +29,15 @@ export class ManageShowtimesComponent implements OnInit {
       .subscribe((response) => {
         this.showtimes = response;
       })
+  }
+
+  onCurrentPageDataChange($event: readonly ShowtimesDataItem[]): void {
+    this.listOfCurrentPageData = $event;
+    this.refreshCheckedStatus();
+  }
+
+  refreshCheckedStatus(): void {
+    this.checked = this.listOfCurrentPageData.every(item => this.setOfCheckedId.has(item.id));
+    this.indeterminate = this.listOfCurrentPageData.some(item => this.setOfCheckedId.has(item.id)) && !this.checked;
   }
 }

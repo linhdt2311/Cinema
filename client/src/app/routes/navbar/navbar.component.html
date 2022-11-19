@@ -29,10 +29,23 @@
       <span (click)="logout()">Log out</span>
     </div>
     <div *ngIf="checkUser == true" class="avatar">
-      <span class="login" (click)="openLogin()">Login</span> | 
+      <span class="login" (click)="openLogin()">Login</span> |
       <span class="login" href="membership">Register</span>
     </div>
   </ul>
 </nz-affix>
 <router-outlet></router-outlet>
+<div class="setting" (click)="open()">
+  <i class="fa-solid fa-gear icon"></i>
+</div>
+<nz-drawer [nzSize]="'large'" [nzClosable]="false" [nzVisible]="visible" nzPlacement="right" [nzTitle]="titleTemplate"
+  (nzOnClose)="close()">
+  <ng-template #titleTemplate>
+    <i class="fa-solid fa-gear"></i>
+    Setting
+  </ng-template>
+  <ng-container *nzDrawerContent>
+    <app-setting></app-setting>
+  </ng-container>
+</nz-drawer>
 <app-login #modalLogin [isVisible]="isVisible" (cancel)="handleCancel()" (submit)="handleSumit()"></app-login>

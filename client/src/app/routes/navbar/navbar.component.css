@@ -1,23 +1,71 @@
-.logo{
+.logo {
   width: 45px;
   float: left;
   margin-left: 30px;
 }
-.logo_text{
+
+.logo_text {
   width: 100px;
   float: left;
   margin-top: 0.75rem;
 }
-.avatar{
+
+.avatar {
   cursor: pointer;
   float: right;
   margin-right: 50px;
 }
+
 .login:hover {
   text-decoration: underline;
 }
+
+.setting {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  float: right;
+  background-color: #fff;
+  border-radius: 50%;
+  width: 75px;
+  height: 75px;
+  margin-bottom: 25px;
+  margin-right: 25px;
+  z-index: 1000;
+}
+
+.icon {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  scale: 3;
+}
+
+.setting:hover {
+  border-top: 2px solid #03A9F4;
+  border-bottom: 2px solid blueviolet;
+  border-left: 2px solid #03f40f;
+  border-right: 2px solid #ff3e3b;
+  animation: around 2s linear 0s infinite;
+}
+
+nz-select {
+  width: 150px;
+}
+
+@keyframes around {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @media(max-width: 900px) {
-  .nav-item{
+  .nav-item {
     display: none;
   }
 }

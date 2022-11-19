@@ -1,1 +1,30 @@
-<p>manage-movie works!</p>
+<nz-table #rowSelectionTable nzShowSizeChanger [nzData]="movies"
+    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
+    <thead>
+        <tr>
+            <th [nzAlign]="'center'">Movie</th>
+            <th [nzAlign]="'center'">Time</th>
+            <th [nzAlign]="'center'">OpeningDay</th>
+            <th [nzAlign]="'center'">Country</th>
+            <th [nzAlign]="'center'">Director</th>
+            <th [nzAlign]="'center'" nzRight>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of rowSelectionTable.data">
+            <td>{{ data.name }}</td>
+            <td>{{ data.time }} minutes</td>
+            <td>{{ data.openingDay | date: 'YYYY/MM/dd' }}</td>
+            <td>{{ data.country }}</td>
+            <td>{{ data.director }}</td>
+            <td nzRight style="text-align: center;">
+                <button nz-button nzType="primary">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+                <button nz-button nzType="primary" nzDanger>
+                    <i class="fa-solid fa-trash-can"></i>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>

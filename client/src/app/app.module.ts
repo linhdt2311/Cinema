@@ -40,6 +40,15 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { ManageMovieComponent } from './routes/management/manage-movie/manage-movie.component';
 import { ManageShowtimesComponent } from './routes/management/manage-showtimes/manage-showtimes.component';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { registerLocaleData } from '@angular/common';
+import { NzSliderModule } from 'ng-zorro-antd/slider';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import en from '@angular/common/locales/en';
+import { NZ_I18N, en_US } from 'ng-zorro-antd/i18n';
+import { SupportComponent } from './routes/support/support.component';
+registerLocaleData(en);
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,6 +62,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     ManagementComponent,
     ManageMovieComponent,
     ManageShowtimesComponent,
+    SupportComponent,
   ],
   imports: [
     BrowserModule,
@@ -86,9 +96,14 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     NzSpaceModule,
     NzTabsModule,
     NzSelectModule,
+    NzSliderModule,
+    NzInputNumberModule,
+    NzSwitchModule,
+    NzDrawerModule,
   ],
   providers: [
     DatePipe,
+    { provide: NZ_I18N, useValue: en_US },
   ],
   bootstrap: [AppComponent]
 })

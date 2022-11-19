@@ -1,17 +1,19 @@
-<nz-tabset [nzTabPosition]="position" [nzSelectedIndex]="1">
-    <nz-tab [nzTitle]="titleTemplate" nzDisabled="true">
-        <ng-template #titleTemplate>
-            <nz-select [(ngModel)]="position" style="width: 80px;">
-                <nz-option *ngFor="let option of options" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
-            </nz-select>
+<nz-tabset [nzTabPosition]="setting.tabPosition" [nzSelectedIndex]="setting.tabSelectedIndex"
+    [nzTabBarGutter]="setting.tabBarGutter" [nzSize]="setting.tabSize" [nzType]="setting.tabType" [nzHideAll]="setting.tabHideAll" [nzCentered]="true">
+    <nz-tab [nzTitle]="showtimesTemplate">
+        <ng-template #showtimesTemplate>
+            <i class="fa-solid fa-calendar-days"></i>
+            Showtimes
         </ng-template>
-    </nz-tab>
-    <nz-tab nzTitle="Showtimes">
         <ng-template nz-tab>
             <app-manage-showtimes></app-manage-showtimes>
         </ng-template>
     </nz-tab>
-    <nz-tab nzTitle="Movies">
+    <nz-tab [nzTitle]="movieTemplate">
+        <ng-template #movieTemplate>
+            <i class="fa-solid fa-film"></i>
+            Movies
+        </ng-template>
         <ng-template nz-tab>
             <app-manage-movie></app-manage-movie>
         </ng-template>

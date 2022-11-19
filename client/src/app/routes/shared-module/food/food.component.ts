@@ -43,17 +43,12 @@ export class FoodComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-  }
-
-  ngOnChanges(): void {
-    if (this.isVisible == true) {
-      this.user = JSON.parse(localStorage.getItem('user') || '{}');
-      this.foodData();
-      this.money;
-      this.total = this.money
-      if (this.createDate !== undefined) {
-        this.billData();
-      }
+    this.user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.foodData();
+    this.money;
+    this.total = this.money
+    if (this.createDate !== undefined) {
+      this.billData();
     }
   }
 

@@ -53,6 +53,10 @@ export class NavbarComponent implements OnInit {
     this.authenticationService.logout();
   }
 
+  refresh(){
+    document.location.href = ""
+  }
+
   open(): void {
     this.visible = true;
   }

@@ -17,7 +17,6 @@ import { ShowtimesService } from 'src/app/services/showtimes.service';
   styleUrls: ['./modal-room.component.css']
 })
 export class ModalRoomComponent implements OnInit {
-  @Input() isVisible: boolean | undefined;
   @Input() showtimesId: any;
   @Output() submit = new EventEmitter();
   @Output() cancel = new EventEmitter();
@@ -55,19 +54,14 @@ export class ModalRoomComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-  }
-
-  ngOnChanges(): void {
-    if (this.isVisible == true) {
-      this.user = JSON.parse(localStorage.getItem('user') || '{}');
-      this.checkUser = Object.keys(this.user).length === 0;
-      this.getAllShowtimes.id = this.showtimesId
-      this.checkBooking = true;
-      this.showtimesData();
-      this.seatData();
-      this.movieData();
-      this.accountData();
-    }
+    this.user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.checkUser = Object.keys(this.user).length === 0;
+    this.getAllShowtimes.id = this.showtimesId
+    this.checkBooking = true;
+    this.showtimesData();
+    this.seatData();
+    this.movieData();
+    this.accountData();
   }
 
   seatData() {

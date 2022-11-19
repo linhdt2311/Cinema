@@ -32,4 +32,11 @@
         </div>
     </nz-content>
 </nz-affix>
-<app-modal-room #modalRoom [isVisible]="isVisible" (submit)="handleSubmit()" (cancel)="handleCancel()" [showtimesId]="sId"></app-modal-room>
+<nz-modal [nzStyle]="{ top: '2.75rem', width: '1100px' }" [(nzVisible)]="isVisible" [nzTitle]="modalTitle"
+    [nzContent]="modalContent" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+    <ng-template #modalTitle><span>Book Tickets</span></ng-template>
+    <ng-template #modalContent>
+        <app-modal-room #modalRoom (submit)="handleSubmit()" (cancel)="handleCancel()" [showtimesId]="sId">
+        </app-modal-room>
+    </ng-template>
+</nz-modal>

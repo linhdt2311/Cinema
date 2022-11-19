@@ -39,7 +39,7 @@
   <i class="fa-solid fa-gear icon"></i>
 </div>
 <nz-drawer [nzSize]="'large'" [nzClosable]="false" [nzVisible]="visible" nzPlacement="right" [nzTitle]="titleTemplate"
-  (nzOnClose)="close()">
+  (nzOnClose)="close()" [nzFooter]="footerTpl">
   <ng-template #titleTemplate>
     <i class="fa-solid fa-gear"></i>
     Setting
@@ -47,5 +47,21 @@
   <ng-container *nzDrawerContent>
     <app-setting></app-setting>
   </ng-container>
+  <ng-template #footerTpl>
+    <div style="float: right">
+      <button nz-button nzType="primary" (click)="refresh()">
+        <i class="fa-solid fa-arrows-rotate"></i>
+        Refresh
+      </button>
+    </div>
+  </ng-template>
 </nz-drawer>
-<app-login #modalLogin [isVisible]="isVisible" (cancel)="handleCancel()" (submit)="handleSumit()"></app-login>
+<nz-modal [nzStyle]="{ width: '20rem' }" [(nzVisible)]="isVisible" [nzTitle]="modalTitle" [nzContent]="modalContent"
+    [nzFooter]="null" (nzOnCancel)="handleCancel()" style="width: 1100px;">
+    <ng-template #modalTitle>
+        <div style="text-align: center;">Login</div>
+    </ng-template>
+    <ng-template #modalContent>
+      <app-login #modalLogin (cancel)="handleCancel()" (submit)="handleSumit()"></app-login>
+    </ng-template>
+</nz-modal>

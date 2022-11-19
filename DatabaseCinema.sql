@@ -279,7 +279,7 @@ as
 	select t.Id as ShowtimesId, r.Name as Room, r.Status, s.Id as SeatId, s.Name as Seat, s.Type, s.Price, s.Status as SeatStatus from Room r
 	join Showtimes t on t.RoomId = r.Id
 	join Seat s on t.Id = s.ShowtimesId
-	where (isnull(@ShowtimesId, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or t.Id = @ShowtimesId)
+	where t.Id = @ShowtimesId
 	order by Seat asc
     option (recompile)
 go

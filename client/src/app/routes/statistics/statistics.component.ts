@@ -16,48 +16,53 @@ import { AccountService } from 'src/app/services/account.service';
   styleUrls: ['./statistics.component.css']
 })
 export class StatisticsComponent implements OnInit {
-  bills: any[] = [];
+  bills: DataItem[] = [];
   foods: any[] = [];
   billDetails: any[] = [];
   movies: any[] = [];
   seats: any[] = [];
   showtimes: any[] = [];
   accounts: any[] = [];
-  tickets: DataItem[] = [];
+  tickets: any[] = [];
   listOfColumns: ColumnItem[] = [
     {
-      name: 'Id',
+      name: 'customerId',
       sortOrder: null,
-      sortFn: (a: DataItem, b: DataItem) => a.id.localeCompare(b.id),
+      sortFn: (a: DataItem, b: DataItem) => a.customerId.localeCompare(b.customerId),
       sortDirections: ['ascend', 'descend', null],
       filterMultiple: true,
       listOfFilter: [
         { text: 'Joe', value: 'Joe' },
         { text: 'Jim', value: 'Jim' }
       ],
-      filterFn: (list: string[], item: DataItem) => list.some(id => item.id.indexOf(id) !== -1)
+      filterFn: (list: string[], item: DataItem) => list.some(customerId => item.customerId.indexOf(customerId) !== -1)
     },
     {
-      name: 'SeatId',
+      name: 'Id',
       sortOrder: null,
       sortDirections: ['ascend', 'descend', null],
-      sortFn: (a: DataItem, b: DataItem) => a.seatId.localeCompare(b.id),
+      sortFn: null,
       filterMultiple: false,
-      listOfFilter: [
-        { text: 'London', value: 'London' },
-        { text: 'Sidney', value: 'Sidney' }
-      ],
-      filterFn: (seatId: string, item: DataItem) => item.seatId.indexOf(seatId) !== -1
+      listOfFilter: [],
+      filterFn: null
     },
     {
-      name: 'Price',
+      name: 'foodId',
       sortOrder: null,
-      sortFn: (a: DataItem, b: DataItem) => a.price - b.price,
+      sortFn: null,
       sortDirections: ['ascend', 'descend', null],
       listOfFilter: [],
       filterFn: null,
-      filterMultiple: true
-
+      filterMultiple: true,
+    },
+    {
+      name: 'ticketId',
+      sortOrder: null,
+      sortFn: null,
+      sortDirections: ['ascend', 'descend', null],
+      listOfFilter: [],
+      filterFn: null,
+      filterMultiple: true,
     },
   ];
   constructor(
@@ -77,7 +82,6 @@ export class StatisticsComponent implements OnInit {
     this.billDetailData();
     this.accountData();
     this.movieData();
-    this.seatData();
     this.showtimesData();
   }
 
@@ -136,9 +140,9 @@ export class StatisticsComponent implements OnInit {
       })
   }
 
-  seatData() {
+  seatData(id: any) {
     this.seatService
-      .getAllSeat()
+      .getAllSeatByTicket(id)
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         if (response) {

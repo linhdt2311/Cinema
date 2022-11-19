@@ -12,13 +12,13 @@ namespace Cinema.DTO.DtoFood
         {
             this.CinemaId = (Guid)row["CinemaId"];
             this.Id = (Guid)row["Id"];
-            this.Food = row["Food"].ToString();
+            this.Name = row["Name"].ToString();
             this.Size = (int)row["Size"];
             this.Price = (int)row["Price"];
         }
         public Guid Id { get; set; }
         public Guid CinemaId { get; set; }
-        public string Food { get; set; }
+        public string Name { get; set; }
         public int Size { get; set; }
         public int Price { get; set; }
     }

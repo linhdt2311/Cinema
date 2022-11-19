@@ -34,6 +34,11 @@ import { MembershipComponent } from './routes/membership/membership.component';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { StatisticsComponent } from './routes/statistics/statistics.component';
+import { ManagementComponent } from './routes/management/management.component';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { ManageMovieComponent } from './routes/management/manage-movie/manage-movie.component';
+import { ManageShowtimesComponent } from './routes/management/manage-showtimes/manage-showtimes.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,6 +49,9 @@ import { StatisticsComponent } from './routes/statistics/statistics.component';
     CinemaComponent,
     MembershipComponent,
     StatisticsComponent,
+    ManagementComponent,
+    ManageMovieComponent,
+    ManageShowtimesComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,6 +82,8 @@ import { StatisticsComponent } from './routes/statistics/statistics.component';
     NzCarouselModule,
     NzDatePickerModule,
     NzSpaceModule,
+    NzTabsModule,
+    NzSelectModule,
   ],
   providers: [
     DatePipe,

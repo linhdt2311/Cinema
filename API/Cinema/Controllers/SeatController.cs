@@ -14,11 +14,12 @@ namespace Cinema.Controllers
     public class SeatController : DBConnect
     {
         [HttpGet("getall")]
-        public List<SeatDto> GetAllSeat(Guid showtimesId)
+        public List<SeatDto> GetAllSeat(Guid? showtimesId)
         {
             conn.Open();
+            string id = string.Format("00000000-0000-0000-0000-000000000000");
+            if (showtimesId == null) showtimesId = new Guid(id);
             string sql = string.Format("exec GetAllSeatByRoom @ShowtimesId = '" + showtimesId + "'");
-
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             DataTable data = new DataTable();
             SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
@@ -27,6 +28,24 @@ namespace Cinema.Controllers
             foreach (DataRow i in data.Rows)
             {
                 SeatDto seat = new SeatDto(i);
+                seatList.Add(seat);
+            }
+            conn.Close();
+            return seatList.ToList();
+        }
+        [HttpGet("getallseatbyticket")]
+        public List<GetSeatByTicketDto> GetAllSeatByTicket(Guid ticketId)
+        {
+            conn.Open();
+            string sql = string.Format("exec TicketForSeat @TicketId = '" + ticketId + "'");
+            SqlCommand sqlCommand = new SqlCommand(sql, conn);
+            DataTable data = new DataTable();
+            SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
+            adapter.Fill(data);
+            var seatList = new List<GetSeatByTicketDto>();
+            foreach (DataRow i in data.Rows)
+            {
+                GetSeatByTicketDto seat = new GetSeatByTicketDto(i);
                 seatList.Add(seat);
             }
             conn.Close();

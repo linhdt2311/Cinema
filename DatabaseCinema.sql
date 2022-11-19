@@ -254,12 +254,12 @@ go
 create or alter proc GetAllFoodByCinema
 @CinemaId uniqueidentifier, @Name nvarchar(50), @Size int
 as
-	select c.Id as CinemaId, f.Id, f.Name as Food, f.Size, f.Price from Food f
-	join Cinema c on c.Id = f.CinemaId where f.IsDeleted <> 1
-	and (isnull(@CinemaId, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or c.Id = @CinemaId) 
+	select * from Food f 
+	where f.IsDeleted <> 1
+	and (isnull(@CinemaId, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or f.CinemaId = @CinemaId) 
 	and (isnull(@Name, '') = '' or upper(f.Name) like '%' + upper(@Name) + '%')
 	and (isnull(@Size, '') = '' or upper(f.Size) like '%' + upper(@Size) + '%')
-    option (recompile) --Cải thiện hiệu suất xử lý proc
+    option (recompile)
 go
 --proc getall room in cinema
 create proc GetAllRoomByCinema
@@ -273,13 +273,14 @@ as
     option (recompile)
 go
 --proc getall ghế trong 1 phòng 
-create proc GetAllSeatByRoom 
+create or alter proc GetAllSeatByRoom 
 @ShowtimesId uniqueidentifier
 as
 	select t.Id as ShowtimesId, r.Name as Room, r.Status, s.Id as SeatId, s.Name as Seat, s.Type, s.Price, s.Status as SeatStatus from Room r
 	join Showtimes t on t.RoomId = r.Id
 	join Seat s on t.Id = s.ShowtimesId
-	where t.Id = @ShowtimesId order by Seat asc
+	where (isnull(@ShowtimesId, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or t.Id = @ShowtimesId)
+	order by Seat asc
     option (recompile)
 go
 --proc view Movie nếu có tìm kiếm sẽ tìm theo yêu cầu không thì sẽ hiện full

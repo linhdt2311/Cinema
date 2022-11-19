@@ -54,9 +54,10 @@
     margin-top: 2px;
 }
 
-nz-date-picker {
-    margin: 0 8px 12px 0;
-  }
+nz-date-picker, input {
+    height: 28px;
+    width: 178px;
+}
 
 .footer {
     color: aliceblue;

@@ -1,8 +1,10 @@
+import { User } from "./user";
+
 export interface DataItem {
     id: string;
-    date: Date;
-    seatId: string;
-    price: number;
-    promotionId: string;
-    billId: string;
+    customerId: string;
+    foodId: string;
+    foodNum: number;
+    ticketId: string;
+    cost: number;
 }

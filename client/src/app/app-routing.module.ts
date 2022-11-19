@@ -8,6 +8,7 @@ import { NavbarComponent } from './routes/navbar/navbar.component';
 import { PageNotFoundComponent } from './routes/page-not-found/page-not-found.component';
 import { MembershipComponent } from './routes/membership/membership.component';
 import { StatisticsComponent } from './routes/statistics/statistics.component';
+import { ManagementComponent } from './routes/management/management.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/cinema', pathMatch: 'full' },
@@ -19,6 +20,7 @@ const routes: Routes = [
       { path: 'movie/:id', component: MovieShowtimesComponent },
       { path: 'membership', component: MembershipComponent },
       { path: 'statistics', component: StatisticsComponent },
+      { path: 'management', component: ManagementComponent },
       { path: '**', pathMatch: 'full', component: PageNotFoundComponent },
     ],
   },

@@ -1,0 +1,19 @@
+<nz-tabset [nzTabPosition]="position" [nzSelectedIndex]="1">
+    <nz-tab [nzTitle]="titleTemplate" nzDisabled="true">
+        <ng-template #titleTemplate>
+            <nz-select [(ngModel)]="position" style="width: 80px;">
+                <nz-option *ngFor="let option of options" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </ng-template>
+    </nz-tab>
+    <nz-tab nzTitle="Showtimes">
+        <ng-template nz-tab>
+            <app-manage-showtimes></app-manage-showtimes>
+        </ng-template>
+    </nz-tab>
+    <nz-tab nzTitle="Movies">
+        <ng-template nz-tab>
+            <app-manage-movie></app-manage-movie>
+        </ng-template>
+    </nz-tab>
+</nz-tabset>

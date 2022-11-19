@@ -39,6 +39,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { ManageMovieComponent } from './routes/management/manage-movie/manage-movie.component';
 import { ManageShowtimesComponent } from './routes/management/manage-showtimes/manage-showtimes.component';
+import { NzInputModule } from 'ng-zorro-antd/input';
 @NgModule({
   declarations: [
     AppComponent,
@@ -63,6 +64,7 @@ import { ManageShowtimesComponent } from './routes/management/manage-showtimes/m
     AppRoutingModule,
     ReactiveFormsModule,
     NzButtonModule,
+    NzInputModule,
     NzLayoutModule,
     NzMenuModule,
     NzFormModule,

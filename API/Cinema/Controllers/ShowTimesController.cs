@@ -23,7 +23,9 @@ namespace Cinema.Controllers
             if (showtimesId == null) showtimesId = new Guid(id);
             if (cinemaId == null) cinemaId = new Guid(id);
             if (movieId == null) movieId = new Guid(id);
-            string sql = string.Format("exec GetViewShowtimes @ShowtimesId = '" + showtimesId + "', @CinemaId = '" + cinemaId + "', @MovieId = '" + movieId + "', @TimeStart = '" + timeStart + "', @FormatMovieScreen = '" + formatMovieScreen + "'");
+            var a = string.IsNullOrWhiteSpace(timeStart.ToString()) ? null : timeStart.Value.ToString("yyyy-MM-dd");
+            
+            string sql = string.Format("exec GetViewShowtimes @ShowtimesId = '" + showtimesId + "', @CinemaId = '" + cinemaId + "', @MovieId = '" + movieId + "', @TimeStart = '" + a + "', @FormatMovieScreen = '" + formatMovieScreen + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             DataTable data = new DataTable();
             SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);

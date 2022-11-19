@@ -294,6 +294,14 @@ as
 		order by m.OpeningDay desc
         option (recompile)
 go
+create proc GetViewCinema
+@Name nvarchar(max)
+as
+	select * from Cinema m where m.IsDeleted <> 1 
+		and (isnull(@Name, '') = '' or upper(m.Name) like '%' + upper(@Name) + '%')
+		order by m.Name desc
+        option (recompile)
+go
 --proc view Showtimes nếu có tìm kiếm sẽ tìm theo yêu cầu không thì sẽ hiện full
 create proc GetViewShowtimes
 @ShowtimesId uniqueidentifier, @CinemaId uniqueidentifier, @MovieId uniqueidentifier, @TimeStart datetime, @FormatMovieScreen int
@@ -303,9 +311,36 @@ as
 		and (isnull(@ShowtimesId, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or t.Id = @ShowtimesId) 
 		and (isnull(@CinemaId, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or c.Id = @CinemaId) 
 		and (isnull(@MovieId, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or t.MovieId = @MovieId)
-        and (isnull(@TimeStart, '') = '' or upper(t.TimeStart) like '%' + upper(@TimeStart) + '%')
+        and (isnull(@TimeStart, '') = '' or cast (t.TimeStart  as date) =@TimeStart)
         and (isnull(@FormatMovieScreen, '') = '' or upper(t.FormatMovieScreen) like '%' + upper(@FormatMovieScreen) + '%')
 go
+select * from Showtimes where cast (TimeStart as date) = '2022-11-19' 
+select * from Cinema where cast (Id as uniqueidentifier) ='7926D163-5803-4024-A23F-5B0D741EA446'
+select * from Cinema where id ='7926D163-5803-4024-A23F-5B0D741EA446'
+	select * from Showtimes t 
+	join Movie m on m.Id = t.MovieId 
+	join Room r on r.Id = t.RoomId 
+	join Cinema c on c.Id = r.CinemaId where t.IsDeleted <> 1 
+		and c.id ='7926D163-5803-4024-A23F-5B0D741EA446'
+		select * from Room a 
+		join Cinema b on a.CinemaId =  b.id
+		where a.CinemaId ='7926D163-5803-4024-A23F-5B0D741EA446'
+
+		select * from Showtimes a 
+		join Room b on a.RoomId = b.id
+		join Cinema c on c.Id =   b.Id
+		where b.CinemaId ='7926D163-5803-4024-A23F-5B0D741EA446'
+
+		select * from Room a 
+		join Showtimes b on a.Id =  b.RoomId
+		where a.CinemaId ='7926D163-5803-4024-A23F-5B0D741EA446'
+		select * from Showtimes
+		select * from room where id= '960DCF02-C656-46D4-A640-20D425A9F2B6'
+		select * from  Cinema where id ='AA50D68E-F6F8-4D81-8390-EDB25B95EAEC'
+
+exec GetViewShowtimes   @ShowtimesId = '00000000-0000-0000-0000-000000000000', @CinemaId ='7926D163-5803-4024-A23F-5B0D741EA446', @MovieId ='00000000-0000-0000-0000-000000000000', @TimeStart ='2022-11-19', @FormatMovieScreen =2
+
+
 --proc view Account nếu có tìm kiếm sẽ tìm theo yêu cầu không thì sẽ hiện full
 create proc GetViewAccount
 @Name nvarchar(50), @Email nvarchar(50), @IdentityCard nvarchar(12), @DoB datetime, @Address nvarchar(max), @Phone nvarchar(10)
@@ -659,7 +694,7 @@ begin
 	while @m < 2
 	begin
 		declare @RoomId uniqueidentifier = (select Id from (select row_number() over(order by Name asc) as row, * from Room) r where row = @m)
-		insert into Showtimes(CreationTime, CreatorUserId, IsDeleted, MovieId, TimeStart, FormatMovieScreen, RoomId) values ('2022-10-22', @AId, 0, @MovieId, '2022-10-29 01:00:00', 2, @RoomId)
+		insert into Showtimes(CreationTime, CreatorUserId, IsDeleted, MovieId, TimeStart, FormatMovieScreen, RoomId) values ('2022-10-22', @AId, 0, @MovieId,getdate(), 2, @RoomId)
 	set @m = @m + 1;
 	end
 	set @n = @n + 1;

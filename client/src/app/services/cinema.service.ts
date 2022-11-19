@@ -14,4 +14,10 @@ export class CinemaService {
   getAllCinema():Observable<any>{
     return this.http.get(this.baseUrl + '/getall');
   }
+  searchCinema(payload: any):Observable<any>{
+    if(!payload){
+      payload='';
+    }
+    return this.http.get(this.baseUrl + '/search?search='+ payload);
+  }
 }

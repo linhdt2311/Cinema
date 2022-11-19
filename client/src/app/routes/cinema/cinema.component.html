@@ -1,1 +1,92 @@
-<p>cinema works!</p>
+<nz-layout>
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+    <div class="text-search">
+      <nz-input-group [nzSuffix]="suffixIconSearch">
+        <input type="text" nz-input placeholder="input search text" [(ngModel)]="txtSearchCinema"
+          (ngModelChange)="getAllCinema()" />
+      </nz-input-group>
+      <ng-template #suffixIconSearch>
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </ng-template>
+    </div>
+    <ul nz-menu nzTheme="dark" nzMode="inline">
+      <li nz-menu-item *ngFor="let data of cinemaList" (click)="onChangeSelectCinema(data)">
+        <span nz-icon nzType="pie-chart"></span>
+        <span>{{data.name}}</span>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <img width="100%" height="100%" style="object-fit:cover" src="../../../assets/background.webp" alt="background">
+    <div class="layoutImg">
+      <nz-content>
+        <nz-breadcrumb>
+          <nz-breadcrumb-item style="color: white ;">Lịch chiếu phim rạp {{this.selectCinema}}</nz-breadcrumb-item>
+        </nz-breadcrumb>
+        <div style="width: 91.65%;">
+          <div class="inner-content">
+            <ul nz-menu nzTheme="dark" nzMode="horizontal">
+              <li nz-menu-item *ngFor="let d of dayName" (click)="onFilterDate(d.value)" class="header-menu">
+                <div nz-row style="width: 120px;">
+                  <div nz-col nzSpan="24"
+                    style="color: black; background: #FFCCCC; display: flex;justify-content: center;">{{
+                    d.value | date: 'dd' }}</div>
+                  <div style="display: flex;justify-content: center;" nz-col nzSpan="24">{{d.label}}</div>
+                </div>
+              </li>
+            </ul>
+            <div class="layout">
+              <div nz-row *ngFor="let movie of movies">
+                <div nz-col nzFlex="0.5">
+                  <div (click)="onViewShowtimes(movie.id)">
+                    <nz-card nzHoverable [nzCover]="coverTemplate" [nzLoading]="loading">
+                    </nz-card>
+                    <ng-template #coverTemplate>
+                      <img alt="Poster" src="{{ getPoster(movie.mId) }}" class="poster" (mousemove)="onClick()"
+                        (mouseout)="clear()" />
+                    </ng-template>
+                  </div>
+                </div>
+                <div nz-col nzFlex="1" style="width: 70%;">
+                  <div class="cardMovie">
+                    <div>
+                      {{ movie.name }}
+                    </div>
+                    <div class="divider">
+                      <nz-divider nzText="Format Screen"></nz-divider>
+                      <div nz-row [nzGutter]="1">
+                        <div nz-col [nzSpan]="3" *ngFor="let format of formatMovieScreen" style="text-align: center;">
+                          <button nz-button class="button" [nzLoading]="isLoadingOne" nzType="default"
+                            style="width: 80%;margin-bottom: 10px;" (click)="onFilterScreen(format.value)">{{
+                            format.viewValue }}
+                            <div class="cont_icon_menu">
+                              <div class="cont_circle_1"></div>
+                              <div class="cont_circle_2"></div>
+                            </div></button>
+                        </div>
+                      </div>
+                      <nz-divider nzText="Showtimes"></nz-divider>
+                      <div nz-row [nzGutter]="1">
+                        <div nz-col [nzSpan]="3" *ngFor="let s of showTimeMoive(movie.id)" style="text-align: center;">
+
+
+                            <button nz-button class="button" nzType="default" (click)="showModal(s.id)"
+                              style="width: 80%; margin-bottom: 10px;">
+                              {{ s.timeStart|date: 'hh:mm' }}
+                              <div class="cont_icon_menu">
+                                <div class="cont_circle_1"></div>
+                                <div class="cont_circle_2"></div>
+                              </div></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nz-content>
+    </div>
+  </nz-layout>
+</nz-layout>

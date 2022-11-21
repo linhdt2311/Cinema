@@ -139,22 +139,14 @@ export class ModalRoomComponent implements OnInit {
           this.money = this.money + this.seat.price
         }
         else {
-          this.notification.create(
-            'warning',
-            'You cannot book more than 6 seat!',
-            ''
-          );
+          this.notification.create('warning', 'You cannot book more than 6 seat!', '');
         }
       } else {
         this.booking.splice(this.booking.indexOf(this.seat), 1)
         this.money = this.money - this.seat.price
       }
     } else {
-      this.notification.create(
-        'warning',
-        'This seat has been booked. You cannot be selected!',
-        ''
-      )
+      this.notification.create('warning', 'This seat has been booked. You cannot be selected!', '')
     }
     if (this.booking.length > 0) {
       this.checkBooking = false;
@@ -188,11 +180,7 @@ export class ModalRoomComponent implements OnInit {
       }
       this.billService
         .createBill(payload)
-        .pipe(
-          catchError((err) => {
-            return of(err);
-          }),
-        )
+        .pipe(catchError((err) => of(err)))
         .subscribe((response) => {
           this.createDate = this.datepipe.transform(new Date(), 'YYYY-MM-dd%20HH%3Amm%3Ass');
           if (response) {

@@ -1,0 +1,59 @@
+<form [formGroup]="form">
+    <div class="form-group row">
+        <label class="form-label col-2">Name</label>
+        <div class="col-10">
+            <input class="information" nz-input nzPlaceHolder="Enter movie name" formControlName="name" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="form-label col-2">Time</label>
+        <div class="col-10">
+            <nz-space nzDirection="vertical" class="information">
+                <nz-input-number-group *nzSpaceItem nzAddOnAfter="minutes" class="information">
+                    <nz-input-number class="information"  nzPlaceHolder="Enter movie time" formControlName="time"
+                    [ngModel]="100" [nzMin]="10" [nzMax]="500" [nzStep]="1"></nz-input-number>
+                </nz-input-number-group>
+            </nz-space>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="form-label col-2">Opening Day</label>
+        <div class="col-10">
+            <nz-date-picker class="information" formControlName="openingDay"></nz-date-picker>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="form-label col-2">Country</label>
+        <div class="col-10">
+            <input class="information" nz-input nzPlaceHolder="Enter movie country" formControlName="country" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="form-label col-2">Director</label>
+        <div class="col-10">
+            <input class="information" nz-input nzPlaceHolder="Enter movie director" formControlName="director" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="form-label col-2">Description</label>
+        <div class="col-10">
+            <textarea class="information" nz-input rows="2" nzPlaceHolder="Enter movie description"
+                formControlName="description"></textarea>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="form-label col-2">Poster</label>
+        <div class="col-10">
+            <input class="information" nz-input nzPlaceHolder="Enter movie poster" formControlName="poster" />
+        </div>
+    </div>
+    <div style="width: 100%">
+        <img *ngIf="form.value.poster !== ''" class="poster" src="{{ form.value.poster }}" alt="Poster">
+        <img *ngIf="form.value.poster === ''" class="poster"
+            src="https://i.pinimg.com/originals/85/9f/52/859f5219ba0b8d67f399c0db5a648694.jpg" alt="Poster">
+    </div>
+    <div *ngIf="isEdit" class="footer">
+        <button nz-button nzType="primary" (click)="submit()">
+            <i class="fa-solid fa-check-double" style="margin-right: 5px;"></i>Submit</button>
+    </div>
+</form>

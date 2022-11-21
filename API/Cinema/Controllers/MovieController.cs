@@ -36,7 +36,7 @@ namespace Cinema.Controllers
         public bool CreateMovie(CreateMovieDto input)
         {
             conn.Open();
-            string sql = string.Format("exec CreateMovie @CreatorUserId = '" + input.CreatorUserId + "', @Name = '" + input.Name + "', @Time = '" + input.Time + "', @OpeningDay = '" + input.OpeningDay + "', @Country = '" + input.Country + "', @Director = '" + input.Director + "', @Description = '" + input.Description + "', @Poster = '" + input.Poster + "'");
+            string sql = string.Format("exec CreateMovie @CreatorUserId = '" + input.CreatorUserId + "', @Name = N'" + input.Name + "', @Time = '" + input.Time + "', @OpeningDay = '" + input.OpeningDay.ToString("yyyy-MM-dd") + "', @Country = N'" + input.Country + "', @Director = N'" + input.Director + "', @Description = N'" + input.Description + "', @Poster = '" + input.Poster + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();
@@ -46,17 +46,17 @@ namespace Cinema.Controllers
         public bool UpdateMovie(UpdateMovieDto input)
         {
             conn.Open();
-            string sql = string.Format("exec UpdateMovie @LastModifierUserId = '" + input.LastModifierUserId + "', @Id = '" + input.Id + "', @Name = '" + input.Name + "', @Time = '" + input.Time + "', @OpeningDay = '" + input.OpeningDay + "', @Country = '" + input.Country + "', @Director = '" + input.Director + "', @Description = '" + input.Description + "', @Poster = '" + input.Poster + "'");
+            string sql = string.Format("exec UpdateMovie @LastModifierUserId = '" + input.LastModifierUserId + "', @Id = '" + input.Id + "', @Name = N'" + input.Name + "', @Time = '" + input.Time + "', @OpeningDay = '" + input.OpeningDay.ToString("yyyy-MM-dd") + "', @Country = N'" + input.Country + "', @Director = N'" + input.Director + "', @Description = N'" + input.Description + "', @Poster = '" + input.Poster + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();
             return false;
         }
         [HttpDelete("delete")]
-        public bool DeleteMovie(DeleteDto input)
+        public bool DeleteMovie(Guid deleterUserId, Guid id)
         {
             conn.Open();
-            string sql = string.Format("update Movie set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = '" + input.DeleterUserId + "' where Id = '" + input.Id + "'");
+            string sql = string.Format("update Movie set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = '" + deleterUserId + "' where Id = '" + id + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();

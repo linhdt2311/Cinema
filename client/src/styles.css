@@ -32,6 +32,6 @@ body::-webkit-scrollbar {
     /* cho Chrome, Safari, and Opera */
 }
 
-span {
+span, label {
     font-weight: bolder;
 }

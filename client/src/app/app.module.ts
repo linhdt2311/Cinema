@@ -45,9 +45,11 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import en from '@angular/common/locales/en';
 import { NZ_I18N, en_US } from 'ng-zorro-antd/i18n';
 import { SupportComponent } from './routes/support/support.component';
+import { ManageAccountsComponent } from './routes/management/manage-accounts/manage-accounts.component';
 registerLocaleData(en);
 @NgModule({
   declarations: [
@@ -63,6 +65,7 @@ registerLocaleData(en);
     ManageMovieComponent,
     ManageShowtimesComponent,
     SupportComponent,
+    ManageAccountsComponent,
   ],
   imports: [
     BrowserModule,
@@ -100,6 +103,7 @@ registerLocaleData(en);
     NzInputNumberModule,
     NzSwitchModule,
     NzDrawerModule,
+    DragDropModule,
   ],
   providers: [
     DatePipe,

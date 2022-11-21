@@ -35,11 +35,11 @@
   </ul>
 </nz-affix>
 <router-outlet></router-outlet>
-<div class="setting" (click)="open()">
-  <i class="fa-solid fa-gear icon"></i>
-</div>
-<nz-drawer [nzSize]="'large'" [nzClosable]="false" [nzVisible]="visible" nzPlacement="right" [nzTitle]="titleTemplate"
-  (nzOnClose)="close()" [nzFooter]="footerTpl">
+<!-- <div class="setting" (click)="open()">
+  <i class="fa-solid fa-gear fa-3x fa-beat-fade icon"></i>
+</div> -->
+<nz-drawer [nzSize]="'default'" [nzClosable]="false" [nzVisible]="visible" [nzTitle]="titleTemplate"
+  (nzOnClose)="close()" [nzFooter]="footerTpl" [nzPlacement]="setting.drawerPosition">
   <ng-template #titleTemplate>
     <i class="fa-solid fa-gear"></i>
     Setting

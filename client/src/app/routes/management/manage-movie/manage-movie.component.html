@@ -1,30 +1,60 @@
-<nz-table #rowSelectionTable nzShowSizeChanger [nzData]="movies"
-    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
+<nz-table #rowSelectionTable nzShowSizeChanger [nzData]="movies" [nzShowTotal]="rangeTemplate"
+    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)" nzShowQuickJumper
+    [nzScroll]="{ y: '480px' }" [nzPaginationPosition]="'top'" [nzBordered]="true">
+    <ng-template #rangeTemplate let-range="range" let-total>
+        {{ range[0] }}-{{ range[1] }} of {{ total }} items
+    </ng-template>
     <thead>
         <tr>
-            <th [nzAlign]="'center'">Movie</th>
-            <th [nzAlign]="'center'">Time</th>
-            <th [nzAlign]="'center'">OpeningDay</th>
-            <th [nzAlign]="'center'">Country</th>
-            <th [nzAlign]="'center'">Director</th>
-            <th [nzAlign]="'center'" nzRight>Action</th>
+            <th [nzAlign]="'center'" [nzWidth]="'30%'" nzLeft>Movie</th>
+            <th [nzAlign]="'center'" [nzWidth]="'10%'">Time</th>
+            <th [nzAlign]="'center'" [nzWidth]="'10%'">OpeningDay</th>
+            <th [nzAlign]="'center'" [nzWidth]="'20%'">Country</th>
+            <th [nzAlign]="'center'" [nzWidth]="'20%'">Director</th>
+            <th [nzAlign]="'center'" [nzWidth]="'10%'"nzRight>Action</th>
         </tr>
     </thead>
-    <tbody>
-        <tr *ngFor="let data of rowSelectionTable.data">
-            <td>{{ data.name }}</td>
-            <td>{{ data.time }} minutes</td>
-            <td>{{ data.openingDay | date: 'YYYY/MM/dd' }}</td>
-            <td>{{ data.country }}</td>
-            <td>{{ data.director }}</td>
-            <td nzRight style="text-align: center;">
-                <button nz-button nzType="primary">
-                    <i class="fa-solid fa-pen-to-square"></i>
+    <tbody cdkDropList (cdkDropListDropped)="drop($event)" style="cursor: pointer;">
+        <tr *ngFor="let data of rowSelectionTable.data" cdkDrag>
+            <td nzLeft>{{ data.name }}</td>
+            <td [nzAlign]="'center'">{{ data.time }} minutes</td>
+            <td [nzAlign]="'center'">{{ data.openingDay | date: 'YYYY/MM/dd' }}</td>
+            <td [nzAlign]="'center'">{{ data.country }}</td>
+            <td [nzAlign]="'center'">{{ data.director }}</td>
+            <td [nzAlign]="'center'" nzRight>
+                <button nz-button nzType="primary" (click)="$event.stopPropagation(); open('view', data)">
+                    <i class="fa-solid fa-eye"></i>
                 </button>
-                <button nz-button nzType="primary" nzDanger>
+                <button nz-button nzType="primary" nzDanger (click)="$event.stopPropagation(); showConfirm(data.id)">
                     <i class="fa-solid fa-trash-can"></i>
                 </button>
             </td>
         </tr>
     </tbody>
 </nz-table>
+<div class="create">
+    <button class="btn_create" (click)="open('create', null)">Create</button>
+</div>
+<nz-drawer [nzSize]="'large'" [nzClosable]="false" [nzVisible]="visible" [nzTitle]="titleTemplate" (nzOnClose)="close()"
+    [nzPlacement]="setting.drawerPosition">
+    <ng-template #titleTemplate>
+        <div class="row">
+            <div class="col col-10">
+                <span *ngIf="title === 'Create Movie'"><i class="fa-solid fa-folder-plus" style="margin-right: 5px;"></i>{{
+                    title }}</span>
+                <span *ngIf="title !== 'Create Movie'"><i class="fa-solid fa-wand-magic-sparkles" style="margin-right: 5px;"></i>{{
+                    title }}</span>
+            </div>
+            <div *ngIf="mode !== 'create'" class="col col-2">
+                <button *ngIf="isEdit == false" nz-button nzType="primary" class="btn_edit" (click)="changeEdit()">
+                    <i class="fa-solid fa-right-to-bracket" style="margin-right: 5px;"></i>Edit</button>
+                <button *ngIf="isEdit == true" nz-button nzType="default" class="btn_edit" (click)="changeEdit()">
+                    <i class="fa-solid fa-right-to-bracket fa-rotate-180" style="margin-right: 5px;"></i>Cancel</button>
+            </div>
+        </div>
+    </ng-template>
+    <ng-container *nzDrawerContent>
+        <app-view-and-edit-movie #movie [mode]="mode" [data]="data" [isEdit]="isEdit" (onSubmit)="submit($event)">
+        </app-view-and-edit-movie>
+    </ng-container>
+</nz-drawer>

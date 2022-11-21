@@ -2,34 +2,35 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { catchError, of } from 'rxjs';
-import { MoviesDataItem } from 'src/app/models/moviesDataItem';
+import { AccountsDataItem } from 'src/app/models/accountDataItem';
 import { Setting } from 'src/app/models/setting';
 import { User } from 'src/app/models/user';
-import { MovieService } from 'src/app/services/movie.service';
-import { ViewAndEditMovieComponent } from '../../shared-module/view-and-edit-movie/view-and-edit-movie.component';
+import { AccountService } from 'src/app/services/account.service';
+import { ViewAndEditCustomerComponent } from '../../shared-module/view-and-edit-customer/view-and-edit-customer.component';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+
 @Component({
-  selector: 'app-manage-movie',
-  templateUrl: './manage-movie.component.html',
-  styleUrls: ['./manage-movie.component.css']
+  selector: 'app-manage-accounts',
+  templateUrl: './manage-accounts.component.html',
+  styleUrls: ['./manage-accounts.component.css']
 })
-export class ManageMovieComponent implements OnInit {
-  @ViewChild('movie', { static: true }) movie: ViewAndEditMovieComponent;
+export class ManageAccountsComponent implements OnInit {
+  @ViewChild('account', { static: true }) account: ViewAndEditCustomerComponent;
   title: string = 'create';
   user: User;
-  movies: any[] = [];
+  accounts: any[] = [];
   visible: boolean = false
   setting: Setting;
   checked = false;
   indeterminate = false;
-  listOfCurrentPageData: readonly MoviesDataItem[] = [];
+  listOfCurrentPageData: readonly AccountsDataItem[] = [];
   setOfCheckedId = new Set<string>();
   confirmModal?: NzModalRef;
   mode: string = 'create';
   data: any;
   isEdit: boolean = true;
   constructor(
-    private movieService: MovieService,
+    private accountService: AccountService,
     private modal: NzModalService,
     private notification: NzNotificationService,
   ) { }
@@ -41,19 +42,19 @@ export class ManageMovieComponent implements OnInit {
   }
 
   movieData() {
-    this.movieService
-      .getAllMovie()
+    this.accountService
+      .getAllAccount()
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
-        this.movies = response;
+        this.accounts = response;
       })
   }
 
   drop(event: CdkDragDrop<any[]>): void {
-    moveItemInArray(this.movies, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.accounts, event.previousIndex, event.currentIndex);
   }
 
-  onCurrentPageDataChange($event: readonly MoviesDataItem[]): void {
+  onCurrentPageDataChange($event: readonly AccountsDataItem[]): void {
     this.listOfCurrentPageData = $event;
     this.refreshCheckedStatus();
   }
@@ -92,10 +93,10 @@ export class ManageMovieComponent implements OnInit {
     this.isEdit = true;
     this.visible = false;
     if (data.id) {
-      this.movies.splice(this.movies.findIndex((item) => item.id === data.id), 1, data);
-      this.movies = [...this.movies];
+      this.accounts.splice(this.accounts.findIndex((item) => item.id === data.id), 1, data);
+      this.accounts = [...this.accounts];
     } else {
-      this.movies = [data, ...this.movies];
+      this.accounts = [data, ...this.accounts];
     }
   }
 
@@ -109,8 +110,8 @@ export class ManageMovieComponent implements OnInit {
       nzContent: 'When clicked the OK button, this movie will be deleted system-wide!!!',
       nzOnOk: () =>
         new Promise((resolve, reject) => {
-          this.movieService
-            .deleteMovie(payload)
+          this.accountService
+            .deleteAccount(payload)
             .pipe(catchError((err) => of(err)))
             .subscribe((response) => {
               if (response) {
@@ -119,9 +120,9 @@ export class ManageMovieComponent implements OnInit {
                 this.notification.create('error', 'Failed!', '');
               }
             })
-          const index = this.movies.findIndex((item) => item.id == movieId);
-          this.movies.splice(index, 1);
-          this.movies = [...this.movies];
+          const index = this.accounts.findIndex((item) => item.id == movieId);
+          this.accounts.splice(index, 1);
+          this.accounts = [...this.accounts];
           setTimeout(null ? resolve : reject, 1000);
         }).catch(() => console.log('Oops errors!'))
     });

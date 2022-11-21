@@ -33,7 +33,7 @@ namespace Cinema.Controllers
         }
 
         [HttpGet("search")]
-        public List<CinemaDto> SearchCinema(string? search)
+        public List<CinemaDto> SearchCinema(string search)
         {
             conn.Open();
             string sql = string.Format("exec GetViewCinema @Name = '" + search + "'");

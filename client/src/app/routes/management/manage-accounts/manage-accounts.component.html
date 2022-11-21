@@ -1,27 +1,30 @@
-<nz-table #rowSelectionTable nzShowSizeChanger [nzData]="showtimes" [nzShowTotal]="rangeTemplate"
-(nzCurrentPageDataChange)="onCurrentPageDataChange($event)" nzShowQuickJumper
-[nzScroll]="{ y: '480px' }" [nzPaginationPosition]="'top'" [nzBordered]="true">
-<ng-template #rangeTemplate let-range="range" let-total>
-    {{ range[0] }}-{{ range[1] }} of {{ total }} items
-</ng-template>
-<thead>
+<nz-table #rowSelectionTable nzShowSizeChanger [nzData]="accounts" [nzShowTotal]="rangeTemplate"
+    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)" nzShowQuickJumper
+    [nzScroll]="{ y: '480px' }" [nzPaginationPosition]="'top'" [nzBordered]="true">
+    <ng-template #rangeTemplate let-range="range" let-total>
+        {{ range[0] }}-{{ range[1] }} of {{ total }} items
+    </ng-template>
     <thead>
         <tr>
-            <th [nzAlign]="'center'" [nzWidth]="'40%'">Movie</th>
-            <th [nzAlign]="'center'" [nzWidth]="'20%'">TimeStart</th>
-            <th [nzAlign]="'center'" [nzWidth]="'10%'">Format</th>
-            <th [nzAlign]="'center'" [nzWidth]="'10%'">Cinema</th>
-            <th [nzAlign]="'center'" [nzWidth]="'10%'">Room</th>
-            <th [nzAlign]="'center'" [nzWidth]="'10%'" nzRight>Action</th>
+            <th [nzAlign]="'center'" [nzWidth]="'30%'" nzLeft>Customer</th>
+            <th [nzAlign]="'center'" [nzWidth]="'10%'">Email</th>
+            <th [nzAlign]="'center'" [nzWidth]="'10%'">Address</th>
+            <th [nzAlign]="'center'" [nzWidth]="'20%'">Identity</th>
+            <th [nzAlign]="'center'" [nzWidth]="'20%'">Phone</th>
+            <th [nzAlign]="'center'" [nzWidth]="'20%'">Birthday</th>
+            <th [nzAlign]="'center'" [nzWidth]="'20%'">Point</th>
+            <th [nzAlign]="'center'" [nzWidth]="'10%'"nzRight>Action</th>
         </tr>
     </thead>
     <tbody cdkDropList (cdkDropListDropped)="drop($event)" style="cursor: pointer;">
         <tr *ngFor="let data of rowSelectionTable.data" cdkDrag>
-            <td>{{ getMovieName(data.movieId) }}</td>
-            <td [nzAlign]="'center'">{{ data.timeStart | date: 'HH:mm:ss YYYY/MM/dd' }}</td>
-            <td [nzAlign]="'center'">{{ getFormatName(data.formatMovieScreen) }}</td>
-            <td [nzAlign]="'center'">{{ getCinemaName(data.cinemaId) }}</td>
-            <td [nzAlign]="'center'">{{ getRoomName(data.roomId) }}</td>
+            <td nzLeft>{{ data.name }}</td>
+            <td>{{ data.email }}</td>
+            <td>{{ data.address }}</td>
+            <td [nzAlign]="'center'">{{ data.identityCard }}</td>
+            <td [nzAlign]="'center'">{{ data.phone }}</td>
+            <td [nzAlign]="'center'">{{ data.doB }}</td>
+            <td [nzAlign]="'center'" nzRight>{{ data.point }}</td>
             <td [nzAlign]="'center'" nzRight>
                 <button nz-button nzType="primary" (click)="$event.stopPropagation(); open('view', data)">
                     <i class="fa-solid fa-eye"></i>
@@ -55,7 +58,7 @@
         </div>
     </ng-template>
     <ng-container *nzDrawerContent>
-        <app-view-and-edit-showtimes #showtimes [mode]="mode" [data]="data" [isEdit]="isEdit" (onSubmit)="submit($event)">
-        </app-view-and-edit-showtimes>
+        <app-view-and-edit-customer #account [mode]="mode" [data]="data" [isEdit]="isEdit" (onSubmit)="submit($event)">
+        </app-view-and-edit-customer>
     </ng-container>
 </nz-drawer>

@@ -81,11 +81,7 @@ export class FoodComponent implements OnInit {
     this.warningCode = '';
     this.billService
       .delete(this.billId)
-      .pipe(
-        catchError((err) => {
-          return of(err);
-        }),
-      )
+      .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         if (response) {
           console.log("delete bill successfully!")
@@ -159,17 +155,9 @@ export class FoodComponent implements OnInit {
       ))
       .subscribe((response) => {
         if (response) {
-            this.notification.create(
-              'success',
-              'Successfully!',
-              ''
-            );
+            this.notification.create('success', 'Successfully!', '');
         } else {
-            this.notification.create(
-              'error',
-              'Failed!',
-              ''
-            );
+            this.notification.create('error', 'Failed!', '');
         }
       })
     this.billDetail = [];

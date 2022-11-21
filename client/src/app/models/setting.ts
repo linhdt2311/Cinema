@@ -8,4 +8,5 @@ export interface Setting {
     tabSize: any;
     tabType: any;
     tabHideAll: boolean;
+    drawerPosition: NzTabPosition;
 }

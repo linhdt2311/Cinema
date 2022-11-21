@@ -39,7 +39,6 @@
   display: flex;
   justify-content: center;
   height: 100%;
-  scale: 3;
 }
 
 .setting:hover {
@@ -50,16 +49,10 @@
   animation: around 2s linear 0s infinite;
 }
 
-nz-select {
-  width: 150px;
-}
-
 @keyframes around {
   from {
     transform: rotate(0deg);
-  }
-
-  to {
+  } to {
     transform: rotate(360deg);
   }
 }

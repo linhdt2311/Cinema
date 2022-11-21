@@ -9,12 +9,12 @@ namespace Cinema.DTO.DtoRoom
         {
             Id = (Guid)row["Id"];
             Name = (int)row["Room"];
-            Cinema = row["Cinema"].ToString();
+            CinemaId = (Guid)row["CinemaId"];
             Status = (int)row["Status"];
         }
         public Guid Id { get; set; }
         public int Name { get; set; }
-        public string Cinema { get; set; }
+        public Guid CinemaId { get; set; }
         public int Status { get; set; }
     }
 }

@@ -55,4 +55,9 @@ export class SettingComponent implements OnInit {
     this.setting.tabHideAll = ev;
     return localStorage.setItem('setting', JSON.stringify(this.setting));
   }
+
+  onChangePositionDrawer(ev: any){
+    this.setting.drawerPosition = ev;
+    return localStorage.setItem('setting', JSON.stringify(this.setting));
+  }
 }

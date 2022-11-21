@@ -1,21 +1,33 @@
-<nz-tabset [nzTabPosition]="setting.tabPosition" [nzSelectedIndex]="setting.tabSelectedIndex"
-    [nzTabBarGutter]="setting.tabBarGutter" [nzSize]="setting.tabSize" [nzType]="setting.tabType" [nzHideAll]="setting.tabHideAll" [nzCentered]="true">
-    <nz-tab [nzTitle]="showtimesTemplate">
-        <ng-template #showtimesTemplate>
-            <i class="fa-solid fa-calendar-days"></i>
-            Showtimes
-        </ng-template>
-        <ng-template nz-tab>
-            <app-manage-showtimes></app-manage-showtimes>
-        </ng-template>
-    </nz-tab>
-    <nz-tab [nzTitle]="movieTemplate">
-        <ng-template #movieTemplate>
-            <i class="fa-solid fa-film"></i>
-            Movies
-        </ng-template>
-        <ng-template nz-tab>
-            <app-manage-movie></app-manage-movie>
-        </ng-template>
-    </nz-tab>
-</nz-tabset>
+<div class="content">
+    <nz-tabset [nzTabPosition]="setting.tabPosition" [nzSelectedIndex]="setting.tabSelectedIndex"
+        [nzTabBarGutter]="setting.tabBarGutter" [nzSize]="setting.tabSize" [nzType]="setting.tabType"
+        [nzHideAll]="setting.tabHideAll" [nzCentered]="true">
+        <nz-tab [nzTitle]="showtimesTemplate">
+            <ng-template #showtimesTemplate>
+                <i class="fa-solid fa-calendar-days"></i>
+                Showtimes
+            </ng-template>
+            <ng-template nz-tab>
+                <app-manage-showtimes></app-manage-showtimes>
+            </ng-template>
+        </nz-tab>
+        <nz-tab [nzTitle]="movieTemplate">
+            <ng-template #movieTemplate>
+                <i class="fa-solid fa-film"></i>
+                Movies
+            </ng-template>
+            <ng-template nz-tab>
+                <app-manage-movie></app-manage-movie>
+            </ng-template>
+        </nz-tab>
+        <nz-tab [nzTitle]="userTemplate">
+            <ng-template #userTemplate>
+                <i class="fa-solid fa-users"></i>
+                Customers
+            </ng-template>
+            <ng-template nz-tab>
+                <app-manage-accounts></app-manage-accounts>
+            </ng-template>
+        </nz-tab>
+    </nz-tabset>
+</div>

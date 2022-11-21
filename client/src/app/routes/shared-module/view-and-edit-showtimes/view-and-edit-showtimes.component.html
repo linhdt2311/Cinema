@@ -1,0 +1,37 @@
+<form [formGroup]="form">
+    <div class="form-group row">
+        <label class="form-label col-3">Movie</label>
+        <div class="col-9">
+            <input class="information" nz-input nzPlaceHolder="Enter movie name" formControlName="movieId" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="form-label col-3">Time Start</label>
+        <div class="col-9">
+            <nz-date-picker class="information" nzShowTime formControlName="timeStart" nzFormat="yyyy-MM-dd HH:mm">
+            </nz-date-picker>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="form-label col-3">Format Screen</label>
+        <div class="col-9">
+            <nz-select class="information" formControlName="formatMovieScreen" nzShowSearch
+                nzPlaceHolder="Select a format sreen" [(ngModel)]="data.formatMovieScreen">
+                <div *ngFor="let f of formatMovieScreen">
+                    <nz-option nzLabel="{{ f.viewValue }}" nzValue="{{ f.value }}">
+                    </nz-option>
+                </div>
+            </nz-select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="form-label col-3">Room</label>
+        <div class="col-9">
+            <input class="information" nz-input nzPlaceHolder="Enter movie country" formControlName="roomId" />
+        </div>
+    </div>
+    <div *ngIf="isEdit" class="footer">
+        <button nz-button nzType="primary" (click)="submit()">
+            <i class="fa-solid fa-check-double" style="margin-right: 5px;"></i>Submit</button>
+    </div>
+</form>

@@ -363,8 +363,8 @@ as
 	insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description, Poster) values (getdate(), @CreatorUserId, 0, @Name, @Time, @OpeningDay, @Country, @Director, @Description, @Poster)
 go
 --proc update movie
-create proc UpdateMovie
-@LastModifierUserId uniqueidentifier, @Id uniqueidentifier, @Name int, @Time int, @OpeningDay datetime, @Country nvarchar(50), @Director nvarchar(50), @Description nvarchar(max), @Poster nvarchar(max)
+create or alter proc UpdateMovie
+@LastModifierUserId uniqueidentifier, @Id uniqueidentifier, @Name nvarchar(50), @Time int, @OpeningDay datetime, @Country nvarchar(50), @Director nvarchar(50), @Description nvarchar(max), @Poster nvarchar(max)
 as
 	update Movie set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, Name = @Name, Time = @Time, OpeningDay = @OpeningDay, Country = @Country, Director = @Director, Description = @Description, Poster = @Poster where Id = @Id
 go
@@ -532,7 +532,9 @@ as
 go
 
 
-
+--danh sách các table
+select row_number() over(order by Name asc) as row_number, name from sys.tables
+go
 --danh sách các view
 select object_schema_name(v.object_id) schema_name, v.name from sys.views as v;
 go

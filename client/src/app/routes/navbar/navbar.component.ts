@@ -25,7 +25,20 @@ export class NavbarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    
+    this.setting = JSON.parse(localStorage.getItem('setting') || '{}');
+    this.checkSetting = Object.keys(this.setting).length === 0;
+    if(this.checkSetting == true){
+      this.setting.tabSelectedIndex = 0;
+      this.setting.tabPosition = 'top';
+      this.setting.tabBarGutter = 0;
+      this.setting.tabSize = 'default';
+      this.setting.tabType = 'line';
+      this.setting.tabHideAll = false;
+      this.setting.drawerPosition = 'right';
+      localStorage.setItem('setting', JSON.stringify(this.setting));
+  } else {
+      this.setting = JSON.parse(localStorage.getItem('setting') || '{}');
+    }
   }
 
   ngDoCheck() {

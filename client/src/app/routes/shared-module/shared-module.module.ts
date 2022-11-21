@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
 import { ModalRoomComponent } from './modal-room/modal-room.component';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzGridModule } from 'ng-zorro-antd/grid';
@@ -17,14 +17,29 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzSelectModule } from 'ng-zorro-antd/select';
+import { ViewAndEditMovieComponent } from './view-and-edit-movie/view-and-edit-movie.component';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { en_US, NZ_I18N } from 'ng-zorro-antd/i18n';
+import en from '@angular/common/locales/en';
+import { ViewAndEditShowtimesComponent } from './view-and-edit-showtimes/view-and-edit-showtimes.component';
+import { ViewAndEditCustomerComponent } from './view-and-edit-customer/view-and-edit-customer.component';
+registerLocaleData(en);
+
 @NgModule({
   declarations: [
     ModalRoomComponent,
     LoginComponent,
     FoodComponent,
     SettingComponent,
+    ViewAndEditMovieComponent,
+    ViewAndEditShowtimesComponent,
+    ViewAndEditCustomerComponent,
   ],
   imports: [
+    FormsModule,
+    ReactiveFormsModule,
     NzModalModule,
     CommonModule,
     ReactiveFormsModule,
@@ -40,12 +55,22 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
     NzSliderModule,
     NzSwitchModule,
     NzDrawerModule,
+    NzDatePickerModule,
+    NzSpaceModule,
+    NzInputModule,
   ],
   exports:[
     ModalRoomComponent,
     LoginComponent,
     FoodComponent,
     SettingComponent,
+    ViewAndEditMovieComponent,
+    ViewAndEditShowtimesComponent,
+    ViewAndEditCustomerComponent,
+  ],
+  providers: [
+    DatePipe,
+    { provide: NZ_I18N, useValue: en_US },
   ],
 })
 export class SharedModuleModule { }

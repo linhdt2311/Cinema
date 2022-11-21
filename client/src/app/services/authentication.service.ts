@@ -23,7 +23,6 @@ export class AuthenticationService {
   }
   logout() {
     localStorage.removeItem('user');
-    localStorage.clear();
   }
   register(payload: any): Observable<any> {
     return this.http.post(this.baseUrl + '/register', payload);

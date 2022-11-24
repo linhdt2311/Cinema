@@ -1,6 +1,28 @@
+<div class="header">
+    <button class="btn_create" (click)="open('create', null)">Create</button>
+    <div class="filter">
+        <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate" class="search m-2">
+            <input nz-input type="text" nzPlaceHolder="Search movie name..." />
+        </nz-input-group>
+        <ng-template #addOnBeforeTemplate>
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </ng-template>
+        <nz-range-picker class="m-2" nzFormat="YYYY-MM-dd"></nz-range-picker>
+        <nz-select class="m-2" [ngModel]="'.com'">
+            <nz-option nzLabel=".com" nzValue=".com"></nz-option>
+            <nz-option nzLabel=".jp" nzValue=".jp"></nz-option>
+            <nz-option nzLabel=".cn" nzValue=".cn"></nz-option>
+            <nz-option nzLabel=".org" nzValue=".org"></nz-option>
+        </nz-select>
+        <button nz-button class="m-2" nzType="primary">
+            <i class="fa-solid fa-arrows-rotate" style="margin-right: 5px;"></i>
+            Refresh
+        </button>
+    </div>
+</div>
 <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="movies" [nzShowTotal]="rangeTemplate"
-    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)" nzShowQuickJumper
-    [nzScroll]="{ y: '480px' }" [nzPaginationPosition]="'top'" [nzBordered]="true">
+    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)" nzShowQuickJumper [nzScroll]="{ y: '400px' }"
+    [nzPaginationPosition]="'bottom'" [nzBordered]="true">
     <ng-template #rangeTemplate let-range="range" let-total>
         {{ range[0] }}-{{ range[1] }} of {{ total }} items
     </ng-template>
@@ -11,7 +33,7 @@
             <th [nzAlign]="'center'" [nzWidth]="'10%'">OpeningDay</th>
             <th [nzAlign]="'center'" [nzWidth]="'20%'">Country</th>
             <th [nzAlign]="'center'" [nzWidth]="'20%'">Director</th>
-            <th [nzAlign]="'center'" [nzWidth]="'10%'"nzRight>Action</th>
+            <th [nzAlign]="'center'" [nzWidth]="'10%'" nzRight>Action</th>
         </tr>
     </thead>
     <tbody cdkDropList (cdkDropListDropped)="drop($event)" style="cursor: pointer;">
@@ -32,17 +54,16 @@
         </tr>
     </tbody>
 </nz-table>
-<div class="create">
-    <button class="btn_create" (click)="open('create', null)">Create</button>
-</div>
 <nz-drawer [nzSize]="'large'" [nzClosable]="false" [nzVisible]="visible" [nzTitle]="titleTemplate" (nzOnClose)="close()"
     [nzPlacement]="setting.drawerPosition">
     <ng-template #titleTemplate>
         <div class="row">
             <div class="col col-10">
-                <span *ngIf="title === 'Create Movie'"><i class="fa-solid fa-folder-plus" style="margin-right: 5px;"></i>{{
+                <span *ngIf="title === 'Create Movie'"><i class="fa-solid fa-folder-plus"
+                        style="margin-right: 5px;"></i>{{
                     title }}</span>
-                <span *ngIf="title !== 'Create Movie'"><i class="fa-solid fa-wand-magic-sparkles" style="margin-right: 5px;"></i>{{
+                <span *ngIf="title !== 'Create Movie'"><i class="fa-solid fa-wand-magic-sparkles"
+                        style="margin-right: 5px;"></i>{{
                     title }}</span>
             </div>
             <div *ngIf="mode !== 'create'" class="col col-2">

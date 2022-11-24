@@ -47,6 +47,9 @@ export class FoodComponent implements OnInit {
     this.foodData();
     this.money;
     this.total = this.money
+  }
+
+  ngOnChanges(){
     if (this.createDate !== undefined) {
       this.billData();
     }
@@ -105,10 +108,7 @@ export class FoodComponent implements OnInit {
       this.ticketService
         .createTicket(payload)
         .pipe(catchError((err) => of(err)),finalize(() => 
-        setTimeout(() => {
-            this.isLoading = false
-          }, 1000)
-        ))
+        setTimeout(() => {this.isLoading = false}, 1000)))
         .subscribe((response) => {
           if (response) {
               console.log("Add ticket success" + payload.seatId)
@@ -128,10 +128,7 @@ export class FoodComponent implements OnInit {
       this.billService
         .createBillDetail(payload)
         .pipe(catchError((err) => of(err)),finalize(() => 
-        setTimeout(() => {
-            this.isLoading = false
-          }, 1000)
-        ))
+        setTimeout(() => {this.isLoading = false}, 1000)))
         .subscribe((response) => {
           if (response) {
               console.log("Add food success" + payload.foodId)

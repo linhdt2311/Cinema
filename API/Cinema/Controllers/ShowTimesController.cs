@@ -16,7 +16,7 @@ namespace Cinema.Controllers
     public class ShowTimesController : DBConnect
     {
         [HttpGet("getall")]
-        public List<ShowTimesDto> GetAllShowTimes(Guid? showtimesId, Guid? cinemaId, Guid? movieId, DateTime? timeStart, int? formatMovieScreen)
+        public List<ShowTimesDto> GetAllShowTimes(Guid? showtimesId, Guid? cinemaId, Guid? movieId, DateTime? timeStart, int? format)
         {
             conn.Open();
             string id = string.Format("00000000-0000-0000-0000-000000000000");
@@ -25,7 +25,7 @@ namespace Cinema.Controllers
             if (movieId == null) movieId = new Guid(id);
             var a = string.IsNullOrWhiteSpace(timeStart.ToString()) ? null : timeStart.Value.ToString("yyyy-MM-dd");
             
-            string sql = string.Format("exec GetViewShowtimes @ShowtimesId = '" + showtimesId + "', @CinemaId = '" + cinemaId + "', @MovieId = '" + movieId + "', @TimeStart = '" + a + "', @FormatMovieScreen = '" + formatMovieScreen + "'");
+            string sql = string.Format("exec GetViewShowtimes @ShowtimesId = '" + showtimesId + "', @CinemaId = '" + cinemaId + "', @MovieId = '" + movieId + "', @TimeStart = '" + a + "', @FormatMovieScreen = '" + format + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             DataTable data = new DataTable();
             SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
@@ -43,7 +43,7 @@ namespace Cinema.Controllers
         public bool CreateShowTime(CreateShowtimesDto input)
         {
             conn.Open();
-            string sql = string.Format("exec CreateShowtimes @CreatorUserId = '" + input.CreatorUserId + "', @MovieId = '" + input.MovieId + "', @TimeStart = '" + input.TimeStart + "', @FormatMovieScreen = '" + input.FormatMovieScreen + "', @RoomId = '" + input.RoomId + "'");
+            string sql = string.Format("exec CreateShowtimes @CreatorUserId = '" + input.CreatorUserId + "', @MovieId = '" + input.MovieId + "', @TimeStart = '" + input.TimeStart + "', @RoomId = '" + input.RoomId + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();
@@ -53,7 +53,7 @@ namespace Cinema.Controllers
         public bool UpdateShowTime(UpdateShowtimesDto input)
         {
             conn.Open();
-            string sql = string.Format("exec UpdateShowtimes @LastModifierUserId = '" + input.LastModifierUserId + "', @Id = '" + input.Id + "', @MovieId = '" + input.MovieId + "', @TimeStart = '" + input.TimeStart + "', @FormatMovieScreen = '" + input.FormatMovieScreen + "', @RoomId = '" + input.RoomId + "'");
+            string sql = string.Format("exec UpdateShowtimes @LastModifierUserId = '" + input.LastModifierUserId + "', @Id = '" + input.Id + "', @MovieId = '" + input.MovieId + "', @TimeStart = '" + input.TimeStart + "', @RoomId = '" + input.RoomId + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();

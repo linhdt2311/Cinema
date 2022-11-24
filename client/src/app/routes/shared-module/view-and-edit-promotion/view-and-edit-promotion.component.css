@@ -3,14 +3,14 @@
     height: 28px;
 }
 
-nz-form-label {
-    text-align: left;
-}
-
 .footer {
     position: fixed;
     bottom: 0;
     right: 0;
     margin-right: 2rem;
     margin-bottom: 1rem;
+}
+
+nz-form-label {
+    text-align: left;
 }

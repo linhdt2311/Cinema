@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { catchError, finalize, of } from 'rxjs';
@@ -13,11 +13,15 @@ import { AccountService } from 'src/app/services/account.service';
   styleUrls: ['./view-and-edit-customer.component.css']
 })
 export class ViewAndEditCustomerComponent implements OnInit {
+  @ViewChild('identityCard', { static: false }) identityCard?: ElementRef;
+  @ViewChild('phone', { static: false }) phone?: ElementRef;
   @Input() mode: string = 'create';
   @Input() data: any;
   @Input() isEdit: boolean;
   @Output() onSubmit = new EventEmitter();
   accounts: any[] = [];
+  valueIdentityCard = '';
+  valuePhone = '';
   isLoading: boolean = false;
   user: User;
   setting: Setting;
@@ -32,6 +36,7 @@ export class ViewAndEditCustomerComponent implements OnInit {
   ngOnInit(): void {
     this.setting = JSON.parse(localStorage.getItem('setting') || '{}');
     this.user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.accountData();
     this.initForm();
     this.form.reset();
     this.form.disable();
@@ -45,6 +50,7 @@ export class ViewAndEditCustomerComponent implements OnInit {
   ngOnChanges(): void {
     if (this.form) {
       if (this.isEdit) {
+        console.log(this.data)
         this.form.enable();
       } else {
         this.form.disable();
@@ -55,19 +61,20 @@ export class ViewAndEditCustomerComponent implements OnInit {
   initForm() {
     this.form = this.fb.group({
       id: [null],
-      creatorUserId: [null, Validators.required],
       lastModifierUserId: [null],
+      email: [null, Validators.required],
+      password: [null],
       name: [null, Validators.required],
-      time: [null, Validators.required],
-      openingDay: [null, Validators.required],
-      country: [null, Validators.required],
-      director: [null, Validators.required],
-      description: [null],
-      poster: [null],
+      identityCard: [null, Validators.required],
+      address: [null, Validators.required],
+      phone: [null, Validators.required],
+      doB: [null, Validators.required],
+      role: [null, Validators.required],
+      point: [0, Validators.required],
     });
   }
 
-  movieData() {
+  accountData() {
     this.accountService
       .getAllAccount()
       .pipe(catchError((err) => of(err)))
@@ -76,8 +83,26 @@ export class ViewAndEditCustomerComponent implements OnInit {
       })
   }
 
+  checkPhone(value: string): void {
+    const reg = /^-?(0|[1-9][0-9]*)(\.[0-9]*)?$/;
+    if ((!isNaN(+value) && reg.test(value)) || value === '' || value === '-') {
+      this.valueIdentityCard = value;
+    }
+    this.phone!.nativeElement.value = this.valueIdentityCard;
+  }
+
+  checkIdentity(value: string): void {
+    const reg = /^-?(0|[1-9][0-9]*)(\.[0-9]*)?$/;
+    if ((!isNaN(+value) && reg.test(value)) || value === '' || value === '-') {
+      this.valuePhone = value;
+    }
+    this.identityCard!.nativeElement.value = this.valuePhone;
+  }
+
   submit() {
     this.isLoading = true;
+    this.form.get('role')?.setValue(1);
+    this.form.get('doB')?.setValue(this.datepipe.transform(this.form.value.doB, 'YYYY-MM-dd'));
     for (const i in this.form.controls) {
       this.form.controls[i].markAsDirty();
       this.form.controls[i].updateValueAndValidity();

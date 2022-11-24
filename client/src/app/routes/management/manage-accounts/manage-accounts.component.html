@@ -1,18 +1,40 @@
+<div class="header">
+    <button class="btn_create" (click)="open('create', null)">Create</button>
+    <div class="filter">
+        <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate" class="search m-2">
+            <input nz-input type="text" nzPlaceHolder="Search movie name..." />
+        </nz-input-group>
+        <ng-template #addOnBeforeTemplate>
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </ng-template>
+        <nz-range-picker class="m-2" nzFormat="YYYY-MM-dd"></nz-range-picker>
+        <nz-select class="m-2" [ngModel]="'.com'">
+            <nz-option nzLabel=".com" nzValue=".com"></nz-option>
+            <nz-option nzLabel=".jp" nzValue=".jp"></nz-option>
+            <nz-option nzLabel=".cn" nzValue=".cn"></nz-option>
+            <nz-option nzLabel=".org" nzValue=".org"></nz-option>
+        </nz-select>
+        <button nz-button class="m-2" nzType="primary">
+            <i class="fa-solid fa-arrows-rotate" style="margin-right: 5px;"></i>
+            Refresh
+        </button>
+    </div>
+</div>
 <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="accounts" [nzShowTotal]="rangeTemplate"
     (nzCurrentPageDataChange)="onCurrentPageDataChange($event)" nzShowQuickJumper
-    [nzScroll]="{ y: '480px' }" [nzPaginationPosition]="'top'" [nzBordered]="true">
+    [nzScroll]="{ y: '400px' }" [nzPaginationPosition]="'bottom'" [nzBordered]="true">
     <ng-template #rangeTemplate let-range="range" let-total>
         {{ range[0] }}-{{ range[1] }} of {{ total }} items
     </ng-template>
     <thead>
         <tr>
-            <th [nzAlign]="'center'" [nzWidth]="'30%'" nzLeft>Customer</th>
-            <th [nzAlign]="'center'" [nzWidth]="'10%'">Email</th>
-            <th [nzAlign]="'center'" [nzWidth]="'10%'">Address</th>
-            <th [nzAlign]="'center'" [nzWidth]="'20%'">Identity</th>
-            <th [nzAlign]="'center'" [nzWidth]="'20%'">Phone</th>
-            <th [nzAlign]="'center'" [nzWidth]="'20%'">Birthday</th>
-            <th [nzAlign]="'center'" [nzWidth]="'20%'">Point</th>
+            <th [nzAlign]="'center'" [nzWidth]="'16.5%'" nzLeft>Customer</th>
+            <th [nzAlign]="'center'" [nzWidth]="'16.5%'">Email</th>
+            <th [nzAlign]="'center'" [nzWidth]="'17%'">Address</th>
+            <th [nzAlign]="'center'" [nzWidth]="'10%'">Identity</th>
+            <th [nzAlign]="'center'" [nzWidth]="'10%'">Phone</th>
+            <th [nzAlign]="'center'" [nzWidth]="'10%'">Birthday</th>
+            <th [nzAlign]="'center'" [nzWidth]="'10%'">Point</th>
             <th [nzAlign]="'center'" [nzWidth]="'10%'"nzRight>Action</th>
         </tr>
     </thead>
@@ -23,7 +45,7 @@
             <td>{{ data.address }}</td>
             <td [nzAlign]="'center'">{{ data.identityCard }}</td>
             <td [nzAlign]="'center'">{{ data.phone }}</td>
-            <td [nzAlign]="'center'">{{ data.doB }}</td>
+            <td [nzAlign]="'center'">{{ data.doB | date: 'dd/MM/YYYY' }}</td>
             <td [nzAlign]="'center'" nzRight>{{ data.point }}</td>
             <td [nzAlign]="'center'" nzRight>
                 <button nz-button nzType="primary" (click)="$event.stopPropagation(); open('view', data)">
@@ -36,9 +58,6 @@
         </tr>
     </tbody>
 </nz-table>
-<div class="create">
-    <button class="btn_create" (click)="open('create', null)">Create</button>
-</div>
 <nz-drawer [nzSize]="'large'" [nzClosable]="false" [nzVisible]="visible" [nzTitle]="titleTemplate" (nzOnClose)="close()"
     [nzPlacement]="setting.drawerPosition">
     <ng-template #titleTemplate>

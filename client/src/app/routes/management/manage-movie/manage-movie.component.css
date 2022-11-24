@@ -11,11 +11,22 @@
     height: 32px;
 }
 
-.create {
-    position: fixed;
-    top: 0;
-    margin-top: 105px;
-    margin-left: 50px;
+.header {
+    margin-bottom: 20px;
+    display: flex;
+}
+
+.filter {
+    margin-top: 2px;
+    margin-left: 15px;
+}
+
+.search {
+    width: 30rem;
+}
+
+.m-2 {
+    margin: 0 25px;
 }
 
 .btn_create,

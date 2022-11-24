@@ -25,6 +25,7 @@ import { en_US, NZ_I18N } from 'ng-zorro-antd/i18n';
 import en from '@angular/common/locales/en';
 import { ViewAndEditShowtimesComponent } from './view-and-edit-showtimes/view-and-edit-showtimes.component';
 import { ViewAndEditCustomerComponent } from './view-and-edit-customer/view-and-edit-customer.component';
+import { ViewAndEditPromotionComponent } from './view-and-edit-promotion/view-and-edit-promotion.component';
 registerLocaleData(en);
 
 @NgModule({
@@ -36,6 +37,7 @@ registerLocaleData(en);
     ViewAndEditMovieComponent,
     ViewAndEditShowtimesComponent,
     ViewAndEditCustomerComponent,
+    ViewAndEditPromotionComponent,
   ],
   imports: [
     FormsModule,
@@ -67,6 +69,7 @@ registerLocaleData(en);
     ViewAndEditMovieComponent,
     ViewAndEditShowtimesComponent,
     ViewAndEditCustomerComponent,
+    ViewAndEditPromotionComponent,
   ],
   providers: [
     DatePipe,

@@ -10,3 +10,12 @@
     margin-right: 2rem;
     margin-bottom: 1rem;
 }
+
+.time {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+nz-form-label {
+    text-align: left;
+}

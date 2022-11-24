@@ -12,6 +12,10 @@
     margin-right: auto;
 }
 
+nz-form-label {
+    text-align: left;
+}
+
 .footer {
     position: fixed;
     bottom: 0;

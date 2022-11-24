@@ -1,4 +1,5 @@
 ﻿using Cinema.DTO.DtoRoom;
+using Cinema.Enum;
 using Cinema.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,13 +15,13 @@ namespace Cinema.Controllers
     public class RoomController : DBConnect
     {
         [HttpGet("getall")]
-        public List<RoomDto> GetAllRoom(Guid? cinemaId, Guid? roomId)
+        public List<RoomDto> GetAllRoom(Guid? cinemaId, Guid? roomId, int? formatMovieScreen)
         {
             conn.Open();
             string id = string.Format("00000000-0000-0000-0000-000000000000");
             if (cinemaId == null) cinemaId = new Guid(id);
             if (roomId == null) roomId = new Guid(id);
-            string sql = string.Format("exec GetAllRoomByCinema @CinemaId = '" + cinemaId + "', @RoomId = '" + roomId + "'");
+            string sql = string.Format("exec GetAllRoomByCinema @CinemaId = '" + cinemaId + "', @RoomId = '" + roomId + "', @FormatMovieScreen = '" + formatMovieScreen + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             DataTable data = new DataTable();
             SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
@@ -35,10 +36,10 @@ namespace Cinema.Controllers
             return roomList.ToList();
         }
         [HttpPost("create")]
-        public bool CreateRoom(int name, Guid creatorUserId)
+        public bool CreateRoom(int name, Guid creatorUserId, int formatMovieScreen)
         {
             conn.Open();
-            string sql = string.Format("exec CreateRoom @CreatorUserId = '" + creatorUserId + "', @Name = '" + name + "'");
+            string sql = string.Format("exec CreateRoom @CreatorUserId = '" + creatorUserId + "', @Name = '" + name + "', @FormatMovieScreen = '" + formatMovieScreen + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();

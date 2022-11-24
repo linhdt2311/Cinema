@@ -39,7 +39,7 @@ namespace Cinema.Controllers
         public bool CreateAccount(CreateAccountDto input)
         {
             conn.Open();
-            string sql = string.Format("exec CreateAccount @Email = '" + input.Email + "', @Password = '" + input.Password + "', @Role = '" + input.Role + "', @Name = '" + input.Name + "', @IdentityCard = '" + input.IdentityCard + "', @DoB = '" + input.Dob + "', @Address = '" + input.Address + "', @Phone = '" + input.Phone + "'");
+            string sql = string.Format("exec CreateAccount @Email = '" + input.Email + "', @Password = '" + input.Password + "', @Role = '" + input.Role + "', @Name = N'" + input.Name + "', @IdentityCard = '" + input.IdentityCard + "', @DoB = '" + input.Dob + "', @Address = N'" + input.Address + "', @Phone = '" + input.Phone + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();
@@ -49,7 +49,7 @@ namespace Cinema.Controllers
         public bool UpdateAccount(UpdateAccountDto input)
         {
             conn.Open();
-            string sql = string.Format("exec UpdateAccount @LastModifierUserId = '" + input.LastModifierUserId + "', @Id = '" + input.Id + "', @Email = '" + input.Email + "', @Password = '" + input.Password + "', @Role = '" + input.Role + "', @Name = '" + input.Name + "', @IdentityCard = '" + input.IdentityCard + "', @DoB = '" + input.Dob + "', @Address = '" + input.Address, "', @Phone = '" + input.Phone + "', @Point = '" + input.Point + "'");
+            string sql = string.Format("exec UpdateAccount @LastModifierUserId = '" + input.LastModifierUserId + "', @Id = '" + input.Id + "', @Email = '" + input.Email + "', @Password = '" + input.Password + "', @Role = '" + input.Role + "', @Name = N'" + input.Name + "', @IdentityCard = '" + input.IdentityCard + "', @DoB = '" + input.Dob.ToString("yyyy-MM-dd") + "', @Address = N'" + input.Address + "', @Phone = '" + input.Phone + "', @Point = '" + input.Point + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();

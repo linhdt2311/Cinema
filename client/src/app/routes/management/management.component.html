@@ -20,6 +20,15 @@
                 <app-manage-movie></app-manage-movie>
             </ng-template>
         </nz-tab>
+        <nz-tab [nzTitle]="cinemaTemplate">
+            <ng-template #cinemaTemplate>
+                <i class="fa-solid fa-tv"></i>
+                Cinema
+            </ng-template>
+            <ng-template nz-tab>
+                <app-manage-cinema></app-manage-cinema>
+            </ng-template>
+        </nz-tab>
         <nz-tab [nzTitle]="userTemplate">
             <ng-template #userTemplate>
                 <i class="fa-solid fa-users"></i>
@@ -27,6 +36,24 @@
             </ng-template>
             <ng-template nz-tab>
                 <app-manage-accounts></app-manage-accounts>
+            </ng-template>
+        </nz-tab>
+        <nz-tab [nzTitle]="promotionTemplate">
+            <ng-template #promotionTemplate>
+                <i class="fa-solid fa-ticket"></i>
+                Promotion
+            </ng-template>
+            <ng-template nz-tab>
+                <app-manage-promotion></app-manage-promotion>
+            </ng-template>
+        </nz-tab>
+        <nz-tab [nzTitle]="foodTemplate">
+            <ng-template #foodTemplate>
+                <i class="fa-solid fa-burger"></i>
+                Foods & drinks
+            </ng-template>
+            <ng-template nz-tab>
+                <app-manage-food-drink></app-manage-food-drink>
             </ng-template>
         </nz-tab>
     </nz-tabset>

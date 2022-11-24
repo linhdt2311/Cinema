@@ -7,7 +7,6 @@ namespace Cinema.DTO.DtoShowTimes
         public Guid CreatorUserId { get; set; }
         public Guid MovieId { get; set; }
         public DateTime TimeStart { get; set; }
-        public int FormatMovieScreen { get; set; }
         public Guid RoomId { get; set; }
     }
 }

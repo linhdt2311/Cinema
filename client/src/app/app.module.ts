@@ -50,6 +50,9 @@ import en from '@angular/common/locales/en';
 import { NZ_I18N, en_US } from 'ng-zorro-antd/i18n';
 import { SupportComponent } from './routes/support/support.component';
 import { ManageAccountsComponent } from './routes/management/manage-accounts/manage-accounts.component';
+import { ManageFoodDrinkComponent } from './routes/management/manage-food-drink/manage-food-drink.component';
+import { ManagePromotionComponent } from './routes/management/manage-promotion/manage-promotion.component';
+import { ManageCinemaComponent } from './routes/management/manage-cinema/manage-cinema.component';
 registerLocaleData(en);
 @NgModule({
   declarations: [
@@ -66,6 +69,9 @@ registerLocaleData(en);
     ManageShowtimesComponent,
     SupportComponent,
     ManageAccountsComponent,
+    ManageFoodDrinkComponent,
+    ManageCinemaComponent,
+    ManagePromotionComponent,
   ],
   imports: [
     BrowserModule,

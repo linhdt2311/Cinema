@@ -99,7 +99,8 @@ export class ManageShowtimesComponent implements OnInit {
   }
 
   getCinemaName(id: any){
-    return this.cinemas.find(c => c.id === id)?.name;
+    const name = this.rooms.find(r => r.id == id)?.cinemaId;
+    return this.cinemas.find(c => c.id === name)?.name;
   }
 
   getRoomName(id: any){
@@ -107,7 +108,8 @@ export class ManageShowtimesComponent implements OnInit {
   }
 
   getFormatName(value: any){
-    return this.formatMovieScreen.find(f => f.value === value).viewValue
+    const format = this.rooms.find(r => r.id == value)?.formatMovieScreen;
+    return this.formatMovieScreen.find(f => f.value === format)?.viewValue;
   }
 
   drop(event: CdkDragDrop<any[]>): void {

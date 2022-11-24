@@ -6,6 +6,24 @@
     opacity: 0;
 }
 
+.header {
+    margin-bottom: 20px;
+    display: flex;
+}
+
+.filter {
+    margin-top: 2px;
+    margin-left: 15px;
+}
+
+.search {
+    width: 30rem;
+}
+
+.m-2 {
+    margin: 0 25px;
+}
+
 .btn_edit {
     width: 100px;
     height: 32px;

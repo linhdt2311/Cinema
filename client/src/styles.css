@@ -19,19 +19,42 @@
 }
 
 body {
-    -ms-overflow-style: none;
-    /* cho  Internet Explorer, Edge */
     scrollbar-width: none;
-    /* cho Firefox */
     overflow-y: scroll;
 }
 
 body::-webkit-scrollbar {
     display: none;
     overflow-x: hidden;
-    /* cho Chrome, Safari, and Opera */
 }
 
-span, label {
+span,
+label {
     font-weight: bolder;
+}
+
+.ant-drawer-body {
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.ant-drawer-body::-webkit-scrollbar {
+    width: 0.1em;
+}
+
+.ant-drawer-body::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+}
+
+nz-form-label {
+    text-align: left;
+}
+
+::ng-deep .cdk-drag-preview {
+    display: table;
+}
+
+::ng-deep .cdk-drag-placeholder {
+    opacity: 0;
 }

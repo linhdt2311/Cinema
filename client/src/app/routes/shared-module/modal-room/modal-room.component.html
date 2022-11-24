@@ -61,7 +61,7 @@
     <button nz-button nzType="default" style="width: 145.59px;" (click)="handleCancel()">
       <i class="fa-sharp fa-solid fa-rotate-left" style="margin-right: 0.3rem;"></i>Cancel
     </button>
-    <button nz-button nzType="primary" style="width: 145.59px;" (click)="handleOk()" disabled="{{ checkBooking }}"
+    <button nz-button nzType="primary" style="width: 145.59px;" (click)="handleOk()" [disabled]="this.booking.length === 0"
       [nzLoading]="isLoading">
       <i class="fa-solid fa-user-check" style="margin-right: 0.3rem;"></i>Continue
     </button>

@@ -22,7 +22,6 @@ export class ModalRoomComponent implements OnInit {
   @Output() cancel = new EventEmitter();
   showLogin: boolean = false;
   showFood: boolean = false;
-  checkBooking: boolean = true;
   isLoading: boolean = false;
   getAllShowtimes: GetAllShowtimes = new GetAllShowtimes();
   screen: boolean = true;
@@ -57,7 +56,6 @@ export class ModalRoomComponent implements OnInit {
     this.user = JSON.parse(localStorage.getItem('user') || '{}');
     this.checkUser = Object.keys(this.user).length === 0;
     this.getAllShowtimes.id = this.showtimesId
-    this.checkBooking = true;
     this.showtimesData();
     this.seatData();
     this.movieData();
@@ -147,11 +145,6 @@ export class ModalRoomComponent implements OnInit {
       }
     } else {
       this.notification.create('warning', 'This seat has been booked. You cannot be selected!', '')
-    }
-    if (this.booking.length > 0) {
-      this.checkBooking = false;
-    } else {
-      this.checkBooking = true;
     }
     return this.booking
   }

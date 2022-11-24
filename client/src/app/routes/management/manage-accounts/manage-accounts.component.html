@@ -21,8 +21,9 @@
     </div>
 </div>
 <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="accounts" [nzShowTotal]="rangeTemplate"
-    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)" nzShowQuickJumper
-    [nzScroll]="{ y: '400px' }" [nzPaginationPosition]="'bottom'" [nzBordered]="true">
+    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)" nzShowQuickJumper [nzScroll]="{ y: '400px' }"
+    [nzPaginationPosition]="setting.paginationPosition" [nzBordered]="true" [nzPaginationType]="setting.paginationType"
+    [nzSimple]="setting.paginationSimple">
     <ng-template #rangeTemplate let-range="range" let-total>
         {{ range[0] }}-{{ range[1] }} of {{ total }} items
     </ng-template>
@@ -35,7 +36,7 @@
             <th [nzAlign]="'center'" [nzWidth]="'10%'">Phone</th>
             <th [nzAlign]="'center'" [nzWidth]="'10%'">Birthday</th>
             <th [nzAlign]="'center'" [nzWidth]="'10%'">Point</th>
-            <th [nzAlign]="'center'" [nzWidth]="'10%'"nzRight>Action</th>
+            <th [nzAlign]="'center'" [nzWidth]="'10%'" nzRight>Action</th>
         </tr>
     </thead>
     <tbody cdkDropList (cdkDropListDropped)="drop($event)" style="cursor: pointer;">
@@ -63,9 +64,11 @@
     <ng-template #titleTemplate>
         <div class="row">
             <div class="col col-10">
-                <span *ngIf="title === 'Create Movie'"><i class="fa-solid fa-folder-plus" style="margin-right: 5px;"></i>{{
+                <span *ngIf="title === 'Create Movie'"><i class="fa-solid fa-folder-plus"
+                        style="margin-right: 5px;"></i>{{
                     title }}</span>
-                <span *ngIf="title !== 'Create Movie'"><i class="fa-solid fa-wand-magic-sparkles" style="margin-right: 5px;"></i>{{
+                <span *ngIf="title !== 'Create Movie'"><i class="fa-solid fa-wand-magic-sparkles"
+                        style="margin-right: 5px;"></i>{{
                     title }}</span>
             </div>
             <div *ngIf="mode !== 'create'" class="col col-2">

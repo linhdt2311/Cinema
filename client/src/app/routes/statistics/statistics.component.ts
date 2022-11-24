@@ -33,13 +33,13 @@ export class StatisticsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.billData();
-    this.ticketData();
-    this.foodData();
-    this.billDetailData();
-    this.accountData();
-    this.movieData();
-    this.showtimesData();
+    // this.billData();
+    // this.ticketData();
+    // this.foodData();
+    // this.billDetailData();
+    // this.accountData();
+    // this.movieData();
+    // this.showtimesData();
   }
 
   billData() {

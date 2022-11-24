@@ -9,4 +9,7 @@ export interface Setting {
     tabType: any;
     tabHideAll: boolean;
     drawerPosition: NzTabPosition;
+    paginationPosition: any;
+    paginationSimple: boolean;
+    paginationType: any;
 }

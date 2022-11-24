@@ -1,13 +1,17 @@
 <div>
-    <span>Setting current tab's defaults: </span>
-    <nz-select [(ngModel)]="setting.tabSelectedIndex" (ngModelChange)="onChangeSelectTabDefault($event)">
+    <label class="col-5">Setting current tab's defaults: </label>
+    <nz-select class="col-7 setting" [(ngModel)]="setting.tabSelectedIndex" (ngModelChange)="changeSelectTabDefault($event)">
         <nz-option nzValue="0" nzLabel="Showtimes"></nz-option>
         <nz-option nzValue="1" nzLabel="Movies"></nz-option>
+        <nz-option nzValue="2" nzLabel="Cinema"></nz-option>
+        <nz-option nzValue="3" nzLabel="Customers"></nz-option>
+        <nz-option nzValue="4" nzLabel="Promotion"></nz-option>
+        <nz-option nzValue="5" nzLabel="Foods & drinks"></nz-option>
     </nz-select>
 </div>
 <div>
-    <span>Setting position of tabs: </span>
-    <nz-select [(ngModel)]="setting.tabPosition" (ngModelChange)="onChangePositionTab($event)">
+    <label class="col-5">Setting position of tabs: </label>
+    <nz-select class="col-7 setting" [(ngModel)]="setting.tabPosition" (ngModelChange)="changePositionTab($event)">
         <nz-option nzValue="top" nzLabel="Top"></nz-option>
         <nz-option nzValue="left" nzLabel="Left"></nz-option>
         <nz-option nzValue="bottom" nzLabel="Bottom"></nz-option>
@@ -16,46 +20,63 @@
 </div>
 <div>
     <nz-row>
-        <nz-col nzSpan="4">
-            <span>Setting the gap between tabs: </span>
-        </nz-col>
-        <nz-col nzSpan="8">
+        <nz-col nzSpan="10"><label>Setting the gap between tabs: </label></nz-col>
+        <nz-col nzSpan="10">
             <nz-slider [nzMin]="0" [nzMax]="100" [(ngModel)]="setting.tabBarGutter"
-                (ngModelChange)="onChangeTabBarGutter($event)"></nz-slider>
+                (ngModelChange)="changeTabBarGutter($event)"></nz-slider>
         </nz-col>
-        <div nz-col nzSpan="4">
-            <nz-input-number [nzMin]="0" [nzMax]="100" [ngStyle]="{ marginLeft: '16px' }"
-                [(ngModel)]="setting.tabBarGutter" (ngModelChange)="onChangeTabBarGutter($event)">
+        <nz-col nzSpan="4">
+            <nz-input-number [nzMin]="0" [nzMax]="100" [ngStyle]="{ marginLeft: '16px' }" [(ngModel)]="setting.tabBarGutter"
+                (ngModelChange)="changeTabBarGutter($event)">
             </nz-input-number>
-        </div>
+        </nz-col>
     </nz-row>
 </div>
 <div>
-    <span>Setting preset tab bar size: </span>
-    <nz-select [(ngModel)]="setting.tabSize" (ngModelChange)="onChangeTabSize($event)">
+    <label class="col-5">Setting preset tab bar size: </label>
+    <nz-select class="col-7 setting" [(ngModel)]="setting.tabSize" (ngModelChange)="changeTabSize($event)">
         <nz-option nzValue="large" nzLabel="Large"></nz-option>
         <nz-option nzValue="small" nzLabel="Small"></nz-option>
         <nz-option nzValue="default" nzLabel="Default"></nz-option>
     </nz-select>
 </div>
 <div>
-    <span>Setting style of tabs: </span>
-    <nz-select [(ngModel)]="setting.tabType" (ngModelChange)="onChangeTabType($event)">
+    <label class="col-5">Setting style of tabs: </label>
+    <nz-select class="col-7 setting" [(ngModel)]="setting.tabType" (ngModelChange)="changeTabType($event)">
         <nz-option nzValue="line" nzLabel="Line"></nz-option>
         <nz-option nzValue="card" nzLabel="Card"></nz-option>
     </nz-select>
 </div>
 <div>
-    <span>Setting hide all tabs: </span>
-    <nz-switch [(ngModel)]="setting.tabHideAll" (ngModelChange)="onChangeHideAll($event)" nzCheckedChildren="Show"
-        nzUnCheckedChildren="Hide"></nz-switch>
+    <label class="col-5">Setting hide all tabs: </label>
+    <nz-switch class="col-7 setting" [(ngModel)]="setting.tabHideAll" (ngModelChange)="changeHideAll($event)"
+        nzCheckedChildren="Show" nzUnCheckedChildren="Hide"></nz-switch>
 </div>
 <div>
-    <span>Setting the placement of the Drawer.: </span>
-    <nz-select [(ngModel)]="setting.drawerPosition" (ngModelChange)="onChangePositionDrawer($event)">
+    <label class="col-5">Setting the placement of the Drawer: </label>
+    <nz-select class="col-7 setting" [(ngModel)]="setting.drawerPosition" (ngModelChange)="changePositionDrawer($event)">
         <nz-option nzValue="top" nzLabel="Top"></nz-option>
         <nz-option nzValue="left" nzLabel="Left"></nz-option>
         <nz-option nzValue="bottom" nzLabel="Bottom"></nz-option>
         <nz-option nzValue="right" nzLabel="Right"></nz-option>
+    </nz-select>
+</div>
+<div>
+    <label class="col-5">Setting the position of pagination: </label>
+    <nz-select class="col-7 setting" [(ngModel)]="setting.paginationPosition" (ngModelChange)="changePositionPagination($event)">
+        <nz-option nzValue="top" nzLabel="Top"></nz-option>
+        <nz-option nzValue="bottom" nzLabel="Bottom"></nz-option>
+    </nz-select>
+</div>
+<div>
+    <label class="col-5">Setting table pagination simple mode: </label>
+    <nz-switch class="col-7 setting" [(ngModel)]="setting.paginationSimple" (ngModelChange)="changePaginationSimple($event)"
+        nzCheckedChildren="Simple" nzUnCheckedChildren="Full"></nz-switch>
+</div>
+<div>
+    <label class="col-5">Setting the size of pagination: </label>
+    <nz-select class="col-7 setting" [(ngModel)]="setting.paginationType" (ngModelChange)="changePaginationType($event)">
+        <nz-option nzValue="default" nzLabel="Default"></nz-option>
+        <nz-option nzValue="small" nzLabel="Small"></nz-option>
     </nz-select>
 </div>

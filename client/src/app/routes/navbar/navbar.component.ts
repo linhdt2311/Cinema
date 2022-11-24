@@ -35,6 +35,9 @@ export class NavbarComponent implements OnInit {
       this.setting.tabType = 'line';
       this.setting.tabHideAll = false;
       this.setting.drawerPosition = 'right';
+      this.setting.paginationPosition = 'bottom';
+      this.setting.paginationSimple = false;
+      this.setting.paginationType = 'default';
       localStorage.setItem('setting', JSON.stringify(this.setting));
   } else {
       this.setting = JSON.parse(localStorage.getItem('setting') || '{}');
@@ -67,7 +70,7 @@ export class NavbarComponent implements OnInit {
   }
 
   refresh(){
-    document.location.href = ""
+    document.location.reload();
   }
 
   open(): void {

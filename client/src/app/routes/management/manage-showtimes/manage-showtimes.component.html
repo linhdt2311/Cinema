@@ -22,7 +22,8 @@
 </div>
 <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="showtimes" [nzShowTotal]="rangeTemplate"
     (nzCurrentPageDataChange)="onCurrentPageDataChange($event)" nzShowQuickJumper [nzScroll]="{ y: '400px' }"
-    [nzPaginationPosition]="'bottom'" [nzBordered]="true">
+    [nzPaginationPosition]="setting.paginationPosition" [nzBordered]="true" [nzPaginationType]="setting.paginationType"
+    [nzSimple]="setting.paginationSimple">
     <ng-template #rangeTemplate let-range="range" let-total>
         {{ range[0] }}-{{ range[1] }} of {{ total }} items
     </ng-template>

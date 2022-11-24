@@ -21,43 +21,62 @@ export class SettingComponent implements OnInit {
       this.setting.tabSize = 'default';
       this.setting.tabType = 'line';
       this.setting.tabHideAll = false;
+      this.setting.drawerPosition = 'right';
+      this.setting.paginationPosition = 'bottom';
+      this.setting.paginationSimple = false;
+      this.setting.paginationType = 'default';
     } else {
       this.setting = JSON.parse(localStorage.getItem('setting') || '{}');
     }
   }
 
-  onChangeSelectTabDefault(ev: any){
+  changeSelectTabDefault(ev: any){
     this.setting.tabSelectedIndex = ev;
     return localStorage.setItem('setting', JSON.stringify(this.setting));
   }
 
-  onChangePositionTab(ev: any){
+  changePositionTab(ev: any){
     this.setting.tabPosition = ev;
     return localStorage.setItem('setting', JSON.stringify(this.setting));
   }
 
-  onChangeTabBarGutter(ev: any){
+  changeTabBarGutter(ev: any){
     this.setting.tabBarGutter = ev;
     return localStorage.setItem('setting', JSON.stringify(this.setting));
   }
 
-  onChangeTabSize(ev: any){
+  changeTabSize(ev: any){
     this.setting.tabSize = ev;
     return localStorage.setItem('setting', JSON.stringify(this.setting));
   }
 
-  onChangeTabType(ev: any){
+  changeTabType(ev: any){
     this.setting.tabType = ev;
     return localStorage.setItem('setting', JSON.stringify(this.setting));
   }
 
-  onChangeHideAll(ev: any){
+  changeHideAll(ev: any){
     this.setting.tabHideAll = ev;
     return localStorage.setItem('setting', JSON.stringify(this.setting));
   }
 
-  onChangePositionDrawer(ev: any){
+  changePositionDrawer(ev: any){
     this.setting.drawerPosition = ev;
+    return localStorage.setItem('setting', JSON.stringify(this.setting));
+  }
+
+  changePositionPagination(ev: any){
+    this.setting.paginationPosition = ev;
+    return localStorage.setItem('setting', JSON.stringify(this.setting));
+  }
+
+  changePaginationSimple(ev: any){
+    this.setting.paginationSimple = ev;
+    return localStorage.setItem('setting', JSON.stringify(this.setting));
+  }
+
+  changePaginationType(ev: any){
+    this.setting.paginationType = ev;
     return localStorage.setItem('setting', JSON.stringify(this.setting));
   }
 }

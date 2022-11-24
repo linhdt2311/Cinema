@@ -1,1 +1,33 @@
-<p>view-and-edit-promotion works!</p>
+<form [formGroup]="form">
+    <nz-form-item>
+        <nz-form-label class="form-nz-form-label col-2">Code</nz-form-label>
+        <nz-form-control class="col-10">
+            <input class="information" nz-input nzPlaceHolder="Enter code" formControlName="code" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label class="form-nz-form-label col-2">Discount</nz-form-label>
+        <nz-form-control class="col-10">
+            <nz-input-number-group nzAddOnAfter="VNĐ" class="information">
+                <nz-input-number class="information" nzPlaceHolder="Enter price discount" formControlName="discount"
+                    [ngModel]="5000" [nzMin]="1000" [nzMax]="60000" [nzStep]="1000"></nz-input-number>
+            </nz-input-number-group>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label class="form-nz-form-label col-2">Start Date</nz-form-label>
+        <nz-form-control class="col-10">
+            <nz-date-picker class="information" formControlName="startDate"></nz-date-picker>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label class="form-nz-form-label col-2">End Date</nz-form-label>
+        <nz-form-control class="col-10">
+            <nz-date-picker class="information" formControlName="endDate"></nz-date-picker>
+        </nz-form-control>
+    </nz-form-item>
+    <div *ngIf="isEdit" class="footer">
+        <button nz-button nzType="primary" (click)="submit()">
+            <i class="fa-solid fa-check-double" style="margin-right: 5px;"></i>Submit</button>
+    </div>
+</form>

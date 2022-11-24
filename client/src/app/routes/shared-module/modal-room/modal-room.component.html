@@ -57,7 +57,7 @@
     <div class="anotate" style="background-color: #0061ff;"></div>
     <span class="text-anotate">Choose</span>
   </div>
-  <div nz-col [nzSpan]="9">
+  <div nz-col [nzSpan]="9" style="text-align: right;">
     <button nz-button nzType="default" style="width: 145.59px;" (click)="handleCancel()">
       <i class="fa-sharp fa-solid fa-rotate-left" style="margin-right: 0.3rem;"></i>Cancel
     </button>
@@ -67,7 +67,7 @@
     </button>
   </div>
 </div>
-<nz-modal [nzStyle]="{ width: '500px' }" [(nzVisible)]="showFood" [nzTitle]="modalTitle" [nzContent]="modalContent"
+<nz-modal [nzStyle]="{ top: '2.75rem', width: '500px' }" [(nzVisible)]="showFood" [nzTitle]="modalTitle" [nzContent]="modalContent"
   [nzFooter]="null" (nzOnCancel)="handleCancel()">
   <ng-template #modalTitle><span>Book Tickets</span></ng-template>
   <ng-template #modalContent>

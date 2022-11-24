@@ -8,12 +8,12 @@
             <i class="fa-solid fa-magnifying-glass"></i>
         </ng-template>
         <nz-range-picker class="m-2" nzFormat="YYYY-MM-dd"></nz-range-picker>
-        <nz-select class="m-2" [ngModel]="'.com'">
-            <nz-option nzLabel=".com" nzValue=".com"></nz-option>
-            <nz-option nzLabel=".jp" nzValue=".jp"></nz-option>
-            <nz-option nzLabel=".cn" nzValue=".cn"></nz-option>
-            <nz-option nzLabel=".org" nzValue=".org"></nz-option>
-        </nz-select>
+        <nz-input-number-group nzAddOnBefore="From">
+            <nz-input-number nz-input nzPlaceHolder="Point..."></nz-input-number>
+        </nz-input-number-group>
+        <nz-input-number-group nzAddOnBefore="To">
+            <nz-input-number nz-input nzPlaceHolder="Point..."></nz-input-number>
+        </nz-input-number-group>
         <button nz-button class="m-2" nzType="primary">
             <i class="fa-solid fa-arrows-rotate" style="margin-right: 5px;"></i>
             Refresh

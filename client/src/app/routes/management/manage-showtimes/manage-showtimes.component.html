@@ -7,12 +7,15 @@
         <ng-template #addOnBeforeTemplate>
             <i class="fa-solid fa-magnifying-glass"></i>
         </ng-template>
-        <nz-range-picker class="m-2" nzFormat="YYYY-MM-dd"></nz-range-picker>
-        <nz-select class="m-2" [ngModel]="'.com'">
-            <nz-option nzLabel=".com" nzValue=".com"></nz-option>
-            <nz-option nzLabel=".jp" nzValue=".jp"></nz-option>
-            <nz-option nzLabel=".cn" nzValue=".cn"></nz-option>
-            <nz-option nzLabel=".org" nzValue=".org"></nz-option>
+        <nz-range-picker nzShowTime class="m-2" nzFormat="YYYY-MM-dd"></nz-range-picker>
+        <nz-select class="m-2" [ngModel]="'2D'">
+            <nz-option nzLabel="IMAX" nzValue="IMAX"></nz-option>
+            <nz-option nzLabel="2D" nzValue="2D"></nz-option>
+            <nz-option nzLabel="3D" nzValue="3D"></nz-option>
+            <nz-option nzLabel="4D" nzValue="4D"></nz-option>
+        </nz-select>
+        <nz-select class="m-2" style="width: 75px;">
+            <nz-option *ngFor="let cinema of cinemas" [nzLabel]="cinema.name" [nzValue]="cinema.id"></nz-option>
         </nz-select>
         <button nz-button class="m-2" nzType="primary">
             <i class="fa-solid fa-arrows-rotate" style="margin-right: 5px;"></i>

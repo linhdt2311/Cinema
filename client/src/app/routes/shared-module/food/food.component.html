@@ -5,7 +5,7 @@
     <span style="font-weight: bold;" *ngIf="booking[booking.length-1] == book">[{{ book.seat }}]</span>
   </span>
 </div>
-<div style="text-align: center; padding: 1rem; border-top: 0.5px solid rgb(178, 178, 178);">
+<div style="text-align: center; padding: 1rem; border-top: 0.5px solid rgb(178, 178, 178); padding-bottom: 0;">
   <div>Promotion:
     <input style="width: 15rem" nz-input placeholder="Enter code discount" [ngModel]="" id="codePromotion" />
     <button *ngIf="isPromotion == false" nz-button nzType="default" nzSize="small" style="height: 32px; width: 75px;"
@@ -67,4 +67,6 @@
   </table>
 </div>
 <hr />
-<button nz-button nzType="primary" style="width: 145.59px;" (click)="ok()" [nzLoading]="isLoading">OK</button>
+<div style="text-align: center;">
+  <button nz-button nzType="primary" style="width: 145.59px;" (click)="ok()" [nzLoading]="isLoading">OK</button>
+</div>

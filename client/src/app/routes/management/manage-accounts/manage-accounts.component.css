@@ -24,6 +24,11 @@
     margin: 0 25px;
 }
 
+nz-input-number-group{
+    width: 10rem; 
+    margin-top: 8px;
+}
+
 .btn_edit {
     width: 100px;
     height: 32px;

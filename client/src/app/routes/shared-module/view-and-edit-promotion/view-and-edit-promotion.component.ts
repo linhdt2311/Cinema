@@ -22,6 +22,7 @@ export class ViewAndEditPromotionComponent implements OnInit {
     user: User;
     setting: Setting;
     form!: FormGroup;
+    warningstr: string = '';
     constructor(
       private fb: FormBuilder,
       private promotionService: PromotionService,
@@ -72,10 +73,18 @@ export class ViewAndEditPromotionComponent implements OnInit {
           this.promotions = response
         })
     }
+
+    warning(){
+      if(new Date(this.form.value.endDate) < new Date()){
+        this.warningstr = '* This time is unexpired';
+      }
+    }
   
     submit() {
       this.isLoading = true;
       this.form.get('creatorUserId')?.setValue(this.user.id);
+      this.form.get('startDate')?.setValue(this.datepipe.transform(this.form.value.startDate, 'YYYY-MM-dd'));
+      this.form.get('endDate')?.setValue(this.datepipe.transform(this.form.value.endDate, 'YYYY-MM-dd'));
       for (const i in this.form.controls) {
         this.form.controls[i].markAsDirty();
         this.form.controls[i].updateValueAndValidity();

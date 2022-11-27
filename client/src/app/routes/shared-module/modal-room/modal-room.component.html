@@ -61,26 +61,20 @@
     <button nz-button nzType="default" style="width: 145.59px;" (click)="handleCancel()">
       <i class="fa-sharp fa-solid fa-rotate-left" style="margin-right: 0.3rem;"></i>Cancel
     </button>
-    <button nz-button nzType="primary" style="width: 145.59px;" (click)="handleOk()" [disabled]="this.booking.length === 0"
-      [nzLoading]="isLoading">
+    <button nz-button nzType="primary" style="width: 145.59px;" (click)="handleOk()"
+      [disabled]="this.booking.length === 0" [nzLoading]="isLoading">
       <i class="fa-solid fa-user-check" style="margin-right: 0.3rem;"></i>Continue
     </button>
   </div>
 </div>
-<nz-modal [nzStyle]="{ top: '2.75rem', width: '500px' }" [(nzVisible)]="showFood" [nzTitle]="modalTitle" [nzContent]="modalContent"
-  [nzFooter]="null" (nzOnCancel)="handleCancel()">
-  <ng-template #modalTitle><span>Book Tickets</span></ng-template>
-  <ng-template #modalContent>
-    <app-food #modalFood (cancel)="close()" (submit)="foodSubmit()" [createDate]="createDate"
-      [booking]="booking" [cinemaId]="cinemaId" [money]="money"></app-food>
-  </ng-template>
-</nz-modal>
+<app-food #modalFood (cancel)="close()" (submit)="foodSubmit()" [createDate]="createDate" [booking]="booking"
+  [cinemaId]="cinemaId" [money]="money" [isVisible]="showFood"></app-food>
 <nz-modal [nzStyle]="{ width: '20rem' }" [(nzVisible)]="showLogin" [nzTitle]="modalTitle" [nzContent]="modalContent"
-    [nzFooter]="null" (nzOnCancel)="handleCancel()" style="width: 1100px;">
-    <ng-template #modalTitle>
-        <div style="text-align: center;">Login</div>
-    </ng-template>
-    <ng-template #modalContent>
-      <app-login #modalLogin (cancel)="close()" (submit)="loginSubmit()"></app-login>
-    </ng-template>
+  [nzFooter]="null" (nzOnCancel)="close()" style="width: 1100px;">
+  <ng-template #modalTitle>
+    <div style="text-align: center;">Login</div>
+  </ng-template>
+  <ng-template #modalContent>
+    <app-login #modalLogin (cancel)="close()" (submit)="loginSubmit()"></app-login>
+  </ng-template>
 </nz-modal>

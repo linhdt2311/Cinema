@@ -10,7 +10,7 @@
     <nz-form-item>
         <nz-form-label class="form-nz-form-label col-2">Date</nz-form-label>
         <nz-form-control nzErrorTip="Please input movie show date!" class="col-10">
-            <nz-date-picker class="information" formControlName="timeStart" nzFormat="yyyy-MM-dd">
+            <nz-date-picker class="information" nzShowTime formControlName="timeStart" nzFormat="yyyy-MM-dd HH:mm"  (ngModelChange)="checkDate(form.value.timeStart, form.value.roomId)">
             </nz-date-picker>
         </nz-form-control>
     </nz-form-item>
@@ -28,7 +28,7 @@
         <nz-form-label class="form-nz-form-label col-2">Room</nz-form-label>
         <nz-form-control nzErrorTip="Please input room!" class="col-10">
             <nz-select class="information" [(ngModel)]="form.value.roomId" nzPlaceHolder="Enter room"
-                formControlName="roomId" (ngModelChange)="changeRoom()">
+                formControlName="roomId" (ngModelChange)="changeRoom(); checkDate(form.value.timeStart, form.value.roomId)">
                 <nz-option [nzValue]="room.id" [nzLabel]="room.name" *ngFor="let room of roomsFilter">
                 </nz-option>
             </nz-select>
@@ -41,17 +41,14 @@
                 formControlName="formatMovieScreen" />
         </nz-form-control>
     </nz-form-item>
-    <nz-form-item>
-        <nz-form-label class="form-nz-form-label col-2">Time Start</nz-form-label>
-        <nz-form-control nzErrorTip="Please input showtime!" class="col-10 information">
-            <button nz-button ngModel="10:00" disabled>10:00</button>
-            <button nz-button ngModel="13:00" disabled>13:00</button>
-            <button nz-button ngModel="16:00" disabled>16:00</button>
-            <button nz-button ngModel="19:00" disabled>19:00</button>
-            <button nz-button ngModel="22:00" disabled>22:00</button>
-            <button nz-button ngModel="01:00" disabled>01:00</button>
-        </nz-form-control>
-    </nz-form-item>
+    <div>
+        <span>All showtimes of the day: </span>
+        </div>
+        <nz-card style="background-color: white;">
+            <div nz-card-grid *ngFor="let s of filterTime" style="width: 25%; text-align: center; background-color: white;">
+                {{ s.timeStart | date: 'HH:mm' }} - {{ calc(s.timeStart, form.value.movieId) | date: 'HH:mm' }}
+            </div>
+          </nz-card>
     <div *ngIf="isEdit" class="footer">
         <button nz-button nzType="primary" (click)="submit()">
             <i class="fa-solid fa-check-double" style="margin-right: 5px;"></i>Submit</button>

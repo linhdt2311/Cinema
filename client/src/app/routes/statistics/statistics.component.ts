@@ -22,6 +22,7 @@ export class StatisticsComponent implements OnInit {
   showtimes: any[] = [];
   accounts: any[] = [];
   tickets: any[] = [];
+  countMoneyBill: number = 0;
   constructor(
     private billService: BillService,
     private ticketService: TicketService,
@@ -33,7 +34,8 @@ export class StatisticsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.billData();
+    this.billData();
+    
     // this.ticketData();
     // this.foodData();
     // this.billDetailData();
@@ -48,7 +50,8 @@ export class StatisticsComponent implements OnInit {
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         if (response) {
-          this.bills = response
+          this.bills = response;
+          this.bills.forEach(b => {this.countMoneyBill += b.cost;});
         }
       })
   }

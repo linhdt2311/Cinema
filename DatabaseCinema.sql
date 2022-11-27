@@ -341,11 +341,8 @@ go
 create proc GetViewBill
 @CustomerId uniqueidentifier, @FoodId uniqueidentifier, @TicketId uniqueidentifier, @Cost int
 as
-	select b.Id, b.AccountId as CustomerId, f.Id as FoodId, d.Quantity as FoodNum, t.Id as TicketId, b.Cost from Bill b join BillDetail d on b.Id = d.BillId
-	join Food f on f.Id = d.FoodId join Ticket t on b.Id = t.BillId where b.IsDeleted <> 1 
+	select * from Bill b where b.IsDeleted <> 1 
 		and (isnull(@CustomerId, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or b.AccountId = @CustomerId)
-		and (isnull(@FoodId, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or f.Id = @FoodId)
-		and (isnull(@TicketId, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or t.Id = @TicketId)
 		and (isnull(@Cost, '') = '' or upper(b.Cost) like '%' + upper(@Cost) + '%')
         option (recompile)
 go

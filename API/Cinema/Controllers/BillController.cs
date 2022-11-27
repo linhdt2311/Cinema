@@ -19,15 +19,13 @@ namespace Cinema.Controllers
     public class BillController : DBConnect
     {
         [HttpGet("getall")]
-        public List<GetAllBillDto> GetAllBill(Guid? customerId, Guid? foodId, Guid? ticketId, int? cost)
+        public List<GetAllBillDto> GetAllBill(Guid? customerId, int? cost)
         {
             conn.Open();
             string id = string.Format("00000000-0000-0000-0000-000000000000");
             if (customerId == null) customerId = new Guid(id);
-            if (foodId == null) foodId = new Guid(id);
-            if (ticketId == null) ticketId = new Guid(id);
 
-            string sql = string.Format("exec GetViewBill @CustomerId = '" + customerId + "', @FoodId = '" + foodId + "', @TicketId = '" + ticketId + "', @Cost = '" + cost + "'");
+            string sql = string.Format("exec GetViewBill @CustomerId = '" + customerId + "', @Cost = '" + cost + "'");
 
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             DataTable data = new DataTable();

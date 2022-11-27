@@ -7,8 +7,8 @@ namespace Cinema.DTO.DtoPromotion
         public Guid LastModifierUserId { get; set; }
         public Guid Id { get; set; }
         public string Code { get; set; }
-        public Guid Discount { get; set; }
-        public Guid StartDate { get; set; }
-        public Guid EndDate { get; set; }
+        public int Discount { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
     }
 }

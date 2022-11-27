@@ -26,6 +26,7 @@ import en from '@angular/common/locales/en';
 import { ViewAndEditShowtimesComponent } from './view-and-edit-showtimes/view-and-edit-showtimes.component';
 import { ViewAndEditCustomerComponent } from './view-and-edit-customer/view-and-edit-customer.component';
 import { ViewAndEditPromotionComponent } from './view-and-edit-promotion/view-and-edit-promotion.component';
+import { NzCardModule } from 'ng-zorro-antd/card';
 registerLocaleData(en);
 
 @NgModule({
@@ -60,6 +61,7 @@ registerLocaleData(en);
     NzDatePickerModule,
     NzSpaceModule,
     NzInputModule,
+    NzCardModule,
   ],
   exports:[
     ModalRoomComponent,

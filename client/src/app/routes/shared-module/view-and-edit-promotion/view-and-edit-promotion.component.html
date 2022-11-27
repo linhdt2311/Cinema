@@ -23,9 +23,10 @@
     <nz-form-item>
         <nz-form-label class="form-nz-form-label col-2">End Date</nz-form-label>
         <nz-form-control class="col-10">
-            <nz-date-picker class="information" formControlName="endDate"></nz-date-picker>
+            <nz-date-picker class="information" formControlName="endDate" (ngModelChange)="warning()"></nz-date-picker>
         </nz-form-control>
     </nz-form-item>
+    <div style="color: red;">{{ warningstr }}</div>
     <div *ngIf="isEdit" class="footer">
         <button nz-button nzType="primary" (click)="submit()">
             <i class="fa-solid fa-check-double" style="margin-right: 5px;"></i>Submit</button>

@@ -30,19 +30,12 @@ export class ViewAndEditShowtimesComponent implements OnInit {
   user: User;
   setting: Setting;
   form!: FormGroup;
+  filterTime: any[] = [];
   formatMovieScreen: any[] = [
     { value: FormatMovieScreen.IMAX, viewValue: 'IMAX' },
     { value: FormatMovieScreen.TwoD, viewValue: '2D' },
     { value: FormatMovieScreen.ThreeD, viewValue: '3D' },
     { value: FormatMovieScreen.FourD, viewValue: '4D' }];
-  date: any[] = [{ value: new Date() },
-  { value: new Date(new Date().getTime() + 24 * 60 * 60 * 1000) },
-  { value: new Date(new Date().getTime() + 24 * 60 * 60 * 1000 * 2) },
-  { value: new Date(new Date().getTime() + 24 * 60 * 60 * 1000 * 3) },
-  { value: new Date(new Date().getTime() + 24 * 60 * 60 * 1000 * 4) },
-  { value: new Date(new Date().getTime() + 24 * 60 * 60 * 1000 * 5) },
-  { value: new Date(new Date().getTime() + 24 * 60 * 60 * 1000 * 6) },
-  { value: new Date(new Date().getTime() + 24 * 60 * 60 * 1000 * 7) }];
   constructor(
     private fb: FormBuilder,
     private showtimesService: ShowtimesService,
@@ -153,16 +146,19 @@ export class ViewAndEditShowtimesComponent implements OnInit {
     return this.roomsFilter;
   }
 
-  checkDate(date: Date, room: any) {
-    const filter = this.showtimes.filter(s => this.datepipe.transform(s.timeStart, 'YYYY-MM-dd') === this.datepipe.transform(date, 'YYYY-MM-dd') && s.roomId === room);
-    filter.filter(s => 
-      this.datepipe.transform(s.timeStart, 'HH:mm') === '10:00'
-      || this.datepipe.transform(s.timeStart, 'HH:mm') === '13:00'
-      || this.datepipe.transform(s.timeStart, 'HH:mm') === '16:00'
-      || this.datepipe.transform(s.timeStart, 'HH:mm') === '19:00'
-      || this.datepipe.transform(s.timeStart, 'HH:mm') === '22:00'
-      || this.datepipe.transform(s.timeStart, 'HH:mm') === '01:00'
-    );
+  checkDate(date?: Date, room?: any) {
+    if (room === undefined) {
+      this.filterTime = this.showtimes.filter(s => this.datepipe.transform(s.timeStart, 'YYYY-MM-dd') == this.datepipe.transform(date, 'YYYY-MM-dd'));
+    } else if (date === null) {
+      this.filterTime = this.showtimes.filter(s => s.roomId == room);
+    } else {
+      this.filterTime = this.showtimes.filter(s => this.datepipe.transform(s.timeStart, 'YYYY-MM-dd') == this.datepipe.transform(date, 'YYYY-MM-dd') && s.roomId == room)
+    }
+  }
+
+  calc(time: any, movieId: any){
+    const movieTime = this.movies.find(m => m.id == movieId)?.time;
+    return Date.parse(time) + movieTime * 60000;
   }
 
   submit() {

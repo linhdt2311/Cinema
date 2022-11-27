@@ -20,7 +20,6 @@ namespace Cinema.Controllers
         {
             conn.Open();
             string sql = string.Format("select * from GetAllPromotion");
-
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             DataTable data = new DataTable();
             SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
@@ -38,7 +37,7 @@ namespace Cinema.Controllers
         public bool CreatePromotion(CreatePromotionDto input)
         {
             conn.Open();
-            string sql = string.Format("exec CreatePromotion @CreatorUserId = '" + input.CreatorUserId + "', @Code = '" + input.Code + "', @Discount = '" + input.Discount + "', @StartDay = '" + input.StartDate + "', @EndDay = '" + input.EndDate + "'");
+            string sql = string.Format("exec CreatePromotion @CreatorUserId = '" + input.CreatorUserId + "', @Code = '" + input.Code + "', @Discount = '" + input.Discount + "', @StartDate = '" + input.StartDate.ToString("yyyy-MM-dd") + "', @EndDate = '" + input.EndDate.ToString("yyyy-MM-dd") + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();
@@ -48,7 +47,7 @@ namespace Cinema.Controllers
         public bool UpdatePromotion(UpdatePromotionDto input)
         {
             conn.Open();
-            string sql = string.Format("exec UpdatePromotion @LastModifierUserId = '" + input.LastModifierUserId + "', @Id = '" + input.Id + "', @Code = '" + input.Code + "', @Discount = '" + input.Discount + "', @StartDay = '" + input.StartDate + "', @EndDay = '" + input.EndDate + "'");
+            string sql = string.Format("exec UpdatePromotion @LastModifierUserId = '" + input.LastModifierUserId + "', @Id = '" + input.Id + "', @Code = '" + input.Code + "', @Discount = '" + input.Discount + "', @StartDate = '" + input.StartDate.ToString("yyyy-MM-dd") + "', @EndDate = '" + input.EndDate.ToString("yyyy-MM-dd") + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();

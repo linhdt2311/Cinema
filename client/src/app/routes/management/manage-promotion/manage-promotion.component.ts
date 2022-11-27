@@ -52,7 +52,7 @@ export class ManagePromotionComponent implements OnInit {
 
   checkStatus(endDate: Date){
     if(new Date(endDate) > new Date()) {
-      return 'Unexpiry';
+      return 'Unexpired';
     } else {
       return 'Expired';
     }

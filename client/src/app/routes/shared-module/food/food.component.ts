@@ -45,13 +45,13 @@ export class FoodComponent implements OnInit {
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('user') || '{}');
     this.foodData();
-    this.money;
-    this.total = this.money
   }
-
-  ngOnChanges(){
+  
+  ngOnChanges() {
     if (this.createDate !== undefined) {
+      this.money;
       this.billData();
+      this.total = this.money
     }
   }
 
@@ -97,7 +97,7 @@ export class FoodComponent implements OnInit {
 
   ok() {
     for (let i = 0; i < this.booking.length; i++) {
-    this.isLoading = true;
+      this.isLoading = true;
       const payload = {
         billId: this.billId,
         creatorUserId: this.user.id,
@@ -107,13 +107,13 @@ export class FoodComponent implements OnInit {
       }
       this.ticketService
         .createTicket(payload)
-        .pipe(catchError((err) => of(err)),finalize(() => 
-        setTimeout(() => {this.isLoading = false}, 1000)))
+        .pipe(catchError((err) => of(err)), finalize(() =>
+          setTimeout(() => { this.isLoading = false }, 1000)))
         .subscribe((response) => {
           if (response) {
-              console.log("Add ticket success" + payload.seatId)
+            console.log("Add ticket success" + payload.seatId)
           } else {
-              console.log("Add ticket fail" + payload.seatId)
+            console.log("Add ticket fail" + payload.seatId)
           }
         })
     }
@@ -127,13 +127,13 @@ export class FoodComponent implements OnInit {
       }
       this.billService
         .createBillDetail(payload)
-        .pipe(catchError((err) => of(err)),finalize(() => 
-        setTimeout(() => {this.isLoading = false}, 1000)))
+        .pipe(catchError((err) => of(err)), finalize(() =>
+          setTimeout(() => { this.isLoading = false }, 1000)))
         .subscribe((response) => {
           if (response) {
-              console.log("Add food success" + payload.foodId)
+            console.log("Add food success" + payload.foodId)
           } else {
-              console.log("Add food fail" + payload.foodId)
+            console.log("Add food fail" + payload.foodId)
           }
         })
     }
@@ -145,16 +145,16 @@ export class FoodComponent implements OnInit {
     }
     this.billService
       .updateBill(payload)
-      .pipe(catchError((err) => of(err)),finalize(() => 
-      setTimeout(() => {
+      .pipe(catchError((err) => of(err)), finalize(() =>
+        setTimeout(() => {
           this.isLoading = false
         }, 1000)
       ))
       .subscribe((response) => {
         if (response) {
-            this.notification.create('success', 'Successfully!', '');
+          this.notification.create('success', 'Successfully!', '');
         } else {
-            this.notification.create('error', 'Failed!', '');
+          this.notification.create('error', 'Failed!', '');
         }
       })
     this.billDetail = [];
@@ -236,12 +236,18 @@ export class FoodComponent implements OnInit {
               this.isPromotion = true;
               this.isLoading = false;
             }, 1000);
+          } else {
+            setTimeout(() => {
+              this.isLoading = false;
+              this.isPromotion = false;
+              this.warningCode = "* The discount code is incorrect or has expired!*"
+            }, 1000);
           }
         } else {
           setTimeout(() => {
             this.isLoading = false;
             this.isPromotion = false;
-            this.warningCode = "*The discount code is incorrect or has expired!*"
+            this.warningCode = "* The discount code is incorrect or has expired!*"
           }, 1000);
         }
       })

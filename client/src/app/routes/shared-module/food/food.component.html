@@ -1,72 +1,78 @@
-<div style="text-align: center;">
-  <span>Selected seat: </span>
-  <span *ngFor="let book of booking">
-    <span style="font-weight: bold;" *ngIf="booking[booking.length-1] !== book">[{{ book.seat }}], </span>
-    <span style="font-weight: bold;" *ngIf="booking[booking.length-1] == book">[{{ book.seat }}]</span>
-  </span>
-</div>
-<div style="text-align: center; padding: 1rem; border-top: 0.5px solid rgb(178, 178, 178); padding-bottom: 0;">
-  <div>Promotion:
-    <input style="width: 15rem" nz-input placeholder="Enter code discount" [ngModel]="" id="codePromotion" />
-    <button *ngIf="isPromotion == false" nz-button nzType="default" nzSize="small" style="height: 32px; width: 75px;"
-      (click)="checkPromotion()" [nzLoading]="isLoading">Check</button>
-    <button *ngIf="isPromotion == true" nz-button nzType="primary" nzSize="small" style="height: 32px; width: 75px;"><i
-        class="fa-solid fa-check"></i></button><br>
-    <span *ngIf="isPromotion == false" style="font-weight: normal; color: red;">{{ warningCode }}</span>
-  </div>
-</div>
-<hr />
-<div>Food and drink</div>
-<table>
-  <thead>
-    <tr>
-      <th style="width: 10rem; text-align: center;">Food</th>
-      <th style="width: 8rem; text-align: center; cursor: pointer;">
-        <span style="font-weight: bold;" (click)="onFilterSize(null)">Size </span>
-        <i class="fa-solid fa-caret-left" (click)="creaseSize('dec')"></i>
-        <span style="font-weight: normal; cursor: pointer;" *ngIf="size == 1"> S </span>
-        <span style="font-weight: normal; cursor: pointer;" *ngIf="size == 2"> M </span>
-        <span style="font-weight: normal; cursor: pointer;" *ngIf="size == 3"> L </span>
-        <i class="fa-solid fa-caret-right" (click)="creaseSize('inc')"></i>
-      </th>
-      <th style="width: 8rem; text-align: center;">Price</th>
-      <th style="width: 8rem; text-align: center;">Quantity</th>
-      <th style="width: 30px;"></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let food of foods">
-      <td style="width: 10rem;">
-        <!-- <img src="{{ f }}" alt=""> -->
-        {{ food.name }}
-      </td>
-      <td style="width: 8rem; text-align: center;">{{ food.size }}</td>
-      <td style="width: 8rem; text-align: center;">{{ changeToVND(food.price) }}</td>
-      <td style="width: 8rem; text-align: center;">
-        <nz-input-number nzId="{{ food.id }}" [ngModel]="0" [nzMin]="0" [nzMax]="10"
-          (ngModelChange)="addBill($event, food.id)"></nz-input-number>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<hr />
-<div style="width: 100%; display: inline-block;">
-  <table style="width: 250px; float: right;">
-    <tr style="border: none;">
-      <td width="130px">Total:</td>
-      <td style="width: 100px; text-align: right;">{{ changeToVND(money) }}</td>
-    </tr>
-    <tr style="border: none;">
-      <td>Amount is reduced:</td>
-      <td style="text-align: right;">{{ changeToVND(discount) }}</td>
-    </tr>
-    <tr style="border: none;">
-      <td style="font-weight: bold;">Amount to be paid: </td>
-      <td style="text-align: right; font-weight: bold; color: red;">{{ changeToVND(total) }}</td>
-    </tr>
-  </table>
-</div>
-<hr />
-<div style="text-align: center;">
-  <button nz-button nzType="primary" style="width: 145.59px;" (click)="ok()" [nzLoading]="isLoading">OK</button>
-</div>
+<nz-modal [nzStyle]="{ top: '2.75rem', width: '500px' }" [(nzVisible)]="isVisible" [nzTitle]="modalTitle"
+  [nzContent]="modalContent" [nzFooter]="null" (nzOnCancel)="handleCancel()">
+  <ng-template #modalTitle><span>Book Tickets</span></ng-template>
+  <ng-template #modalContent>
+    <div style="text-align: center;">
+      <span>Selected seat: </span>
+      <span *ngFor="let book of booking">
+        <span style="font-weight: bold;" *ngIf="booking[booking.length-1] !== book">[{{ book.seat }}], </span>
+        <span style="font-weight: bold;" *ngIf="booking[booking.length-1] == book">[{{ book.seat }}]</span>
+      </span>
+    </div>
+    <div style="text-align: center; padding: 1rem; border-top: 0.5px solid rgb(178, 178, 178); padding-bottom: 0;">
+      <div>Promotion:
+        <input style="width: 15rem" nz-input placeholder="Enter code discount" [ngModel]="" id="codePromotion" />
+        <button *ngIf="isPromotion == false" nz-button nzType="default" nzSize="small"
+          style="height: 32px; width: 75px;" (click)="checkPromotion()" [nzLoading]="isLoading">Check</button>
+        <button *ngIf="isPromotion == true" nz-button nzType="primary" nzSize="small"
+          style="height: 32px; width: 75px;"><i class="fa-solid fa-check"></i></button><br>
+        <span *ngIf="isPromotion == false" style="font-weight: normal; color: red;">{{ warningCode }}</span>
+      </div>
+    </div>
+    <hr />
+    <div>Food and drink</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 10rem; text-align: center;">Food</th>
+          <th style="width: 8rem; text-align: center; cursor: pointer;">
+            <span style="font-weight: bold;" (click)="onFilterSize(null)">Size </span>
+            <i class="fa-solid fa-caret-left" (click)="creaseSize('dec')"></i>
+            <span style="font-weight: normal; cursor: pointer;" *ngIf="size == 1"> S </span>
+            <span style="font-weight: normal; cursor: pointer;" *ngIf="size == 2"> M </span>
+            <span style="font-weight: normal; cursor: pointer;" *ngIf="size == 3"> L </span>
+            <i class="fa-solid fa-caret-right" (click)="creaseSize('inc')"></i>
+          </th>
+          <th style="width: 8rem; text-align: center;">Price</th>
+          <th style="width: 8rem; text-align: center;">Quantity</th>
+          <th style="width: 30px;"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let food of foods">
+          <td style="width: 10rem;">
+            <!-- <img src="{{ f }}" alt=""> -->
+            {{ food.name }}
+          </td>
+          <td style="width: 8rem; text-align: center;">{{ food.size }}</td>
+          <td style="width: 8rem; text-align: center;">{{ changeToVND(food.price) }}</td>
+          <td style="width: 8rem; text-align: center;">
+            <nz-input-number nzId="{{ food.id }}" [ngModel]="0" [nzMin]="0" [nzMax]="10"
+              (ngModelChange)="addBill($event, food.id)"></nz-input-number>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <div style="width: 100%; display: inline-block;">
+      <table style="width: 250px; float: right;">
+        <tr style="border: none;">
+          <td width="130px">Total:</td>
+          <td style="width: 100px; text-align: right;">{{ changeToVND(money) }}</td>
+        </tr>
+        <tr style="border: none;">
+          <td>Amount is reduced:</td>
+          <td style="text-align: right;">{{ changeToVND(discount) }}</td>
+        </tr>
+        <tr style="border: none;">
+          <td style="font-weight: bold;">Amount to be paid: </td>
+          <td style="text-align: right; font-weight: bold; color: red;">{{ changeToVND(total) }}</td>
+        </tr>
+      </table>
+    </div>
+    <hr />
+    <div style="text-align: center;">
+      <button nz-button nzType="primary" style="width: 145.59px;" (click)="ok()" [nzLoading]="isLoading">OK</button>
+    </div>
+  </ng-template>
+</nz-modal>

@@ -8,7 +8,7 @@
             <i class="fa-solid fa-magnifying-glass"></i>
         </ng-template>
         <nz-input-number-group nzAddOnAfter="VNĐ" class="m-2" style="width: 20rem">
-            <nz-input-number nzPlaceHolder="Search discount..."></nz-input-number>
+            <nz-input-number nzPlaceHolder="Search discount..." [nzMin]="1000" [nzMax]="60000" [nzStep]="1000"></nz-input-number>
         </nz-input-number-group>
         <nz-range-picker class="m-2" nzFormat="dd-MM-YYYY"></nz-range-picker>
         <button nz-button class="m-2" nzType="primary">

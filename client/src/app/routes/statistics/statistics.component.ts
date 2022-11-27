@@ -7,6 +7,7 @@ import { SeatService } from 'src/app/services/seat.service';
 import { ShowtimesService } from 'src/app/services/showtimes.service';
 import { TicketService } from 'src/app/services/ticket.service';
 import { AccountService } from 'src/app/services/account.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-statistics',
@@ -23,6 +24,7 @@ export class StatisticsComponent implements OnInit {
   accounts: any[] = [];
   tickets: any[] = [];
   countMoneyBill: number = 0;
+  strCountMoneyBill: string;
   constructor(
     private billService: BillService,
     private ticketService: TicketService,
@@ -31,6 +33,7 @@ export class StatisticsComponent implements OnInit {
     private seatService: SeatService,
     private showtimesService: ShowtimesService,
     private accountService: AccountService,
+    private datepipe: DatePipe,
   ) { }
 
   ngOnInit(): void {
@@ -51,8 +54,8 @@ export class StatisticsComponent implements OnInit {
       .subscribe((response) => {
         if (response) {
           this.bills = response;
-          this.bills.forEach(b => {this.countMoneyBill += b.cost;});
-        }
+          this.countMoneyBillForMonth();
+          }
       })
   }
 
@@ -132,4 +135,21 @@ export class StatisticsComponent implements OnInit {
         }
       })
   }
+
+  countMoneyBillForMonth(){
+    this.bills.forEach(b => {
+      if(this.datepipe.transform(b.creationTime, 'MM') == this.datepipe.transform(new Date(), 'MM'))
+      this.countMoneyBill += b.cost;
+    });
+    this.strCountMoneyBill = new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'VND' }).format(this.countMoneyBill);
+  }
+
+  datasets = [
+    {
+      label: 'Traffic',
+      data: [2112, 2343, 2545, 3423, 2365, 1985, 987],
+    },
+  ];
+
+  labels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 }

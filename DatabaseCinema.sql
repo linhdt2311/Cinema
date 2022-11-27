@@ -338,8 +338,8 @@ as
         option (recompile)
 go
 --proc view Bill nếu có tìm kiếm sẽ tìm theo yêu cầu không thì sẽ hiện full
-create proc GetViewBill
-@CustomerId uniqueidentifier, @FoodId uniqueidentifier, @TicketId uniqueidentifier, @Cost int
+create or alter proc GetViewBill
+@CustomerId uniqueidentifier, @Cost int
 as
 	select * from Bill b where b.IsDeleted <> 1 
 		and (isnull(@CustomerId, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or b.AccountId = @CustomerId)

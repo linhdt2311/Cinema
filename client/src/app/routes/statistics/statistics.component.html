@@ -1,28 +1,85 @@
-<div>statistic for the month</div>
-<nz-card>
-    <div nz-card-grid style="width: 25%; text-align: center;">
-        <nz-statistic [nzValue]="strCountMoneyBill" [nzTitle]="'Revenue for the month'"></nz-statistic>
+<nz-card cdkDropList>
+    <div nz-card-grid style="width: 25%; text-align: center;" cdkDrag>
+        <div>Revenue for the month</div>
+        <span nz-typography nzEllipsis style="font-size: 20px; color: #0061ff">
+            <i class="fa-solid fa-sack-dollar"></i>
+            {{ changeToMoney(countMoneyBill) }}
+        </span>
     </div>
-    <div nz-card-grid style="width: 25%; text-align: center;">
-        <nz-statistic [nzValue]="strCountMoneyBill" [nzTitle]="'The best movie of the month'"></nz-statistic>
+    <div nz-card-grid style="width: 25%; text-align: center;" cdkDrag>
+        <div>The best movie of the month</div>
+        <span nz-typography nzEllipsis style="font-size: 20px; color: #07f49e">
+            <i class="fa-solid fa-face-laugh-beam"></i>
+            {{ bestMovie }}
+        </span>
     </div>
-    <div nz-card-grid style="width: 25%; text-align: center;">
-        <nz-statistic [nzValue]="strCountMoneyBill" [nzTitle]="'The Best food of the month'"></nz-statistic>
+    <div nz-card-grid style="width: 25%; text-align: center;" cdkDrag>
+        <div>The Best food of the month</div>
+        <span nz-typography nzEllipsis style="font-size: 20px; color: #0974f1;">
+            <i class="fa-solid fa-up-long"></i>
+            {{ getFoodName(bestFood) }}
+        </span>
     </div>
-    <div nz-card-grid style="width: 25%; text-align: center;">
-        <nz-statistic [nzValue]="strCountMoneyBill" [nzTitle]="'The most crowded theater of the month'"></nz-statistic>
+    <div nz-card-grid style="width: 25%; text-align: center;" cdkDrag>
+        <div>The most crowded theater of the month</div>
+        <span nz-typography nzEllipsis style="font-size: 20px; color: #45caff">
+            <i class="fa-solid fa-thumbs-up"></i>
+            {{ bestCinema }}
+        </span>
     </div>
-    <div nz-card-grid style="width: 25%; text-align: center;">
-        <nz-statistic [nzValue]="strCountMoneyBill" [nzTitle]="'The hottest time in right now'"></nz-statistic>
+    <div nz-card-grid style="width: 25%; text-align: center;" cdkDrag>
+        <div>The hottest time in right now</div>
+        <span nz-typography nzEllipsis style="font-size: 20px; color: red">
+            <i class="fa-solid fa-fire"></i>
+            {{ bestTime }}
+        </span>
     </div>
-    <div nz-card-grid style="width: 25%; text-align: center;">
-        <nz-statistic [nzValue]="strCountMoneyBill" [nzTitle]="'The worst movie of the month'"></nz-statistic>
+    <div nz-card-grid style="width: 25%; text-align: center;" cdkDrag>
+        <div>The worst movie of the month</div>
+        <span nz-typography nzEllipsis style="font-size: 20px; color: #e60b09;">
+            <i class="fa-solid fa-face-sad-tear"></i>
+            {{ worstMovie }}
+        </span>
     </div>
-    <div nz-card-grid style="width: 25%; text-align: center;">
-        <nz-statistic [nzValue]="strCountMoneyBill" [nzTitle]="'The worst food of the month'"></nz-statistic>
+    <div nz-card-grid style="width: 25%; text-align: center;" cdkDrag>
+        <div>The worst food of the month</div>
+        <span nz-typography nzEllipsis style="font-size: 20px; color: #ea5459">
+            <i class="fa-solid fa-down-long"></i>
+            {{ getFoodName(worstFood) }}
+        </span>
     </div>
-    <div nz-card-grid style="width: 25%; text-align: center;">
-        <nz-statistic [nzValue]="strCountMoneyBill" [nzTitle]="'The theaters at least in a month'"></nz-statistic>
+    <div nz-card-grid style="width: 25%; text-align: center;" cdkDrag>
+        <div>The theaters at least in a month</div>
+        <span nz-typography nzEllipsis style="font-size: 20px; color: #ff5858">
+            <i class="fa-solid fa-thumbs-down"></i>
+            {{ worstCinema }}
+        </span>
     </div>
 </nz-card>
-<div>statistic for the year</div>
+<div>
+    <nz-table #rowSelectionTable [nzData]="topCustomer" nzShowPagination="false" style="width: 50%;">
+        <thead>
+            <tr>
+                <th [nzAlign]="'center'" nzWidth="50%">
+                    <i class="fa-solid fa-crown" style="margin-right: 5px;"></i>
+                    Customer
+                </th>
+                <th [nzAlign]="'center'" nzWidth="30%">
+                    <i class="fa-solid fa-sack-dollar" style="margin-right: 5px;"></i>
+                    Amount
+                </th>
+                <th [nzAlign]="'center'" nzWidth="20%">
+                    <i class="fa-solid fa-ranking-star" style="margin-right: 5px;"></i>
+                    Rank
+                </th>
+            </tr>
+        </thead>
+        <tbody cdkDropList (cdkDropListDropped)="drop($event)" style="cursor: pointer;">
+            <tr *ngFor="let data of rowSelectionTable.data" cdkDrag>
+                <td>{{ data.name }}</td>
+                <td [nzAlign]="'center'">{{ changeToMoney(data.count) }}</td>
+                <td [nzAlign]="'center'">{{ getRankCustomer(data.name) }} </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</div>

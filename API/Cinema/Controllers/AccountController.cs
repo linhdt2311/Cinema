@@ -35,6 +35,24 @@ namespace Cinema.Controllers
             conn.Close();
             return accountList.ToList();
         }
+        [HttpGet("gettopcustomer")]
+        public List<GetTop1Dto> GetTopCustomer()
+        {
+            conn.Open();
+            string sql = string.Format("select a.Name, sum(b.Cost) as Count from Account a join Bill b on a.Id = b.AccountId group by a.Name order by Count desc");
+            SqlCommand sqlCommand = new SqlCommand(sql, conn);
+            DataTable data = new DataTable();
+            SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
+            adapter.Fill(data);
+            var list = new List<GetTop1Dto>();
+            foreach (DataRow i in data.Rows)
+            {
+                GetTop1Dto account = new GetTop1Dto(i);
+                list.Add(account);
+            }
+            conn.Close();
+            return list.ToList();
+        }
         [HttpPost("create")]
         public bool CreateAccount(CreateAccountDto input)
         {

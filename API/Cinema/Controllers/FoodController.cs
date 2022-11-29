@@ -7,6 +7,7 @@ using System.Linq;
 using System.Data;
 using Cinema.DTO;
 using System;
+using Cinema.DTO.DtoBill;
 
 namespace Cinema.Controllers
 {
@@ -32,11 +33,33 @@ namespace Cinema.Controllers
             conn.Close();
             return list.ToList();
         }
+
+        [HttpGet("getallbilldetail")]
+        public List<GetAllBillDetailDto> GetAllBillDetail(Guid? foodId, Guid? billId, int? quantity)
+        {
+            conn.Open();
+            string id = string.Format("00000000-0000-0000-0000-000000000000");
+            if (foodId == null) foodId = new Guid(id);
+            if (billId == null) billId = new Guid(id);
+            string sql = string.Format("exec GetAllBillDetail @FoodId = '" + foodId + "', @BillId = '" + billId + "', @Quantity = '" + quantity + "'");
+            SqlCommand sqlCommand = new SqlCommand(sql, conn);
+            DataTable data = new DataTable();
+            SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
+            adapter.Fill(data);
+            var list = new List<GetAllBillDetailDto>();
+            foreach (DataRow i in data.Rows)
+            {
+                GetAllBillDetailDto bill = new GetAllBillDetailDto(i);
+                list.Add(bill);
+            }
+            conn.Close();
+            return list.ToList();
+        }
         [HttpPost("create")]
         public bool Create(CreateFoodDto input)
         {
             conn.Open();
-            string sql = string.Format("exec CreateFood @CreatorUserId = '" + input.CreatorUserId + "', @CinemaId = '" + input.CinemaId + "', @Name = '" + input.Name + "', @Size = '" + input.Size + "', @Price = " + input.Price + "'");
+            string sql = string.Format("exec CreateFood @CreatorUserId = '" + input.CreatorUserId + "', @CinemaId = '" + input.CinemaId + "', @Name = N'" + input.Name + "', @Size = '" + input.Size + "', @Price = " + input.Price + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();
@@ -46,7 +69,7 @@ namespace Cinema.Controllers
         public bool Update(UpdateFoodDto input)
         {
             conn.Open();
-            string sql = string.Format("exec UpdateFood @LastModifierUserId = '" + input.LastModifierUserId + "', @Id = '" + input.Id + "', @CinemaId = '" + input.CinemaId + "', @Name = '" + input.Name + "', @Size = '" + input.Size + "', @Price = '" + input.Price + "'");
+            string sql = string.Format("exec UpdateFood @LastModifierUserId = '" + input.LastModifierUserId + "', @Id = '" + input.Id + "', @CinemaId = '" + input.CinemaId + "', @Name = N'" + input.Name + "', @Size = '" + input.Size + "', @Price = '" + input.Price + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();

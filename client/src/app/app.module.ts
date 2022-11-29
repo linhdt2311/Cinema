@@ -54,6 +54,7 @@ import { ManageFoodDrinkComponent } from './routes/management/manage-food-drink/
 import { ManagePromotionComponent } from './routes/management/manage-promotion/manage-promotion.component';
 import { ManageCinemaComponent } from './routes/management/manage-cinema/manage-cinema.component';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
 registerLocaleData(en);
 @NgModule({
   declarations: [
@@ -112,6 +113,7 @@ registerLocaleData(en);
     NzDrawerModule,
     DragDropModule,
     NzStatisticModule,
+    NzTypographyModule,
   ],
   providers: [
     DatePipe,

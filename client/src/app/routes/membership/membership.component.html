@@ -16,7 +16,7 @@
                         <nz-form-item>
                             <nz-form-control nzErrorTip="Please input your name!">
                                 <nz-input-group>
-                                    <input formControlName="name" nz-input placeholder="Name" />
+                                    <input class="information" formControlName="name" class="information" nz-input placeholder="Name" />
                                 </nz-input-group>
                             </nz-form-control>
                         </nz-form-item>
@@ -29,7 +29,7 @@
                         <nz-form-item>
                             <nz-form-control nzErrorTip="Please input your email!">
                                 <nz-input-group>
-                                    <input formControlName="email" nz-input placeholder="Email" pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"/>
+                                    <input formControlName="email" class="information" nz-input placeholder="Email" pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"/>
                                 </nz-input-group>
                             </nz-form-control>
                         </nz-form-item>
@@ -44,7 +44,7 @@
                         <nz-form-item>
                             <nz-form-control nzErrorTip="Please input your address!">
                                 <nz-input-group>
-                                    <input formControlName="address" nz-input placeholder="Address" />
+                                    <input class="information" formControlName="address" nz-input placeholder="Address" />
                                 </nz-input-group>
                             </nz-form-control>
                         </nz-form-item>
@@ -57,7 +57,7 @@
                         <nz-form-item>
                             <nz-form-control nzErrorTip="Please input your id card!">
                                 <nz-input-group>
-                                    <input formControlName="identityCard" nz-input placeholder="Identity card" />
+                                    <input class="information" formControlName="identityCard" nz-input placeholder="Identity card" />
                                 </nz-input-group>
                             </nz-form-control>
                         </nz-form-item>
@@ -72,7 +72,7 @@
                         <nz-form-item>
                             <nz-form-control nzErrorTip="Please input your birthday!">
                                 <nz-input-group>
-                                    <nz-date-picker
+                                    <nz-date-picker class="information"
                                         formControlName="dob" [nzFormat]="dateFormat"></nz-date-picker>
                                 </nz-input-group>
                             </nz-form-control>
@@ -86,7 +86,7 @@
                         <nz-form-item>
                             <nz-form-control nzErrorTip="Please input your phone!">
                                 <nz-input-group>
-                                    <input formControlName="phone" nz-input placeholder="Phone" pattern="([+]?84|0[3|5|7|8|9])+([0-9]{8})"/>
+                                    <input formControlName="phone" class="information" nz-input placeholder="Phone" pattern="([+]?84|0[3|5|7|8|9])+([0-9]{8})"/>
                                 </nz-input-group>
                             </nz-form-control>
                         </nz-form-item>

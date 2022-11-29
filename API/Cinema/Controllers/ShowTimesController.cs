@@ -39,6 +39,22 @@ namespace Cinema.Controllers
             conn.Close();
             return showtimesList.ToList();
         }
+
+        [HttpGet("getthebesttime")]
+        public GetTop1Dto GetTheBestTime()
+        {
+            conn.Open();
+            string sql = string.Format("select top 1 convert(varchar, st.TimeStart, 0) as Name, count(convert(varchar, st.TimeStart, 0)) as Count " +
+                "from Ticket t join Seat s on t.SeatId = s.Id join Showtimes st on st.Id = s.ShowtimesId " +
+                "where t.IsDeleted <> 1 group by convert(varchar, st.TimeStart, 0) order by Count desc");
+            SqlCommand sqlCommand = new SqlCommand(sql, conn);
+            DataTable data = new DataTable();
+            SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
+            adapter.Fill(data);
+            if (data.Rows.Count > 0)
+                return new GetTop1Dto(data.Rows[0]);
+            return null;
+        }
         [HttpPost("create")]
         public bool CreateShowTime(CreateShowtimesDto input)
         {

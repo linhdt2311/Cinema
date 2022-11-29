@@ -24,6 +24,9 @@ export class ShowtimesService {
       return this.http.get(this.baseUrl + '/getall');
     }
   }
+  getthebesttime():Observable<any>{
+    return this.http.get(this.baseUrl + '/getthebesttime');
+  }
   createShowtimes(payload: any): Observable<any> {
     return this.http.post(this.baseUrl + '/create', payload);
   }

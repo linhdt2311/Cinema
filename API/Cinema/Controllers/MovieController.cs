@@ -1,4 +1,5 @@
 ﻿using Cinema.DTO;
+using Cinema.DTO.DtoBill;
 using Cinema.DTO.DtoMovie;
 using Cinema.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,32 @@ namespace Cinema.Controllers
             }
             conn.Close();
             return movieList.ToList();
+        }
+        [HttpGet("getthebestmovie")]
+        public GetTop1Dto GetTheBestMovie(bool bestOrWorst)
+        {
+            conn.Open();
+            string sql;
+            if (bestOrWorst == true)
+            {
+                sql = string.Format("select top 1 m.Name as Name, count(m.Name) as Count from Ticket t " +
+                "join Seat s on t.SeatId = s.Id join Showtimes st on st.Id = s.ShowtimesId " +
+                "join Movie m on m.Id = st.MovieId " +
+                "where t.IsDeleted <> 1 group by m.Name order by Count desc");
+            } else
+            {
+                sql = string.Format("select top 1 m.Name as Name, count(m.Name) as Count from Ticket t " +
+                "join Seat s on t.SeatId = s.Id join Showtimes st on st.Id = s.ShowtimesId " +
+                "join Movie m on m.Id = st.MovieId " +
+                "where t.IsDeleted <> 1 group by m.Name order by Count asc");
+            }
+            SqlCommand sqlCommand = new SqlCommand(sql, conn);
+            DataTable data = new DataTable();
+            SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
+            adapter.Fill(data);
+            if (data.Rows.Count > 0)
+                return new GetTop1Dto(data.Rows[0]);
+            return null;
         }
         [HttpPost("create")]
         public bool CreateMovie(CreateMovieDto input)

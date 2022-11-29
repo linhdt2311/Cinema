@@ -11,7 +11,10 @@ export class MovieService {
 
   getAllMovie():Observable<any>{
     return this.http.get(this.baseUrl + '/getall');
-   }
+  }
+  getthebestmovie(payload: any):Observable<any>{
+    return this.http.get(this.baseUrl + '/getthebestmovie?bestOrWorst='+ payload);
+  }
   createMovie(payload:any):Observable<any>{
     return this.http.post(this.baseUrl + '/create', payload);
   }

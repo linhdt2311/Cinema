@@ -14,6 +14,9 @@ export class AccountService {
   getAllAccount(payload?: any): Observable<any> {
     return this.http.get(this.baseUrl + '/getall?' + payload);
   }
+  getTopAccount(): Observable<any> {
+    return this.http.get(this.baseUrl + '/gettopcustomer');
+  }
   createAccount(payload: any): Observable<any> {
     return this.http.post(this.baseUrl + '/create', payload);
   }

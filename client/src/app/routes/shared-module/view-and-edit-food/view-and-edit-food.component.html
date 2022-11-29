@@ -1,0 +1,41 @@
+<form [formGroup]="form">
+    <nz-form-item>
+        <nz-form-label class="form-nz-form-label col-2">Cinema</nz-form-label>
+        <nz-form-control class="col-10">
+            <nz-select class="information" nzPlaceHolder="Enter cinema name" formControlName="cinemaId">
+                <nz-option [nzValue]="cinema.id" [nzLabel]="cinema.name" *ngFor="let cinema of cinemas">
+                </nz-option>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label class="form-nz-form-label col-2">Name</nz-form-label>
+        <nz-form-control class="col-10">
+            <input class="information" nz-input placeholder="Enter food name" formControlName="name" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label class="form-nz-form-label col-2">Size</nz-form-label>
+        <nz-form-control class="col-10">
+            <nz-select class="information" nzPlaceHolder="Enter food size" formControlName="size">
+                <nz-option [nzValue]="s.value" [nzLabel]="s.viewValue" *ngFor="let s of size">
+                </nz-option>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label class="form-nz-form-label col-2">Price</nz-form-label>
+        <nz-form-control class="col-10">
+            <nz-space nzDirection="vertical" class="information">
+                <nz-input-number-group *nzSpaceItem nzAddOnAfter="VNĐ" class="information">
+                    <nz-input-number class="information" nzPlaceHolder="Enter food price" formControlName="price"
+                        [nzMin]="1000" [nzMax]="500000" [nzStep]="1000"></nz-input-number>
+                </nz-input-number-group>
+            </nz-space>
+        </nz-form-control>
+    </nz-form-item>
+    <div *ngIf="isEdit" class="footer">
+        <button nz-button nzType="primary" (click)="submit()">
+            <i class="fa-solid fa-check-double" style="margin-right: 5px;"></i>Submit</button>
+    </div>
+</form>

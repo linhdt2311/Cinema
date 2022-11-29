@@ -2,7 +2,7 @@
     <button class="btn_create" (click)="open('create', null)">Create</button>
     <div class="filter">
         <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate" class="search m-2">
-            <input nz-input type="text" nzPlaceHolder="Search movie name..." />
+            <input nz-input type="text" placeholder="Search movie name..." />
         </nz-input-group>
         <ng-template #addOnBeforeTemplate>
             <i class="fa-solid fa-magnifying-glass"></i>
@@ -14,7 +14,7 @@
             <nz-option nzLabel="3D" nzValue="3D"></nz-option>
             <nz-option nzLabel="4D" nzValue="4D"></nz-option>
         </nz-select>
-        <nz-select class="m-2" style="width: 75px;">
+        <nz-select class="m-2" style="width: 15rem;" nzPlaceHolder="Search cinema...">
             <nz-option *ngFor="let cinema of cinemas" [nzLabel]="cinema.name" [nzValue]="cinema.id"></nz-option>
         </nz-select>
         <button nz-button class="m-2" nzType="primary">

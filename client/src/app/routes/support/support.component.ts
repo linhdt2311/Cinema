@@ -12,4 +12,8 @@ export class SupportComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  openSocial(link: string){
+    document.location.href = link;
+  }
+
 }

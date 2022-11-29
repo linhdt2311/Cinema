@@ -1,32 +1,35 @@
-import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { catchError, finalize, of } from 'rxjs';
+import { Size } from 'src/app/helpers/Size';
 import { Setting } from 'src/app/models/setting';
 import { User } from 'src/app/models/user';
-import { MovieService } from 'src/app/services/movie.service';
+import { FoodService } from 'src/app/services/food.service';
 
 @Component({
-  selector: 'app-view-and-edit-movie',
-  templateUrl: './view-and-edit-movie.component.html',
-  styleUrls: ['./view-and-edit-movie.component.css']
+  selector: 'app-view-and-edit-food',
+  templateUrl: './view-and-edit-food.component.html',
+  styleUrls: ['./view-and-edit-food.component.css']
 })
-export class ViewAndEditMovieComponent implements OnInit {
+export class ViewAndEditFoodComponent implements OnInit {
   @Input() mode: string = 'create';
   @Input() data: any;
   @Input() isEdit: boolean;
+  @Input() cinemas: any[];
   @Output() onSubmit = new EventEmitter();
-  movies: any[] = [];
   isLoading: boolean = false;
   user: User;
   setting: Setting;
   form!: FormGroup;
+  size: any[] = [
+    { value: Size.S, viewValue: 'S' },
+    { value: Size.M, viewValue: 'M' },
+    { value: Size.L, viewValue: 'L' }];
   constructor(
     private fb: FormBuilder,
-    private movieService: MovieService,
+    private foodService: FoodService,
     private notification: NzNotificationService,
-    private datepipe: DatePipe,
   ) { }
 
   ngOnInit(): void {
@@ -49,6 +52,7 @@ export class ViewAndEditMovieComponent implements OnInit {
       } else {
         this.form.disable();
       }
+      this.form.get('cinemaId')?.disable();
     }
   }
 
@@ -58,13 +62,14 @@ export class ViewAndEditMovieComponent implements OnInit {
       creatorUserId: [null, Validators.required],
       lastModifierUserId: [null],
       name: [null, Validators.required],
-      time: [null, Validators.required],
-      openingDay: [null, Validators.required],
-      country: [null, Validators.required],
-      director: [null, Validators.required],
-      description: [null],
-      poster: [null],
+      cinemaId: [null, Validators.required],
+      size: [null, Validators.required],
+      price: [null, Validators.required],
     });
+  }
+
+  getCinemaName(id: any) {
+    return this.cinemas.find(c => c.id == id)?.name
   }
 
   submit() {
@@ -76,8 +81,8 @@ export class ViewAndEditMovieComponent implements OnInit {
     }
     if (this.form.valid) {
       if (this.mode === 'create') {
-        this.movieService
-          .createMovie(this.form.value)
+        this.foodService
+          .createFood(this.form.value)
           .pipe(catchError((err) => of(err)), finalize(() => this.isLoading = false))
           .subscribe((response) => {
             if (response) {
@@ -88,10 +93,10 @@ export class ViewAndEditMovieComponent implements OnInit {
           })
         this.onSubmit.emit(this.form.value);
       } else {
+        this.form.get('cinemaId')?.enable();
         this.form.get('lastModifierUserId')?.setValue(this.user.id);
-        this.form.get('openingDay')?.setValue(this.datepipe.transform(this.form.get('openingDay')?.value, 'YYYY-MM-dd'));
-        this.movieService
-          .updateMovie(this.form.value)
+        this.foodService
+          .updateFood(this.form.value)
           .pipe(catchError((err) => of(err)), finalize(() => this.isLoading = false))
           .subscribe((response) => {
             if (response) {
@@ -107,3 +112,4 @@ export class ViewAndEditMovieComponent implements OnInit {
     }
   }
 }
+

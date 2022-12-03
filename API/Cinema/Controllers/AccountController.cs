@@ -39,7 +39,7 @@ namespace Cinema.Controllers
         public List<GetTop1Dto> GetTopCustomer()
         {
             conn.Open();
-            string sql = string.Format("select a.Name, sum(b.Cost) as Count from Account a join Bill b on a.Id = b.AccountId group by a.Name order by Count desc");
+            string sql = string.Format("select top 10 a.Name, sum(b.Cost) as Count from Account a join Bill b on a.Id = b.AccountId group by a.Name order by Count desc");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             DataTable data = new DataTable();
             SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);

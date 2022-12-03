@@ -12,7 +12,9 @@ import { MovieService } from 'src/app/services/movie.service';
 import { CinemaService } from 'src/app/services/cinema.service';
 import { RoomService } from 'src/app/services/room.service';
 import { FormatMovieScreen } from 'src/app/helpers/FormatMovieScreen';
-
+import { GetAllShowtimes } from 'src/app/models/getallshowtimes';
+import { NzI18nService } from 'ng-zorro-antd/i18n';
+import { vi } from 'date-fns/locale';
 @Component({
   selector: 'app-manage-showtimes',
   templateUrl: './manage-showtimes.component.html',
@@ -36,10 +38,12 @@ export class ManageShowtimesComponent implements OnInit {
   mode: string = 'create';
   data: any;
   isEdit: boolean = true;
-  formatMovieScreen: any[] = [{ value: FormatMovieScreen.IMAX, viewValue: 'IMAX' },
-  { value: FormatMovieScreen.TwoD, viewValue: '2D' },
-  { value: FormatMovieScreen.ThreeD, viewValue: '3D' },
-  { value: FormatMovieScreen.FourD, viewValue: '4D' }];
+  getAllShowtimes: GetAllShowtimes = new GetAllShowtimes();
+  formatMovieScreen: any[] = [
+    { value: FormatMovieScreen.IMAX, viewValue: 'IMAX' },
+    { value: FormatMovieScreen.TwoD, viewValue: '2D' },
+    { value: FormatMovieScreen.ThreeD, viewValue: '3D' },
+    { value: FormatMovieScreen.FourD, viewValue: '4D' }];
   constructor(
     private showtimesService: ShowtimesService,
     private movieService: MovieService,
@@ -47,6 +51,7 @@ export class ManageShowtimesComponent implements OnInit {
     private roomService: RoomService,
     private modal: NzModalService,
     private notification: NzNotificationService,
+    private i18n: NzI18nService
   ) { }
 
   ngOnInit(): void {
@@ -60,7 +65,7 @@ export class ManageShowtimesComponent implements OnInit {
 
   showtimesData() {
     this.showtimesService
-      .getAllShowtimes()
+      .getAllShowtimes(this.getAllShowtimes)
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.showtimes = response;
@@ -110,6 +115,11 @@ export class ManageShowtimesComponent implements OnInit {
   getFormatName(value: any){
     const format = this.rooms.find(r => r.id == value)?.formatMovieScreen;
     return this.formatMovieScreen.find(f => f.value === format)?.viewValue;
+  }
+
+  onFilterMovie(id: any){
+    this.getAllShowtimes.movieId = id;
+    this.showtimesData();
   }
 
   drop(event: CdkDragDrop<any[]>): void {

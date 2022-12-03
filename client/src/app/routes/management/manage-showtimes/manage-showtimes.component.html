@@ -1,20 +1,18 @@
 <div class="header">
     <button class="btn_create" (click)="open('create', null)">Create</button>
     <div class="filter">
-        <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate" class="search m-2">
-            <input nz-input type="text" placeholder="Search movie name..." />
-        </nz-input-group>
-        <ng-template #addOnBeforeTemplate>
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </ng-template>
+        <nz-select nzShowSearch [ngModel]="null" class="search m-2" nzPlaceHolder="Search movie name..." (ngModelChange)="onFilterMovie($event)">
+            <nz-option *ngFor="let movie of movies" [nzLabel]="movie.name" [nzValue]="movie.id"></nz-option>
+        </nz-select>
         <nz-range-picker nzShowTime class="m-2" nzFormat="YYYY-MM-dd"></nz-range-picker>
-        <nz-select class="m-2" [ngModel]="'2D'">
+        <nz-select class="m-2" [ngModel]="'2D'" (ngModelChange)="onFilterMovie($event)">
             <nz-option nzLabel="IMAX" nzValue="IMAX"></nz-option>
             <nz-option nzLabel="2D" nzValue="2D"></nz-option>
             <nz-option nzLabel="3D" nzValue="3D"></nz-option>
             <nz-option nzLabel="4D" nzValue="4D"></nz-option>
         </nz-select>
-        <nz-select class="m-2" style="width: 15rem;" nzPlaceHolder="Search cinema...">
+        <nz-select nzShowSearch nzAllowClear nzMode="multiple" class="m-2" style="width: 15rem;"
+            nzPlaceHolder="Search cinema...">
             <nz-option *ngFor="let cinema of cinemas" [nzLabel]="cinema.name" [nzValue]="cinema.id"></nz-option>
         </nz-select>
         <button nz-button class="m-2" nzType="primary">
@@ -32,7 +30,7 @@
     </ng-template>
     <thead>
         <thead>
-            <tr>
+            <tr style="cursor: pointer;">
                 <th [nzAlign]="'center'" [nzWidth]="'40%'">Movie</th>
                 <th [nzAlign]="'center'" [nzWidth]="'20%'">TimeStart</th>
                 <th [nzAlign]="'center'" [nzWidth]="'10%'">Format</th>
@@ -44,7 +42,7 @@
     <tbody cdkDropList (cdkDropListDropped)="drop($event)" style="cursor: pointer;">
         <tr *ngFor="let data of rowSelectionTable.data" cdkDrag>
             <td>{{ getMovieName(data.movieId) }}</td>
-            <td [nzAlign]="'center'">{{ data.timeStart | date: 'HH:mm:ss YYYY/MM/dd' }}</td>
+            <td [nzAlign]="'center'">{{ data.timeStart | date: 'HH:mm YYYY/MM/dd' }}</td>
             <td [nzAlign]="'center'">{{ getFormatName(data.roomId) }}</td>
             <td [nzAlign]="'center'">{{ getCinemaName(data.roomId) }}</td>
             <td [nzAlign]="'center'">{{ getRoomName(data.roomId) }}</td>

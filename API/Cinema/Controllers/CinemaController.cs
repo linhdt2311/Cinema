@@ -58,5 +58,26 @@ namespace Cinema.Controllers
                 return new GetTop1Dto(data.Rows[0]);
             return null;
         }
+        [HttpGet("getrevenueforcinema")]
+        public List<GetTop1Dto> GetRevenueForCinema()
+        {
+            conn.Open();
+            string sql = string.Format("select c.Name as Name, sum(b.Cost) as Count from Bill b " +
+                "join Ticket t on t.BillId = b.Id join Seat s on s.Id = t.SeatId " +
+                "join Showtimes st on st.Id = s.ShowtimesId join Room r on r.Id = st.RoomId " +
+                "join Cinema c on c.Id = r.CinemaId group by c.Name");
+            SqlCommand sqlCommand = new SqlCommand(sql, conn);
+            DataTable data = new DataTable();
+            SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
+            adapter.Fill(data);
+            var list = new List<GetTop1Dto>();
+            foreach (DataRow i in data.Rows)
+            {
+                GetTop1Dto cinema = new GetTop1Dto(i);
+                list.Add(cinema);
+            }
+            conn.Close();
+            return list.ToList();
+        }
     }
 }

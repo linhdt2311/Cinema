@@ -11,7 +11,8 @@ import { DatePipe } from '@angular/common';
 import { CinemaService } from 'src/app/services/cinema.service';
 import { Size } from 'src/app/helpers/Size';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-
+import { Chart, registerables } from 'node_modules/chart.js'
+Chart.register(...registerables)
 @Component({
   selector: 'app-statistics',
   templateUrl: './statistics.component.html',
@@ -40,6 +41,7 @@ export class StatisticsComponent implements OnInit {
   bestCinema: any;
   worstCinema: any;
   bestTime: any;
+  revenueForCinema: any;
   constructor(
     private billService: BillService,
     private ticketService: TicketService,
@@ -64,6 +66,7 @@ export class StatisticsComponent implements OnInit {
     this.getTheBestTime();
     this.getTopCustomer();
     // this.ticketData();
+    this.getRevenueForCinema();
     this.accountData();
     // this.movieData();
     // this.showtimesData();
@@ -77,6 +80,7 @@ export class StatisticsComponent implements OnInit {
         if (response) {
           this.bills = response;
           this.countMoneyBillForMonth();
+          this.chart();
         }
       })
   }
@@ -172,7 +176,7 @@ export class StatisticsComponent implements OnInit {
 
   countMoneyBillForMonth() {
     this.bills.forEach(b => {
-      if (this.datepipe.transform(b.creationTime, 'MM') == this.datepipe.transform(new Date(), 'MM')){
+      if (this.datepipe.transform(b.creationTime, 'MM') == this.datepipe.transform(new Date(), 'MM')) {
         this.countMoneyBill += b.cost;
       }
     });
@@ -184,36 +188,36 @@ export class StatisticsComponent implements OnInit {
     this.foods.forEach(f => {
       let count = 0;
       const food = this.billDetails.filter(b => b.foodId == f.id);
-      food.forEach(x => {count += x.quantity;})
+      food.forEach(x => { count += x.quantity; })
       A.push({ foodId: f.id, count: count });
     })
     let countBestFood = 0;
     for (let i = 0; i < A.length; i++) {
-      if(countBestFood < A[i].count){
+      if (countBestFood < A[i].count) {
         countBestFood = A[i].count;
         this.bestFood = A[i].foodId;
       }
     }
     let countWorstFood = Infinity;
     for (let i = 0; i < A.length; i++) {
-      if(countWorstFood > A[i].count){
+      if (countWorstFood > A[i].count) {
         countWorstFood = A[i].count;
         this.worstFood = A[i].foodId;
       }
     }
   }
 
-  getFoodName(id: any){
+  getFoodName(id: any) {
     return this.foods.find(f => f.id === id)?.name + ' size ' + this.getSize(this.foods.find(f => f.id === id)?.size);
   }
 
-  getSize(size: any){
+  getSize(size: any) {
     return this.size.find(f => f.value === size)?.viewValue;
   }
 
   getTheBestMovie() {
     this.movieService
-      .getthebestmovie('true')
+      .getTheBestMovie('true')
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         if (response) {
@@ -224,7 +228,7 @@ export class StatisticsComponent implements OnInit {
 
   getTheWorstMovie() {
     this.movieService
-      .getthebestmovie('false')
+      .getTheBestMovie('false')
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         if (response) {
@@ -235,7 +239,7 @@ export class StatisticsComponent implements OnInit {
 
   getTheBestCinema() {
     this.cinemaService
-      .getthebestcinema('true')
+      .getTheBestCinema('true')
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         if (response) {
@@ -246,7 +250,7 @@ export class StatisticsComponent implements OnInit {
 
   getTheWorstCinema() {
     this.cinemaService
-      .getthebestcinema('false')
+      .getTheBestCinema('false')
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         if (response) {
@@ -257,7 +261,7 @@ export class StatisticsComponent implements OnInit {
 
   getTheBestTime() {
     this.showtimesService
-      .getthebesttime()
+      .getTheBestTime()
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         if (response) {
@@ -266,7 +270,18 @@ export class StatisticsComponent implements OnInit {
       })
   }
 
-  getTopCustomer(){
+  getRevenueForCinema(){
+    this.cinemaService
+      .getRevenueForCinema()
+      .pipe(catchError((err) => of(err)))
+      .subscribe((response) => {
+        if (response) {
+          this.revenueForCinema = response;
+        }
+      })
+  }
+
+  getTopCustomer() {
     this.accountService
       .getTopAccount()
       .pipe(catchError((err) => of(err)))
@@ -277,15 +292,36 @@ export class StatisticsComponent implements OnInit {
       })
   }
 
-  drop(event: CdkDragDrop<any[]>): void {
-    moveItemInArray(this.topCustomer, event.previousIndex, event.currentIndex);
+  chart() {
+    const months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+    const revenue: any = [];
+    months.forEach(month => {
+      let count = 0;
+      for (let i = 0; i < this.bills.length; i++) {
+        if (this.datepipe.transform(this.bills[i].creationTime, 'MM') == month) {
+          count += this.bills[i].cost;
+        }
+      }
+      revenue.push(count);
+    });
+    new Chart('myChart', {
+      type: 'bar',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: [{
+          label: 'revenue',
+          data: revenue,
+          borderWidth: 1
+        }]
+      },
+    });
   }
 
-  changeToMoney(value: any){
+  changeToMoney(value: any) {
     return new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'VND' }).format(value);
   }
 
-  getRankCustomer(name: any ){
+  getRankCustomer(name: any) {
     return this.accounts.find(a => a.name == name)?.point;
   }
 }

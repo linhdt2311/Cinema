@@ -5,3 +5,22 @@
 ::ng-deep .cdk-drag-placeholder {
     opacity: 0;
 }
+
+.chart {
+    width: 70%;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.revenueForMonth {
+    overflow-x: auto;
+}
+
+.revenueForMonth::-webkit-scrollbar {
+    height: 0.1em;
+}
+
+.revenueForMonth::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+}

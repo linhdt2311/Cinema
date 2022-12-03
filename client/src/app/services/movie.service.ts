@@ -22,7 +22,7 @@ export class MovieService {
       return this.http.get(this.baseUrl + '/getall');
     }
   }
-  getthebestmovie(payload: any):Observable<any>{
+  getTheBestMovie(payload: any):Observable<any>{
     return this.http.get(this.baseUrl + '/getthebestmovie?bestOrWorst='+ payload);
   }
   createMovie(payload:any):Observable<any>{

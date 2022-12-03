@@ -1,12 +1,9 @@
 <div class="header">
     <button class="btn_create" (click)="open('create', null)">Create</button>
     <div class="filter">
-        <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate" class="search m-2">
-            <input nz-input type="text" placeholder="Search movie name..." />
-        </nz-input-group>
-        <ng-template #addOnBeforeTemplate>
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </ng-template>
+        <nz-select nzShowSearch nzAllowClear nzMode="multiple" class="search m-2" nzPlaceHolder="Search movie name...">
+            <nz-option *ngFor="let movie of movies" [nzLabel]="movie.name" [nzValue]="movie.id"></nz-option>
+        </nz-select>
         <nz-range-picker class="m-2" nzFormat="YYYY-MM-dd"></nz-range-picker>
         <nz-select class="m-2" [ngModel]="'.com'">
             <nz-option nzLabel=".com" nzValue=".com"></nz-option>
@@ -28,7 +25,7 @@
         {{ range[0] }}-{{ range[1] }} of {{ total }} items
     </ng-template>
     <thead>
-        <tr>
+        <tr style="cursor: pointer;">
             <th [nzAlign]="'center'" [nzWidth]="'30%'" nzLeft>Movie</th>
             <th [nzAlign]="'center'" [nzWidth]="'10%'">Time</th>
             <th [nzAlign]="'center'" [nzWidth]="'10%'">OpeningDay</th>

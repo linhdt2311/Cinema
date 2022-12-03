@@ -56,30 +56,74 @@
         </span>
     </div>
 </nz-card>
+<nz-card nzTitle="Revenue's cinema in this month" class="revenueForMonth" *ngFor="let data of revenueForCinema">
+    <div style="height: 100px; display: flex;">
+        <div nz-card-grid style="width: 25rem; text-align: center">
+            <span >{{ data.name }}</span><br>
+            <span style="font-size: 20px; color: #ffb326;">{{ changeToMoney(data.count) }}</span>
+        </div>
+    </div>
+  </nz-card>
 <div>
-    <nz-table #rowSelectionTable [nzData]="topCustomer" nzShowPagination="false" style="width: 50%;">
-        <thead>
-            <tr>
-                <th [nzAlign]="'center'" nzWidth="50%">
-                    <i class="fa-solid fa-crown" style="margin-right: 5px;"></i>
-                    Customer
-                </th>
-                <th [nzAlign]="'center'" nzWidth="30%">
-                    <i class="fa-solid fa-sack-dollar" style="margin-right: 5px;"></i>
-                    Amount
-                </th>
-                <th [nzAlign]="'center'" nzWidth="20%">
-                    <i class="fa-solid fa-ranking-star" style="margin-right: 5px;"></i>
-                    Rank
-                </th>
-            </tr>
-        </thead>
-        <tbody cdkDropList (cdkDropListDropped)="drop($event)" style="cursor: pointer;">
-            <tr *ngFor="let data of rowSelectionTable.data" cdkDrag>
-                <td>{{ data.name }}</td>
-                <td [nzAlign]="'center'">{{ changeToMoney(data.count) }}</td>
-                <td [nzAlign]="'center'">{{ getRankCustomer(data.name) }} </td>
-            </tr>
-        </tbody>
-    </nz-table>
+    <div >
+        
+    </div>
+</div>
+<div style="display: flex; margin: 25px;">
+    <div class="chart">
+        <h4 style="font-weight: bold; color: #36a2eb;">Revenue for the year</h4>
+        <canvas id="myChart"></canvas>
+    </div>
+    <div style="width: 30%; text-align: center;">
+        <h4 style="font-weight: bold; color: #ff5858;">
+            <i class="fa-solid fa-crown" style="margin-right: 5px;"></i>
+            Top 10 vip
+        </h4>
+        <nz-table #rowSelectionTable [nzData]="topCustomer" nzShowPagination="false">
+            <thead>
+                <tr style="cursor: pointer;">
+                    <th [nzAlign]="'center'" nzWidth="35%">
+                        <i class="fa-solid fa-chess-king" style="margin-right: 5px;"></i>
+                        Customer
+                    </th>
+                    <th [nzAlign]="'center'" nzWidth="30%">
+                        <i class="fa-solid fa-sack-dollar" style="margin-right: 5px;"></i>
+                        Amount
+                    </th>
+                    <th [nzAlign]="'center'" nzWidth="25%">
+                        <i class="fa-solid fa-ranking-star" style="margin-right: 5px;"></i>
+                        Rank
+                    </th>
+                </tr>
+            </thead>
+            <tbody cdkDropList style="cursor: pointer;">
+                <tr *ngFor="let data of rowSelectionTable.data" cdkDrag>
+                    <td *ngIf="data === topCustomer[0]" style="color: red; font-weight: bolder;" nz-typography
+                        nzEllipsis>{{ data.name }}</td>
+                    <td *ngIf="data === topCustomer[0]" style="color: red; font-weight: bolder;" nz-typography
+                        nzEllipsis [nzAlign]="'center'">{{ changeToMoney(data.count) }}</td>
+                    <td *ngIf="data === topCustomer[0]" style="color: red; font-weight: bolder;" nz-typography
+                        nzEllipsis [nzAlign]="'center'">{{ getRankCustomer(data.name) }} </td>
+                    <td *ngIf="data === topCustomer[1]" style="color: #ff0f7b; font-weight: bold;" nz-typography
+                        nzEllipsis>{{ data.name }}</td>
+                    <td *ngIf="data === topCustomer[1]" style="color: #ff0f7b; font-weight: bold;" nz-typography
+                        nzEllipsis [nzAlign]="'center'">{{ changeToMoney(data.count) }}</td>
+                    <td *ngIf="data === topCustomer[1]" style="color: #ff0f7b; font-weight: bold;" nz-typography
+                        nzEllipsis [nzAlign]="'center'">{{ getRankCustomer(data.name) }} </td>
+                    <td *ngIf="data === topCustomer[2]" style="color: #f89b29;" nz-typography nzEllipsis>{{ data.name }}
+                    </td>
+                    <td *ngIf="data === topCustomer[2]" style="color: #f89b29;" nz-typography nzEllipsis
+                        [nzAlign]="'center'">{{ changeToMoney(data.count) }}</td>
+                    <td *ngIf="data === topCustomer[2]" style="color: #f89b29;" nz-typography nzEllipsis
+                        [nzAlign]="'center'">{{ getRankCustomer(data.name) }} </td>
+                    <td *ngIf="data !== topCustomer[0] && topCustomer[1] && topCustomer[2]" nz-typography nzEllipsis>{{
+                        data.name }}</td>
+                    <td *ngIf="data !== topCustomer[0] && topCustomer[1] && topCustomer[2]" nz-typography nzEllipsis
+                        [nzAlign]="'center'">{{ changeToMoney(data.count) }}</td>
+                    <td *ngIf="data !== topCustomer[0] && topCustomer[1] && topCustomer[2]" nz-typography nzEllipsis
+                        [nzAlign]="'center'">{{ getRankCustomer(data.name) }} </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
 </div>

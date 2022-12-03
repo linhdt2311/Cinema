@@ -1,12 +1,9 @@
 <div class="header">
     <button class="btn_create" (click)="open('create', null)">Create</button>
     <div class="filter">
-        <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate" class="search m-2">
-            <input nz-input type="text" placeholder="Search customer name..." />
-        </nz-input-group>
-        <ng-template #addOnBeforeTemplate>
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </ng-template>
+        <nz-select nzShowSearch nzAllowClear nzMode="multiple" class="search m-2" nzPlaceHolder="Search customer name..">
+            <nz-option *ngFor="let account of accounts" [nzLabel]="account.name" [nzValue]="account.id"></nz-option>
+        </nz-select>
         <nz-range-picker class="m-2" nzFormat="YYYY-MM-dd"></nz-range-picker>
         <nz-input-number-group nzAddOnBefore="From">
             <nz-input-number nz-input nzPlaceHolder="Point..."></nz-input-number>
@@ -28,7 +25,7 @@
         {{ range[0] }}-{{ range[1] }} of {{ total }} items
     </ng-template>
     <thead>
-        <tr>
+        <tr style="cursor: pointer;">
             <th [nzAlign]="'center'" [nzWidth]="'16.5%'" nzLeft>Customer</th>
             <th [nzAlign]="'center'" [nzWidth]="'16.5%'">Email</th>
             <th [nzAlign]="'center'" [nzWidth]="'17%'">Address</th>

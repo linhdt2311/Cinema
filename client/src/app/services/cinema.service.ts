@@ -15,9 +15,11 @@ export class CinemaService {
     payload = payload ? '?name=' + payload : '';
     return this.http.get(this.baseUrl + '/getall' + payload);
   }
-
-  getthebestcinema(payload: any): Observable<any> {
+  getTheBestCinema(payload: any): Observable<any> {
     return this.http.get(this.baseUrl + '/getthebestcinema?bestOrWorst=' + payload);
+  }
+  getRevenueForCinema(): Observable<any>{
+    return this.http.get(this.baseUrl + '/getrevenueforcinema');
   }
   createCinema(payload: any): Observable<any> {
     return this.http.post(this.baseUrl + '/create', payload);

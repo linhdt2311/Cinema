@@ -675,3 +675,4 @@ begin
 	set @n = @n + 1;
 end
 go
+select * from Account a join Bill b on b.AccountId = b.Id

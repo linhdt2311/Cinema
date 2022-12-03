@@ -58,3 +58,7 @@ nz-form-label {
 ::ng-deep .cdk-drag-placeholder {
     opacity: 0;
 }
+
+.ant-card-head {
+    font-weight: bold !important;
+}

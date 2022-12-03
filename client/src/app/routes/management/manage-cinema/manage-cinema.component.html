@@ -1,13 +1,10 @@
 <div class="header">
     <button class="btn_create" (click)="open('create', null)">Create</button>
     <div class="filter">
-        <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate" class="search m-2">
-            <input nz-input type="text" placeholder="Search cinema name..." />
-        </nz-input-group>
-        <ng-template #addOnBeforeTemplate>
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </ng-template>
-        <input nz-input type="text" style="width: 20rem" placeholder="Search quantity room..." />
+        <nz-select nzShowSearch nzAllowClear nzMode="multiple" class="search m-2" nzPlaceHolder="Search cinema...">
+            <nz-option *ngFor="let cinema of cinemas" [nzLabel]="cinema.name" [nzValue]="cinema.id"></nz-option>
+        </nz-select>
+        <nz-input-number type="text" style="width: 20rem" placeholder="Search quantity room..." [nzMin]="1" [nzMax]="20" [nzStep]="1"></nz-input-number>
         <button nz-button class="m-2" nzType="primary">
             <i class="fa-solid fa-arrows-rotate" style="margin-right: 5px;"></i>
             Refresh
@@ -22,7 +19,7 @@
         {{ range[0] }}-{{ range[1] }} of {{ total }} items
     </ng-template>
     <thead>
-        <tr>
+        <tr style="cursor: pointer;">
             <th [nzAlign]="'center'" [nzWidth]="'50%'" nzLeft>Cinema</th>
             <th [nzAlign]="'center'" [nzWidth]="'25%'">Quantity Room</th>
             <th [nzAlign]="'center'" [nzWidth]="'25%'" nzRight>Action</th>

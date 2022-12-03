@@ -1,12 +1,9 @@
 <div class="header">
     <button class="btn_create" (click)="open('create', null)">Create</button>
     <div class="filter">
-        <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate" class="search m-2">
-            <input nz-input type="text" placeholder="Search code..." />
-        </nz-input-group>
-        <ng-template #addOnBeforeTemplate>
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </ng-template>
+        <nz-select nzShowSearch nzAllowClear nzMode="multiple" class="search m-2" nzPlaceHolder="Search promotion...">
+            <nz-option *ngFor="let promotion of promotions" [nzLabel]="promotion.code" [nzValue]="promotion.id"></nz-option>
+        </nz-select>
         <nz-input-number-group nzAddOnAfter="VNĐ" class="m-2" style="width: 20rem">
             <nz-input-number nzPlaceHolder="Search discount..." [nzMin]="1000" [nzMax]="60000" [nzStep]="1000"></nz-input-number>
         </nz-input-number-group>
@@ -25,7 +22,7 @@
         {{ range[0] }}-{{ range[1] }} of {{ total }} items
     </ng-template>
     <thead>
-        <tr>
+        <tr style="cursor: pointer;">
             <th [nzAlign]="'center'" [nzWidth]="'20%'" nzLeft>Code</th>
             <th [nzAlign]="'center'" [nzWidth]="'10%'">Discount</th>
             <th [nzAlign]="'center'" [nzWidth]="'20%'">Start Date</th>

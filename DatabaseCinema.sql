@@ -286,15 +286,17 @@ as
 go
 --proc view Movie nếu có tìm kiếm sẽ tìm theo yêu cầu không thì sẽ hiện full
 create proc GetViewMovie
-@Name nvarchar(max), @Country nvarchar(50), @Director nvarchar(50)
+@Name nvarchar(max), @Country nvarchar(50), @Director nvarchar(50) , @ToDate datetime,@FromDate datetime
 as
 	select * from Movie m where m.IsDeleted <> 1 
 		and (isnull(@Name, '') = '' or upper(m.Name) like '%' + upper(@Name) + '%')
         and (isnull(@Country, '') = '' or upper(m.Country) like '%' + upper(@Country) + '%')
         and (isnull(@Director, '') = '' or upper(m.Director) like '%' + upper(@Director) + '%')
+        and (isnull(@ToDate, '') = '' or isnull(@FromDate, '') = '' or cast(m.OpeningDay as date) Between  @ToDate and @FromDate )
 		order by m.OpeningDay desc
         option (recompile)
 go
+--exec GetViewMovie @Name = '', @Country = '', @Director ='' , @ToDate = '2022-11-26',@FromDate ='2022-12-03'
 create proc GetViewCinema
 @Name nvarchar(max)
 as
@@ -612,16 +614,16 @@ begin
 	set @j = @j + 1;
 end
 --insert phim
-insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Chú khủng long của Nobita', 120, '1980-03-15', 'Japan', 'Hiroshi Fukutomi', N'Truyện phim mở đầu khi Nobita tìm thấy một quả trứng hóa thạch, và bằng bảo bối của Doraemon đã giúp nở ra một chú khủng long hiền lành mà cậu bé đặt tên là Pīsuke. Do không thể nuôi khủng long giữa lòng Tokyo hiện đại, Nobita phải đưa Pīsuke trở về quê nhà ở kỷ Creta, đồng thời tìm cách bảo vệ chú khủng long khỏi sự truy bắt của những tay săn trộm đến từ thế kỷ tương lai.')
-insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita và lịch sử khai phá vũ trụ', 120, '1981-03-14', 'Japan', 'Hideo Nishimaki', N'Bối cảnh của phim xảy ra luân phiên giữa Trái Đất và Hành tinh Tím qua một cửa không gian thông từ nền phòng Nôbita tới chiếc phi thuyền của những người bạn ở Hành tinh Tím.')
-insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita thám hiểm vùng đất mới', 120, '1982-03-13', 'Japan', 'Hideo Nishimaki', N'')
-insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita và lâu đài dưới đáy biển', 120, '1983-03-12', 'Japan', 'Shibayama Tsutomu', N'')
-insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita và chuyến phiêu lưu vào xứ quỷ', 120, '1984-03-17', 'Japan', 'Shibayama Tsutomu', N'')
-insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita và cuộc chiến vũ trụ', 120, '1985-03-16', 'Japan', 'Shibayama Tsutomu', N'')
-insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita và binh đoàn người sắt', 120, '1986-03-15', 'Japan', 'Shibayama Tsutomu', N'')
-insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita và hiệp sĩ rồng', 120, '1987-03-14', 'Japan', 'Shibayama Tsutomu', N'')
-insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita Tây du kí', 120, '1988-03-12', 'Japan', 'Shibayama Tsutomu', N'')
-insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita và nước Nhật thời nguyên thủy', 120, '1989-03-11', 'Japan', 'Shibayama Tsutomu', N'')
+insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Chú khủng long của Nobita', 120, '2022-03-15', 'Japan', 'Hiroshi Fukutomi', N'Truyện phim mở đầu khi Nobita tìm thấy một quả trứng hóa thạch, và bằng bảo bối của Doraemon đã giúp nở ra một chú khủng long hiền lành mà cậu bé đặt tên là Pīsuke. Do không thể nuôi khủng long giữa lòng Tokyo hiện đại, Nobita phải đưa Pīsuke trở về quê nhà ở kỷ Creta, đồng thời tìm cách bảo vệ chú khủng long khỏi sự truy bắt của những tay săn trộm đến từ thế kỷ tương lai.')
+insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita và lịch sử khai phá vũ trụ', 120, '2022-12-20', 'Japan', 'Hideo Nishimaki', N'Bối cảnh của phim xảy ra luân phiên giữa Trái Đất và Hành tinh Tím qua một cửa không gian thông từ nền phòng Nôbita tới chiếc phi thuyền của những người bạn ở Hành tinh Tím.')
+insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita thám hiểm vùng đất mới', 120, '2022-11-12', 'Japan', 'Hideo Nishimaki', N'')
+insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita và lâu đài dưới đáy biển', 120, '2022-12-12', 'Japan', 'Shibayama Tsutomu', N'')
+insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita và chuyến phiêu lưu vào xứ quỷ', 120, '2022-11-32', 'Japan', 'Shibayama Tsutomu', N'')
+insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita và cuộc chiến vũ trụ', 120, '2022-11-35', 'Japan', 'Shibayama Tsutomu', N'')
+insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita và binh đoàn người sắt', 120, '2022-11-11', 'Japan', 'Shibayama Tsutomu', N'')
+insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita và hiệp sĩ rồng', 120, '2022-03-14', 'Japan', 'Shibayama Tsutomu', N'')
+insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita Tây du kí', 120, '2022-03-12', 'Japan', 'Shibayama Tsutomu', N'')
+insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita và nước Nhật thời nguyên thủy', 120, '2022-03-11', 'Japan', 'Shibayama Tsutomu', N'')
 insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita và hành tinh muông thú', 120, '1990-03-10', 'Japan', 'Shibayama Tsutomu', N'')
 insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita ở xứ sở nghìn lẻ một đêm', 120, '1991-03-09', 'Japan', 'Shibayama Tsutomu', N'')
 insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita và vương quốc trên mây', 120, '1992-03-07', 'Japan', 'Shibayama Tsutomu', N'')
@@ -630,9 +632,9 @@ insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay
 insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Đấng toàn năng Nobita', 120, '1995-03-04', 'Japan', 'Shibayama Tsutomu', N'')
 insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita và chuyến tàu tốc hành Ngân Hà', 120, '1996-03-02', 'Japan', 'Shibayama Tsutomu', N'')
 insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita và cuộc phiêu lưu ở thành phố dây cót', 120, '1997-03-08', 'Japan', 'Shibayama Tsutomu', N'')
-insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita du hành biển phương Nam', 120, '1998-03-07', 'Japan', 'Shibayama Tsutomu', N'')
-insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita - Vũ trụ phiêu lưu kí', 120, '1999-03-06', 'Japan', 'Shibayama Tsutomu', N'')
-insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita và truyền thuyết vua Mặt Trời', 120, '2000-03-04', 'Japan', 'Shibayama Tsutomu', N'')
+insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita du hành biển phương Nam', 120, '2022-11-30', 'Japan', 'Shibayama Tsutomu', N'')
+insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita - Vũ trụ phiêu lưu kí', 120, '2022-12-01', 'Japan', 'Shibayama Tsutomu', N'')
+insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita và truyền thuyết vua Mặt Trời', 120, '2022-12-02', 'Japan', 'Shibayama Tsutomu', N'')
 insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita và những dũng sĩ có cánh', 120, '2001-03-10', 'Japan', 'Shibayama Tsutomu', N'')
 insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita và vương quốc robot', 120, '2002-03-09', 'Japan', 'Shibayama Tsutomu', N'')
 insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Doraemon: Nobita và những pháp sư gió bí ẩn', 120, '2003-03-08', 'Japan', 'Shibayama Tsutomu', N'')

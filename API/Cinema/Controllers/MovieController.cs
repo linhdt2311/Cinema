@@ -16,10 +16,16 @@ namespace Cinema.Controllers
     public class MovieController : DBConnect
     {
         [HttpGet("getall")]
-        public List<MovieDto> GetAllMovie(string name, string country, string director)
+        public List<MovieDto> GetAllMovie(string? name, string? country, string? director,DateTime? todate, DateTime? fromdate)
         {
             conn.Open();
-            string sql = string.Format("exec GetViewMovie @Name = '" + name + "',@Country ='" + country + "', @Director = '" + director + "'");
+            var nameMovie = string.IsNullOrWhiteSpace(name) ? "" : name;
+            var countryMovie = string.IsNullOrWhiteSpace(country) ? "" : country;
+            var directorMovie = string.IsNullOrWhiteSpace(director) ? "" : director;
+
+            var toTime = string.IsNullOrWhiteSpace(todate.ToString()) ? null : todate.Value.ToString("yyyy-MM-dd");
+            var FromTime = string.IsNullOrWhiteSpace(fromdate.ToString()) ? null : fromdate.Value.ToString("yyyy-MM-dd");
+            string sql = string.Format("exec GetViewMovie @Name = '" + nameMovie + "',@Country ='" + countryMovie + "', @Director = '" + directorMovie + "', @ToDate ='" + toTime + "', @FromDate ='" + FromTime + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             DataTable data = new DataTable();
             SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);

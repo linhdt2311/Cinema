@@ -9,8 +9,18 @@ export class MovieService {
   baseUrl = environment.baseUrl + 'movie';
   constructor(private http: HttpClient) { }
 
-  getAllMovie():Observable<any>{
-    return this.http.get(this.baseUrl + '/getall');
+  getAllMovie(payload?: any):Observable<any>{
+    if(payload){
+      let todate, fromdate, country,director, name
+      name = payload.name ? 'name=' + payload.name : ''
+      country = payload.country ? '&country=' + payload.country : ''
+      director = payload.director ? '&director=' + payload.director : ''
+      todate = payload.todate ? '&toDate=' + payload.todate :   ''
+      fromdate = payload.fromdate ? '&fromDate=' + payload.fromdate :  ''
+      return this.http.get(this.baseUrl + '/getall?' + name + country + director + todate +fromdate);
+    } else {
+      return this.http.get(this.baseUrl + '/getall');
+    }
   }
   getthebestmovie(payload: any):Observable<any>{
     return this.http.get(this.baseUrl + '/getthebestmovie?bestOrWorst='+ payload);

@@ -31,6 +31,24 @@ namespace Cinema.Controllers
             conn.Close();
             return cinemaList.ToList();
         }
+        [HttpPost("search")]
+        public List<CinemaDto> Search(SearchCinemaDto input)
+        {
+            conn.Open();
+            string sql = string.Format("exec SearchCinema @Id = '" + input.Id + "'");
+            SqlCommand sqlCommand = new SqlCommand(sql, conn);
+            DataTable data = new DataTable();
+            SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
+            adapter.Fill(data);
+            var cinemaList = new List<CinemaDto>();
+            foreach (DataRow i in data.Rows)
+            {
+                CinemaDto cinema = new CinemaDto(i);
+                cinemaList.Add(cinema);
+            }
+            conn.Close();
+            return cinemaList.ToList();
+        }
         [HttpGet("getthebestcinema")]
         public GetTop1Dto GetTheBestCinema(bool bestOrWorst)
         {

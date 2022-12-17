@@ -35,6 +35,26 @@ namespace Cinema.Controllers
             conn.Close();
             return accountList.ToList();
         }
+        [HttpPost("search")]
+        [AllowAnonymous]
+        public List<AccountDto> SearchAccountDto(SearchCustomerDto input)
+        {
+            conn.Open();
+            string Id = input.id.Count >= 1 ? string.Join(",", input.id) : "00000000-0000-0000-0000-000000000000";
+            string sql = string.Format("exec SearchAccount @Id= '" + Id + "',@TimeStart = '" + input.startDate + "', @TimeEnd = '" + input.endDate + "', @FromPoint = '" + input.fromPoint + "', @ToPoint= '" + input.toPoint + "'");
+            SqlCommand sqlCommand = new SqlCommand(sql, conn);
+            DataTable data = new DataTable();
+            SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
+            adapter.Fill(data);
+            var accountList = new List<AccountDto>();
+            foreach (DataRow i in data.Rows)
+            {
+                AccountDto account = new AccountDto(i);
+                accountList.Add(account);
+            }
+            conn.Close();
+            return accountList.ToList();
+        }
         [HttpGet("gettopcustomer")]
         public List<GetTop1Dto> GetTopCustomer()
         {

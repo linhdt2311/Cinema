@@ -33,6 +33,25 @@ namespace Cinema.Controllers
             conn.Close();
             return list.ToList();
         }
+        [HttpPost("search")]
+        public List<GetAllFoodDto> Search(SearchFoodAndDrinksDto input)
+        {
+            conn.Open();
+            string listId = input.cinemaId.Count >= 1 ? string.Join(",", input.cinemaId) : "00000000-0000-0000-0000-000000000000";
+            string sql = string.Format("exec SearchFoodByCinema @CinemaId = '" + listId + "', @Name = '" + input.name + "', @Size = '" + input.size + "', @@Price = '" + input.price + "'");
+            SqlCommand sqlCommand = new SqlCommand(sql, conn);
+            DataTable data = new DataTable();
+            SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
+            adapter.Fill(data);
+            var list = new List<GetAllFoodDto>();
+            foreach (DataRow i in data.Rows)
+            {
+                GetAllFoodDto dto = new GetAllFoodDto(i);
+                list.Add(dto);
+            }
+            conn.Close();
+            return list.ToList();
+        }
 
         [HttpGet("getallbilldetail")]
         public List<GetAllBillDetailDto> GetAllBillDetail(Guid? foodId, Guid? billId, int? quantity)

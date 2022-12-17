@@ -15,7 +15,7 @@ namespace Cinema.Controllers
     [Route("api/showtimes")]
     public class ShowTimesController : DBConnect
     {
-        [HttpGet("getall")]
+       [HttpGet("getall")]
         public List<ShowTimesDto> GetAllShowTimes(Guid? showtimesId, Guid? cinemaId, Guid? movieId, DateTime? timeStart, int? format)
         {
             conn.Open();
@@ -26,6 +26,31 @@ namespace Cinema.Controllers
             var a = string.IsNullOrWhiteSpace(timeStart.ToString()) ? null : timeStart.Value.ToString("yyyy-MM-dd");
             
             string sql = string.Format("exec GetViewShowtimes @ShowtimesId = '" + showtimesId + "', @CinemaId = '" + cinemaId + "', @MovieId = '" + movieId + "', @TimeStart = '" + a + "', @FormatMovieScreen = '" + format + "'");
+            SqlCommand sqlCommand = new SqlCommand(sql, conn);
+            DataTable data = new DataTable();
+            SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
+            adapter.Fill(data);
+            var showtimesList = new List<ShowTimesDto>();
+            foreach (DataRow i in data.Rows)
+            {
+                ShowTimesDto showtimes = new ShowTimesDto(i);
+                showtimesList.Add(showtimes);
+            }
+            conn.Close();
+            return showtimesList.ToList();
+        }
+        
+        [HttpPost("search")]
+        public List<ShowTimesDto> SearchShowTime(SearchShowTimeDto input)
+        {
+            conn.Open();
+            string id = string.Format("00000000-0000-0000-0000-000000000000");
+            string list = input.cinemaId.Count >= 1? string.Join(",", input.cinemaId) :"00000000-0000-0000-0000-000000000000";
+            string dataliset = list.ToUpper();
+            if (input.showtimesId == null) input.showtimesId = new Guid(id);
+            if (input.movieId == null) input.movieId = new Guid(id);
+            input.format = 2;
+            string sql = string.Format("exec SearchShowtimes @ShowtimesId = '" + input.showtimesId + "', @CinemaId = '" + dataliset + "', @MovieId = '" + input.movieId + "', @TimeStart = '" + input.timeStart + "', @TimeEnd = '" + input.timeEnd + "', @FormatMovieScreen = '" + input.format + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             DataTable data = new DataTable();
             SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);

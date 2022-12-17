@@ -4,18 +4,18 @@
         <nz-select nzShowSearch [ngModel]="null" class="search m-2" nzPlaceHolder="Search movie name..." (ngModelChange)="onFilterMovie($event)">
             <nz-option *ngFor="let movie of movies" [nzLabel]="movie.name" [nzValue]="movie.id"></nz-option>
         </nz-select>
-        <nz-range-picker nzShowTime class="m-2" nzFormat="YYYY-MM-dd"></nz-range-picker>
-        <nz-select class="m-2" [ngModel]="'2D'" (ngModelChange)="onFilterMovie($event)">
+        <nz-range-picker nzShowTime  ngModel class="m-2" nzFormat="YYYY-MM-dd" (ngModelChange)="onFilterDate($event)"></nz-range-picker>
+        <nz-select class="m-2" [ngModel]="'2D'" (ngModelChange)="onFilterFormaterMovie($event)">
             <nz-option nzLabel="IMAX" nzValue="IMAX"></nz-option>
             <nz-option nzLabel="2D" nzValue="2D"></nz-option>
             <nz-option nzLabel="3D" nzValue="3D"></nz-option>
             <nz-option nzLabel="4D" nzValue="4D"></nz-option>
         </nz-select>
-        <nz-select nzShowSearch nzAllowClear nzMode="multiple" class="m-2" style="width: 15rem;"
-            nzPlaceHolder="Search cinema...">
+        <nz-select nzShowSearch nzAllowClear nzMode="multiple" class="m-2" style="width: 15rem;"  [nzMaxTagCount]="2"
+            nzPlaceHolder="Search cinema..."  (ngModelChange)="onFilterCinema($event)"  [(ngModel)]="cinemaName">
             <nz-option *ngFor="let cinema of cinemas" [nzLabel]="cinema.name" [nzValue]="cinema.id"></nz-option>
         </nz-select>
-        <button nz-button class="m-2" nzType="primary">
+        <button nz-button class="m-2" nzType="primary" (click)="Refresh()" >
             <i class="fa-solid fa-arrows-rotate" style="margin-right: 5px;"></i>
             Refresh
         </button>

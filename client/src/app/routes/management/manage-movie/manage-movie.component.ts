@@ -8,6 +8,8 @@ import { User } from 'src/app/models/user';
 import { MovieService } from 'src/app/services/movie.service';
 import { ViewAndEditMovieComponent } from '../../shared-module/view-and-edit-movie/view-and-edit-movie.component';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { DatePipe } from '@angular/common';
+import { SearchMoive } from 'src/app/models/getallmoive';
 @Component({
   selector: 'app-manage-movie',
   templateUrl: './manage-movie.component.html',
@@ -18,6 +20,9 @@ export class ManageMovieComponent implements OnInit {
   title: string = 'create';
   user: User;
   movies: any[] = [];
+  movieName: any[] =[];
+  date: any[] =[];
+
   visible: boolean = false
   setting: Setting;
   checked = false;
@@ -28,10 +33,12 @@ export class ManageMovieComponent implements OnInit {
   mode: string = 'create';
   data: any;
   isEdit: boolean = true;
+  searchMovie : SearchMoive = new SearchMoive();
   constructor(
     private movieService: MovieService,
     private modal: NzModalService,
     private notification: NzNotificationService,
+    private datepipe: DatePipe,
   ) { }
 
   ngOnInit(): void {
@@ -42,11 +49,17 @@ export class ManageMovieComponent implements OnInit {
 
   movieData() {
     this.movieService
-      .getAllMovie()
+      .searchMovie(this.searchMovie)
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.movies = response;
       })
+    // this.movieService
+    //   .getAllMovie()
+    //   .pipe(catchError((err) => of(err)))
+    //   .subscribe((response) => {
+    //     this.movies = response;
+    //   })
   }
 
   drop(event: CdkDragDrop<any[]>): void {
@@ -125,5 +138,21 @@ export class ManageMovieComponent implements OnInit {
           setTimeout(null ? resolve : reject, 1000);
         }).catch(() => console.log('Oops errors!'))
     });
+  }
+  onFilterMovie(id :any){
+    this.searchMovie.id =  id;
+    this.movieData();
+  }
+  onFilterDate(id : any){
+    id[0] =  this.datepipe.transform(id[0], 'YYYY-MM-dd') ;
+    this.searchMovie.startDate =  id[0];
+    id[1] =  this.datepipe.transform(id[1], 'YYYY-MM-dd') ;
+    this.searchMovie.endDate =  id[1];
+    this.movieData();
+  }
+  Refresh(){
+    this.searchMovie = new SearchMoive();
+    this.date = [];
+    this.movieData();
   }
 }

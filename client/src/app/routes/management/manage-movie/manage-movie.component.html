@@ -1,17 +1,17 @@
 <div class="header">
     <button class="btn_create" (click)="open('create', null)">Create</button>
     <div class="filter">
-        <nz-select nzShowSearch nzAllowClear nzMode="multiple" class="search m-2" nzPlaceHolder="Search movie name...">
+        <nz-select nzShowSearch nzAllowClear nzMode="multiple" [nzMaxTagCount]="2" [(ngModel)]="movieName" class="search m-2" nzPlaceHolder="Search movie name..." (ngModelChange)="onFilterMovie($event)">
             <nz-option *ngFor="let movie of movies" [nzLabel]="movie.name" [nzValue]="movie.id"></nz-option>
         </nz-select>
-        <nz-range-picker class="m-2" nzFormat="YYYY-MM-dd"></nz-range-picker>
+        <nz-range-picker class="m-2" nzFormat="YYYY-MM-dd" [(ngModel)]="date" (ngModelChange)="onFilterDate($event)" ></nz-range-picker>
         <nz-select class="m-2" [ngModel]="'.com'">
             <nz-option nzLabel=".com" nzValue=".com"></nz-option>
             <nz-option nzLabel=".jp" nzValue=".jp"></nz-option>
             <nz-option nzLabel=".cn" nzValue=".cn"></nz-option>
             <nz-option nzLabel=".org" nzValue=".org"></nz-option>
         </nz-select>
-        <button nz-button class="m-2" nzType="primary">
+        <button nz-button class="m-2" nzType="primary" (click)="Refresh()">
             <i class="fa-solid fa-arrows-rotate" style="margin-right: 5px;"></i>
             Refresh
         </button>

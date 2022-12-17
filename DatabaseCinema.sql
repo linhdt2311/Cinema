@@ -240,6 +240,17 @@ create view GetAllPromotion
 as
 	select Id, Code, Discount, StartDate, EndDate from Promotion where IsDeleted <> 1
 go
+
+create proc SearchPromotion
+@Id uniqueidentifier, @Discount int, @StartDate datetime,@EndDate datetime
+as
+	select * from Promotion m where IsDeleted <> 1
+	and (isnull(@Id, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or m.Id  in (SELECT * FROM STRING_SPLIT(cast(@Id as varchar(Max)),',')))
+    and (isnull(@Discount, '') = '' or upper(m.Discount) like '%' + upper(@Discount) + '%')
+    and (isnull(@StartDate, '') = '' or cast(m.StartDate as date) = @StartDate)
+    and (isnull(@EndDate, '') = '' or cast(m.EndDate as date ) = @EndDate)
+      
+go
 --proc getall billDetail in cinema
 create or alter proc GetAllBillDetail
 @FoodId uniqueidentifier, @BillId uniqueidentifier, @Quantity int
@@ -259,6 +270,16 @@ as
 	and (isnull(@CinemaId, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or f.CinemaId = @CinemaId) 
 	and (isnull(@Name, '') = '' or upper(f.Name) like '%' + upper(@Name) + '%')
 	and (isnull(@Size, '') = '' or upper(f.Size) like '%' + upper(@Size) + '%')
+    option (recompile)
+go
+create proc SearchFoodByCinema
+@CinemaId uniqueidentifier, @Name nvarchar(50), @Size int, @Price int
+as
+	select * from Food f where f.IsDeleted <> 1
+	and (isnull(@CinemaId, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or f.CinemaId  in (SELECT * FROM STRING_SPLIT(cast(@CinemaId as varchar(Max)),',')))
+	and (isnull(@Name, '') = '' or upper(f.Name) like '%' + upper(@Name) + '%')
+	and (isnull(@Size, '') = '' or upper(f.Size) like '%' + upper(@Size) + '%')
+	and (isnull(@Price, '') = '' or f.Price like '%' + @Price + '%')
     option (recompile)
 go
 --proc getall room in cinema
@@ -296,6 +317,17 @@ as
 		order by m.OpeningDay desc
         option (recompile)
 go
+create proc SearchMovie
+@Id nvarchar(max), @Country nvarchar(50), @Director nvarchar(50) , @ToDate datetime,@FromDate datetime
+as
+		select * from Movie m where m.IsDeleted <> 1 
+		and (isnull(@Id, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or m.Id  in (SELECT * FROM STRING_SPLIT(cast(@Id as varchar(Max)),',')))
+        and (isnull(@Country, '') = '' or upper(m.Country) like '%' + upper(@Country) + '%')
+        and (isnull(@Director, '') = '' or upper(m.Director) like '%' + upper(@Director) + '%')
+        and (isnull(@ToDate, '') = '' or isnull(@FromDate, '') = '' or cast(m.OpeningDay as date) Between  @ToDate and @FromDate )
+		order by m.OpeningDay desc
+        option (recompile)
+go
 --exec GetViewMovie @Name = '', @Country = '', @Director ='' , @ToDate = '2022-11-26',@FromDate ='2022-12-03'
 create proc GetViewCinema
 @Name nvarchar(max)
@@ -305,7 +337,16 @@ as
 		order by m.Name desc
         option (recompile)
 go
---proc view Showtimes nếu có tìm kiếm sẽ tìm theo yêu cầu không thì sẽ hiện full
+create proc SearchCinema
+@Id nvarchar(max)  @QuantityRoom int
+as
+	select * from Cinema m where m.IsDeleted <> 1 
+		and (isnull(@Id, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or m.Id  in (SELECT * FROM STRING_SPLIT(cast(@Id as varchar(Max)),',')))
+		and (isnull(@QuantityRoom, '') = '' or m.  in (SELECT * FROM STRING_SPLIT(cast(@Id as varchar(Max)),',')))
+		order by m.Name desc
+        option (recompile)
+go
+--proc view Showtimes nếu cótìm kiếm sẽ tìm theo yêu cầu không thì sẽ hiện full
 create proc GetViewShowtimes
 @ShowtimesId uniqueidentifier, @CinemaId uniqueidentifier, @MovieId uniqueidentifier, @TimeStart datetime, @FormatMovieScreen int
 as
@@ -317,6 +358,21 @@ as
         and (isnull(@TimeStart, '') = '' or cast (t.TimeStart  as date) =@TimeStart)
         and (isnull(@FormatMovieScreen, '') = '' or upper(r.FormatMovieScreen) like '%' + upper(@FormatMovieScreen) + '%')
 go
+
+
+create proc SearchShowtimes
+@ShowtimesId uniqueidentifier, @CinemaId varchar(max), @MovieId uniqueidentifier, @TimeStart datetime, @TimeEnd datetime, @FormatMovieScreen int
+as
+		select * from Showtimes t join Movie m on m.Id = t.MovieId join Room r on r.Id = t.RoomId 
+		join Cinema c on c.Id = r.CinemaId where t.IsDeleted <> 1 
+		and (isnull(@ShowtimesId, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or t.Id = @ShowtimesId) 
+		and (isnull(@CinemaId, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or c.Id  in (SELECT * FROM STRING_SPLIT(cast(@CinemaId as varchar(Max)),',')))
+		and (isnull(@MovieId, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or t.MovieId = @MovieId)
+		and (isnull(@TimeStart, '') = '' or cast (t.TimeStart  as date) between @TimeStart and @TimeEnd)
+		and (isnull(@FormatMovieScreen, '') = '' or upper(r.FormatMovieScreen) like '%' + upper(@FormatMovieScreen) + '%')
+		option (recompile)
+go
+--SUBSTRING(string, start, length)
 --proc view Account nếu có tìm kiếm sẽ tìm theo yêu cầu không thì sẽ hiện full
 create proc GetViewAccount
 @Name nvarchar(50), @Email nvarchar(50), @IdentityCard nvarchar(12), @DoB datetime, @Address nvarchar(max), @Phone nvarchar(10)
@@ -328,6 +384,15 @@ as
         and (isnull(@DoB, '') = '' or upper(a.DoB) like '%' + upper(@DoB) + '%')
         and (isnull(@Address, '') = '' or upper(a.Address) like '%' + upper(@Address) + '%')
         and (isnull(@Phone, '') = '' or upper(a.Phone) like '%' + upper(@Phone) + '%')
+        option (recompile)
+go
+create proc SearchAccount
+@Id nvarchar(Max),@TimeStart datetime, @TimeEnd datetime, @FromPoint int, @ToPoint int
+as
+	select * from Account a where a.IsDeleted <> 1
+		and (isnull(@Id, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or a.Id  in (SELECT * FROM STRING_SPLIT(cast(@Id as varchar(Max)),',')))
+        and (isnull(@TimeStart, '') = '' or cast (a.DoB  as date) between @TimeStart and @TimeEnd)
+		and (isnull(@FromPoint, '') = '' or a.Point between @FromPoint and @ToPoint)
         option (recompile)
 go
 --proc view Ticket nếu có tìm kiếm sẽ tìm theo yêu cầu không thì sẽ hiện full
@@ -676,3 +741,6 @@ begin
 end
 go
 select * from Account a join Bill b on b.AccountId = b.Id
+
+
+	

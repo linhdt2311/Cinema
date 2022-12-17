@@ -22,6 +22,14 @@ export class MovieService {
       return this.http.get(this.baseUrl + '/getall');
     }
   }
+  searchMovie(payload?: any):Observable<any>{
+    if(!payload.id){
+      payload.id = ['00000000-0000-0000-0000-000000000000'];
+    }
+
+    return this.http.post(this.baseUrl + '/search',payload);
+
+  }
   getTheBestMovie(payload: any):Observable<any>{
     return this.http.get(this.baseUrl + '/getthebestmovie?bestOrWorst='+ payload);
   }

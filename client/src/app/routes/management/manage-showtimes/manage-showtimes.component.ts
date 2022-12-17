@@ -12,9 +12,10 @@ import { MovieService } from 'src/app/services/movie.service';
 import { CinemaService } from 'src/app/services/cinema.service';
 import { RoomService } from 'src/app/services/room.service';
 import { FormatMovieScreen } from 'src/app/helpers/FormatMovieScreen';
-import { GetAllShowtimes } from 'src/app/models/getallshowtimes';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
-import { vi } from 'date-fns/locale';
+import { L } from 'chart.js/dist/chunks/helpers.core';
+import { SearchShowTime } from 'src/app/models/getallshowtimes';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-manage-showtimes',
   templateUrl: './manage-showtimes.component.html',
@@ -38,8 +39,9 @@ export class ManageShowtimesComponent implements OnInit {
   mode: string = 'create';
   data: any;
   isEdit: boolean = true;
-  getAllShowtimes: GetAllShowtimes = new GetAllShowtimes();
-  formatMovieScreen: any[] = [
+  cinemaName :any[]=[];
+  getAllShowtimes: SearchShowTime = new SearchShowTime();
+  formatMovieScreen: {value:number| undefined ,viewValue : string }[] = [
     { value: FormatMovieScreen.IMAX, viewValue: 'IMAX' },
     { value: FormatMovieScreen.TwoD, viewValue: '2D' },
     { value: FormatMovieScreen.ThreeD, viewValue: '3D' },
@@ -51,25 +53,23 @@ export class ManageShowtimesComponent implements OnInit {
     private roomService: RoomService,
     private modal: NzModalService,
     private notification: NzNotificationService,
-    private i18n: NzI18nService
+    private datepipe: DatePipe,
   ) { }
 
   ngOnInit(): void {
     this.setting = JSON.parse(localStorage.getItem('setting') || '{}');
     this.user = JSON.parse(localStorage.getItem('user') || '{}');
-    this.showtimesData();
-    this.movieData();
     this.cinemaData();
+    this.movieData();
     this.roomData();
+    this.showtimesData();
   }
 
   showtimesData() {
-    this.showtimesService
-      .getAllShowtimes(this.getAllShowtimes)
-      .pipe(catchError((err) => of(err)))
-      .subscribe((response) => {
-        this.showtimes = response;
-      })
+      this.showtimesService.searchShowTime(this.getAllShowtimes)
+      .pipe(catchError((err) => of(err))).subscribe((response) => {
+        this.showtimes = response ?? [];
+    })
   }
 
   movieData() {
@@ -77,7 +77,7 @@ export class ManageShowtimesComponent implements OnInit {
       .getAllMovie()
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
-        this.movies = response;
+        this.movies = response ?? [];
       })
   }
 
@@ -86,7 +86,7 @@ export class ManageShowtimesComponent implements OnInit {
       .getAllCinema()
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
-        this.cinemas = response;
+        this.cinemas = response ?? [];
       })
   }
 
@@ -95,7 +95,7 @@ export class ManageShowtimesComponent implements OnInit {
       .getAllRoom()
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
-        this.rooms = response;
+        this.rooms = response ?? [];
       })
   }
 
@@ -119,6 +119,25 @@ export class ManageShowtimesComponent implements OnInit {
 
   onFilterMovie(id: any){
     this.getAllShowtimes.movieId = id;
+    this.showtimesData();
+  }
+  onFilterFormaterMovie(formatMovie : any){
+    this.getAllShowtimes.formatMovieScreen = (this.formatMovieScreen.find(e=>e.viewValue == formatMovie ))?.value;
+    this.showtimesData();
+  }
+  onFilterCinema(id : any){
+    this.getAllShowtimes.cinemaId = id;
+    this.showtimesData();
+  }
+  onFilterDate(id : any){
+    id[0] =  this.datepipe.transform(id[0], 'YYYY-MM-dd') ;
+    this.getAllShowtimes.timeStart =  id[0];
+    id[1] =  this.datepipe.transform(id[1], 'YYYY-MM-dd') ;
+    this.getAllShowtimes.timeEnd =  id[1];
+    this.showtimesData();
+  }
+  Refresh(){
+    this.getAllShowtimes = new SearchShowTime();
     this.showtimesData();
   }
 

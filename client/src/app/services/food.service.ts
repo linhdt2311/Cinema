@@ -22,6 +22,17 @@ export class FoodService {
       return this.http.get(this.baseUrl + '/getall');
     }
   }
+  searchFood(payload?: any): Observable<any> {
+    if(payload){
+      let cinemaId, name, size
+      cinemaId = payload.cinemaId ? 'cinemaId=' + payload.cinemaId : ''
+      name = payload.name ? '&name=' + payload.name : ''
+      size = payload.size ? '&size=' + payload.size : ''
+      return this.http.get(this.baseUrl + '/search?' + cinemaId + name + size);
+    } else {
+      return this.http.post(this.baseUrl + '/search',payload);
+    }
+  }
   createFood(payload: any): Observable<any> {
     return this.http.post(this.baseUrl + '/create', payload);
   }

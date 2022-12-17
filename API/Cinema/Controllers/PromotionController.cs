@@ -33,6 +33,26 @@ namespace Cinema.Controllers
             conn.Close();
             return promotionList.ToList();
         }
+        [HttpPost("search")]
+        public List<PromotionDto> SearchromotionDto(SearchPromotionDto input)
+        {
+            conn.Open();
+            string list = input.id.Count >= 1 ? string.Join(",", input.id) : "00000000-0000-0000-0000-000000000000";
+            string dataliset = list.ToUpper();
+            string sql = string.Format("select * from SearchPromotion @Id = '" + dataliset + "', @Discount = '" + input.discount + "', @StartDate = '" + input.startDate + "',@EndDate= '" + input.endDate  + "'");
+            SqlCommand sqlCommand = new SqlCommand(sql, conn);
+            DataTable data = new DataTable();
+            SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
+            adapter.Fill(data);
+            var promotionList = new List<PromotionDto>();
+            foreach (DataRow i in data.Rows)
+            {
+                PromotionDto promotion = new PromotionDto(i);
+                promotionList.Add(promotion);
+            }
+            conn.Close();
+            return promotionList.ToList();
+        }
         [HttpPost("create")]
         public bool CreatePromotion(CreatePromotionDto input)
         {

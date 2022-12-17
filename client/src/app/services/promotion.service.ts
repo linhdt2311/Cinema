@@ -14,6 +14,9 @@ export class PromotionService {
   getAllPromotion():Observable<any>{
     return this.http.get(this.baseUrl + '/getall');
    }
+   searchPromotion():Observable<any>{
+    return this.http.get(this.baseUrl + '/getall');
+   }
   createPromotion(payload:any):Observable<any>{
     return this.http.post(this.baseUrl + '/create', payload);
   }

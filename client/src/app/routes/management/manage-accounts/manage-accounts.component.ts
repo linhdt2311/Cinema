@@ -1,3 +1,4 @@
+import { searchPromotion } from './../../../models/promotionDataItem';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
@@ -8,6 +9,7 @@ import { User } from 'src/app/models/user';
 import { AccountService } from 'src/app/services/account.service';
 import { ViewAndEditCustomerComponent } from '../../shared-module/view-and-edit-customer/view-and-edit-customer.component';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-manage-accounts',
@@ -19,6 +21,7 @@ export class ManageAccountsComponent implements OnInit {
   title: string = 'create';
   user: User;
   accounts: any[] = [];
+  date: any[] =[];
   visible: boolean = false
   setting: Setting;
   checked = false;
@@ -29,10 +32,12 @@ export class ManageAccountsComponent implements OnInit {
   mode: string = 'create';
   data: any;
   isEdit: boolean = true;
+  search: searchPromotion = new searchPromotion();
   constructor(
     private accountService: AccountService,
     private modal: NzModalService,
     private notification: NzNotificationService,
+    private datepipe: DatePipe,
   ) { }
 
   ngOnInit(): void {
@@ -48,6 +53,13 @@ export class ManageAccountsComponent implements OnInit {
       .subscribe((response) => {
         this.accounts = response;
       })
+  }
+  onFilterDate(id : any){
+    id[0] =  this.datepipe.transform(id[0], 'YYYY-MM-dd') ;
+    this.search.startDate =  id[0];
+    id[1] =  this.datepipe.transform(id[1], 'YYYY-MM-dd') ;
+    this.search.endDate =  id[1];
+    this.movieData();
   }
 
   drop(event: CdkDragDrop<any[]>): void {

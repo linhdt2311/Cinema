@@ -7,7 +7,8 @@ import { User } from 'src/app/models/user';
 import { PromotionService } from 'src/app/services/promotion.service';
 import { ViewAndEditPromotionComponent } from '../../shared-module/view-and-edit-promotion/view-and-edit-promotion.component';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { PromotionDataItem } from 'src/app/models/promotionDataItem';
+import { PromotionDataItem, searchPromotion } from 'src/app/models/promotionDataItem';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-manage-promotion',
@@ -28,17 +29,26 @@ export class ManagePromotionComponent implements OnInit {
   confirmModal?: NzModalRef;
   mode: string = 'create';
   data: any;
+  date: any[] =[];
+  search: searchPromotion = new searchPromotion();
   isEdit: boolean = true;
   constructor(
     private promotionService: PromotionService,
     private modal: NzModalService,
     private notification: NzNotificationService,
+    private datepipe: DatePipe,
   ) { }
 
   ngOnInit(): void {
     this.setting = JSON.parse(localStorage.getItem('setting') || '{}');
     this.user = JSON.parse(localStorage.getItem('user') || '{}');
     this.promotionData();
+  }
+  onFilterDate(id : any){
+    id[0] =  this.datepipe.transform(id[0], 'YYYY-MM-dd') ;
+    this.search.startDate =  id[0];
+    id[1] =  this.datepipe.transform(id[1], 'YYYY-MM-dd') ;
+    this.search.endDate =  id[1];
   }
 
   promotionData() {
@@ -49,6 +59,7 @@ export class ManagePromotionComponent implements OnInit {
         this.promotions = response;
       })
   }
+
 
   checkStatus(endDate: Date){
     if(new Date(endDate) > new Date()) {

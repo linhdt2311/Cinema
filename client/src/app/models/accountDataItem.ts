@@ -8,3 +8,8 @@ export interface AccountsDataItem {
     description: string;
     poster: string;
 }
+export class search{
+    id!: any[];
+    startDate!: string |null;
+    endDate!: string | null;
+  }

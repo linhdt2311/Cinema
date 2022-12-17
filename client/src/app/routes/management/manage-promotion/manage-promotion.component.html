@@ -5,9 +5,9 @@
             <nz-option *ngFor="let promotion of promotions" [nzLabel]="promotion.code" [nzValue]="promotion.id"></nz-option>
         </nz-select>
         <nz-input-number-group nzAddOnAfter="VNĐ" class="m-2" style="width: 20rem">
-            <nz-input-number nzPlaceHolder="Search discount..." [nzMin]="1000" [nzMax]="60000" [nzStep]="1000"></nz-input-number>
+            <nz-input-number nzPlaceHolder="Search discount..." [nzMin]="1000" [nzMax]="60000" [nzStep]="1000" ></nz-input-number>
         </nz-input-number-group>
-        <nz-range-picker class="m-2" nzFormat="dd-MM-YYYY"></nz-range-picker>
+        <nz-range-picker class="m-2" nzFormat="dd-MM-YYYY"  [(ngModel)]="date" (ngModelChange)="onFilterDate($event)"></nz-range-picker>
         <button nz-button class="m-2" nzType="primary">
             <i class="fa-solid fa-arrows-rotate" style="margin-right: 5px;"></i>
             Refresh

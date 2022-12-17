@@ -338,11 +338,11 @@ as
         option (recompile)
 go
 create proc SearchCinema
-@Id nvarchar(max)  @QuantityRoom int
+@Id nvarchar(max) , @QuantityRoom int
 as
 	select * from Cinema m where m.IsDeleted <> 1 
 		and (isnull(@Id, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or m.Id  in (SELECT * FROM STRING_SPLIT(cast(@Id as varchar(Max)),',')))
-		and (isnull(@QuantityRoom, '') = '' or m.  in (SELECT * FROM STRING_SPLIT(cast(@Id as varchar(Max)),',')))
+		--and (isnull(@QuantityRoom, '') = '' or m.  in (SELECT * FROM STRING_SPLIT(cast(@Id as varchar(Max)),',')))
 		order by m.Name desc
         option (recompile)
 go

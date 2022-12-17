@@ -4,7 +4,7 @@
         <nz-select nzShowSearch nzAllowClear nzMode="multiple" class="search m-2" nzPlaceHolder="Search customer name..">
             <nz-option *ngFor="let account of accounts" [nzLabel]="account.name" [nzValue]="account.id"></nz-option>
         </nz-select>
-        <nz-range-picker class="m-2" nzFormat="YYYY-MM-dd"></nz-range-picker>
+        <nz-range-picker class="m-2" nzFormat="YYYY-MM-dd" [(ngModel)]="date" (ngModelChange)="onFilterDate($event)"></nz-range-picker>
         <nz-input-number-group nzAddOnBefore="From">
             <nz-input-number nz-input nzPlaceHolder="Point..."></nz-input-number>
         </nz-input-number-group>

@@ -8,13 +8,11 @@
         </div>
     </nz-carousel>
     <nz-header class="header">Movie</nz-header>
-    <nz-header class="header">
-      <button nz-button nzType="default"  nzShape="round"  class="btn-nowshowing" (click)="getAllMovieNow()">Now Showing</button>
-    <button  nz-button nzType="default"  nzShape="round"  class="btn-comingsoon" (click)="getAllMovieSoon()">Coming soon</button>
-    </nz-header>
     <img width="100%" height="100%" style="object-fit:cover" src="../../../assets/background.webp" alt="background">
     <img width="100%" height="100%" style="object-fit:cover" src="../../../assets/background.webp" alt="background">
     <div class="content">
+        <button class="btn_nowshowing" (click)="movieData('now')">Now Showing</button>
+        <button class="btn_comingsoon" (click)="movieData('soon')">Coming soon</button>
         <nz-card style="background: none; border: none; padding: none;">
             <div nz-card-grid *ngFor="let movie of movies" style="width: 25%; text-align: center;">
                 <nz-card nzHoverable class="card" [nzCover]="coverTemplate" [nzLoading]="loading">

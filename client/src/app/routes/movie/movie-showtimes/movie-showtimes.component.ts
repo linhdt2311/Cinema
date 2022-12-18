@@ -17,10 +17,9 @@ import { ModalRoomComponent } from '../../shared-module/modal-room/modal-room.co
 export class MovieShowtimesComponent implements OnInit {
   @ViewChild('modalRoom', {static: true}) modalRoom!: ModalRoomComponent;
   showtimes: any[] = [];
-  movies: any[] = [];
   cinemas: any[] = [];
   isVisible: boolean = false;
-  m: any;
+  movie: any;
   sId: string = '';
   getAllShowtimes: GetAllShowtimes = new GetAllShowtimes();
   date: any[] = [{ value: new Date() },
@@ -66,9 +65,8 @@ export class MovieShowtimesComponent implements OnInit {
     this.movieService
       .getAllMovie()
       .pipe(catchError((err) => of(err)))
-      .subscribe((response) => {
-        this.movies = response;
-        this.m = this.movies.find(m => m.id == this.getAllShowtimes.movieId)
+      .subscribe((response: any[]) => {
+        this.movie = response.find(m => m.id == this.getAllShowtimes.movieId);
       });
   }
 

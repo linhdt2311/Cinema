@@ -32,12 +32,17 @@ export class MovieComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getAllMovieNow();
+    this.movieData("now");
   }
 
-  getAllMovieNow() {
-    this.getAllMovie.todate = this.datepipe.transform(new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 7), 'YYYY-MM-dd');
-    this.getAllMovie.fromdate = this.datepipe.transform(new Date(), 'YYYY-MM-dd');
+  movieData(value: string) {
+    if (value === "now") {
+      this.getAllMovie.todate = this.datepipe.transform(new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 7), 'YYYY-MM-dd');
+      this.getAllMovie.fromdate = this.datepipe.transform(new Date(), 'YYYY-MM-dd');
+    } else {
+      this.getAllMovie.todate  = this.datepipe.transform(new Date(), 'YYYY-MM-dd');
+      this.getAllMovie.fromdate = this.datepipe.transform(new Date(new Date().getTime() + 24 * 60 * 60 * 1000 * 7), 'YYYY-MM-dd');
+    }
     this.movieService
       .getAllMovie(this.getAllMovie)
       .pipe(catchError((err) => of(err)))
@@ -46,28 +51,6 @@ export class MovieComponent implements OnInit {
       });
   }
 
-  getAllMovieSoon() {
-    this.getAllMovie.todate  = this.datepipe.transform(new Date(), 'YYYY-MM-dd');
-    this.getAllMovie.fromdate = this.datepipe.transform(new Date(new Date().getTime() + 24 * 60 * 60 * 1000 * 7), 'YYYY-MM-dd');
-    this.movieService
-      .getAllMovie(this.getAllMovie)
-      .pipe(catchError((err) => of(err)))
-      .subscribe((response) => {
-        this.movies = response;
-      });
-  }
-  // movieData() {
-  //   this.movieService
-  //     .getAllMovie()
-  //     .pipe(catchError((err) => of(err)))
-  //     .subscribe((response) => {
-  //       this.movies = response;
-  //     });
-  // }
-  onClick(): void {
-  }
-  clear() {
-  }
   getPoster(id: any) {
     this.url = this.movies.find(p => p.mId == id)?.poster
     if (this.url == '') {

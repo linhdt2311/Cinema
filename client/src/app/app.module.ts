@@ -55,6 +55,7 @@ import { ManagePromotionComponent } from './routes/management/manage-promotion/m
 import { ManageCinemaComponent } from './routes/management/manage-cinema/manage-cinema.component';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import { HistoryComponent } from './routes/history/history.component';
 registerLocaleData(en);
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ registerLocaleData(en);
     ManageFoodDrinkComponent,
     ManageCinemaComponent,
     ManagePromotionComponent,
+    HistoryComponent,
   ],
   imports: [
     BrowserModule,

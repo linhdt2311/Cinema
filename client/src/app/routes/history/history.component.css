@@ -1,0 +1,50 @@
+::ng-deep .cdk-drag-preview {
+    display: table;
+}
+
+::ng-deep .cdk-drag-placeholder {
+    opacity: 0;
+}
+
+.content {
+    top: 100px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 30px;
+    display: inline-block;
+    padding: 0 25px;
+    width: 60rem;
+    background-color: #001529;
+    color: aliceblue;
+    padding-bottom: 70px;
+}
+
+.title {
+    text-align: center;
+    margin-top: 70px;
+    color: #ff1b6b;
+}
+
+.list {
+    overflow-x: hidden;
+    height: 20rem;
+    background-color: #001529;
+    color: #fff;
+}
+
+.list::-webkit-scrollbar {
+    width: 0.1em;
+}
+
+.list::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+}
+
+nz-table {
+    color: #fff !important;
+    background-color: #001529 !important;
+}

@@ -53,7 +53,7 @@ export class ModalRoomComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.user = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || '{}');
     this.checkUser = Object.keys(this.user).length === 0;
     this.getAllShowtimes.id = this.showtimesId
     this.showtimesData();
@@ -216,7 +216,7 @@ export class ModalRoomComponent implements OnInit {
   }
 
   loginSubmit() {
-    this.user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.user = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || '{}');
     this.checkUser = Object.keys(this.user).length === 0
     this.showLogin = false;
   }

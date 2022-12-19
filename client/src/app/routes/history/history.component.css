@@ -28,23 +28,16 @@
     color: #ff1b6b;
 }
 
-.list {
+[list] {
     overflow-x: hidden;
     height: 20rem;
-    background-color: #001529;
-    color: #fff;
 }
 
-.list::-webkit-scrollbar {
+[list]::-webkit-scrollbar {
     width: 0.1em;
 }
 
-.list::-webkit-scrollbar-thumb {
+[list]::-webkit-scrollbar-thumb {
     background-color: darkgrey;
     outline: 1px solid slategrey;
-}
-
-nz-table {
-    color: #fff !important;
-    background-color: #001529 !important;
 }

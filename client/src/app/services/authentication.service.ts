@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, ReplaySubject } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../models/user';
 @Injectable({
@@ -11,18 +11,23 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient) { }
 
-  login(payload: any): Observable<any> {
+  login(payload: any, checkRemember: boolean): Observable<any> {
     return this.http.post<User>(this.baseUrl + '/login', payload).pipe(
       map((response: User) => {
         const user = response;
         if (user) {
-          localStorage.setItem('user', JSON.stringify(user));
+          if (checkRemember) {
+            localStorage.setItem('user', JSON.stringify(user));
+          } else {
+            sessionStorage.setItem('user', JSON.stringify(user));
+          }
         }
       })
     );
   }
   logout() {
     localStorage.removeItem('user');
+    sessionStorage.removeItem('user');
   }
   register(payload: any): Observable<any> {
     return this.http.post(this.baseUrl + '/register', payload);

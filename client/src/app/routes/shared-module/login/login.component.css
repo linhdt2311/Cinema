@@ -9,3 +9,8 @@ nz-form-item{
 button {
     width: 100%;
 }
+
+.forgot:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}

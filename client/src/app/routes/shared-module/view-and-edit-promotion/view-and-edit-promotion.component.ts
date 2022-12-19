@@ -32,7 +32,7 @@ export class ViewAndEditPromotionComponent implements OnInit {
   
     ngOnInit(): void {
       this.setting = JSON.parse(localStorage.getItem('setting') || '{}');
-      this.user = JSON.parse(localStorage.getItem('user') || '{}');
+      this.user = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || '{}');
       this.initForm();
       this.form.reset();
       this.form.disable();

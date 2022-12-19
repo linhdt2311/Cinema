@@ -31,7 +31,7 @@ export class MembershipComponent implements OnInit {
   }
 
   ngDoCheck() {
-    this.user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.user = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || '{}');
     this.checkUser = Object.keys(this.user).length === 0;
   }
 

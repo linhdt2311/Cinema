@@ -34,7 +34,7 @@ export class HistoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.setting = JSON.parse(localStorage.getItem('setting') || '{}');
-    this.user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.user = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || '{}');
     this.checkUser = Object.keys(this.user).length === 0;
     this.billData();
     this.foodData();

@@ -45,7 +45,7 @@ export class NavbarComponent implements OnInit {
   }
 
   ngDoCheck() {
-    this.user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.user = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || '{}');
     this.checkUser = Object.keys(this.user).length === 0
   }
   
@@ -59,7 +59,7 @@ export class NavbarComponent implements OnInit {
 
   handleSumit(){
     this.isVisible = false;
-    this.user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.user = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || '{}');
     if(this.user.role == 2){
       this.router.navigate(['statistics']);
     }

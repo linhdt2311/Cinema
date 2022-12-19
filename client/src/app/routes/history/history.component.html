@@ -9,17 +9,19 @@
     </div>
     <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="transactionList" [nzShowTotal]="rangeTemplate"
         (nzCurrentPageDataChange)="onCurrentPageDataChange($event)" nzShowQuickJumper
-        [nzPaginationPosition]="setting.paginationPosition" [nzBordered]="true" class="list"
+        [nzPaginationPosition]="setting.paginationPosition" [nzBordered]="true"
         [nzPaginationType]="setting.paginationType" [nzSimple]="setting.paginationSimple">
         <ng-template #rangeTemplate let-range="range" let-total>
             {{ range[0] }}-{{ range[1] }} of {{ total }} items
         </ng-template>
-        <tbody cdkDropList (cdkDropListDropped)="drop($event)" style="cursor: pointer;">
-            <tr *ngFor="let data of rowSelectionTable.data" cdkDrag>
-                <td style="width: 20%; text-align: center;">{{ data.date | date: 'dd/MM/YYYY' }}</td>
-                <td>{{ data.history }}</td>
-                <td>{{ changeToMoney(data.price) }}</td>
-            </tr>
-        </tbody>
+        <div list>
+            <tbody cdkDropList (cdkDropListDropped)="drop($event)" style="cursor: pointer;">
+                <tr *ngFor="let data of rowSelectionTable.data" cdkDrag>
+                    <td style="width: 20%; text-align: center;">{{ data.date | date: 'dd/MM/YYYY' }}</td>
+                    <td>{{ data.history }}</td>
+                    <td>{{ changeToMoney(data.price) }}</td>
+                </tr>
+            </tbody>
+        </div>
     </nz-table>
 </div>

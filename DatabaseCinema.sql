@@ -631,7 +631,7 @@ insert into Rank(FromPoint, ToPoint, Rank) values (3501, 5500, 'Gold')
 insert into Rank(FromPoint, ToPoint, Rank) values (5501, 8000, 'Platinum')
 insert into Rank(FromPoint, ToPoint, Rank) values (8001, 1100, 'Diamond')
 insert into Rank(FromPoint, ToPoint, Rank) values (1101, 14500, 'Master')
-insert into Rank(FromPoint, ToPoint, Rank) values (14501, max, 'Challenger')
+insert into Rank(FromPoint, ToPoint, Rank) values (14501, 999999, 'Challenger')
 --insert loại phòng
 insert into RoomType(Type) values ('4DX')
 insert into RoomType(Type) values ('IMAX')

@@ -40,13 +40,17 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(key?: any) {
+    let checkRemember = false;
+    if((<HTMLInputElement>document.getElementById('remember')).checked) {
+      checkRemember = true;
+    }
     for (const i in this.loginForm.controls) {
       this.loginForm.controls[i].markAsDirty();
       this.loginForm.controls[i].updateValueAndValidity();
     }
     if (this.loginForm.valid) {
       this.authenticationService
-        .login(this.loginForm.value)
+        .login(this.loginForm.value, checkRemember)
         .pipe(catchError((err) => of(err)))
         .subscribe((response) => {
           if (!response) {

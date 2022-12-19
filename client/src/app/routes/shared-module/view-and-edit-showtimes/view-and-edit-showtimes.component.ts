@@ -48,7 +48,7 @@ export class ViewAndEditShowtimesComponent implements OnInit {
 
   ngOnInit(): void {
     this.setting = JSON.parse(localStorage.getItem('setting') || '{}');
-    this.user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.user = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || '{}');
     this.movieData();
     this.roomData();
     this.cinemaData();

@@ -46,7 +46,7 @@ export class FoodComponent implements OnInit {
     this.user = JSON.parse(localStorage.getItem('user') || '{}');
     this.foodData();
   }
-  
+
   ngOnChanges() {
     if (this.createDate !== undefined) {
       this.money;
@@ -156,7 +156,11 @@ export class FoodComponent implements OnInit {
         } else {
           this.notification.create('error', 'Failed!', '');
         }
-      })
+      });
+    const user = this.user;
+    user.point += (this.total/2000);
+    localStorage.removeItem('user')
+    localStorage.setItem('user', JSON.stringify(user));
     this.billDetail = [];
     this.getAllFood.size = null;
     this.isPromotion = false;

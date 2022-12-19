@@ -500,16 +500,18 @@ as
 	update Food set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, CinemaId = @CinemaId, Name = @Name, Size = @Size, Price = @Price where Id = @Id
 go
 --proc add Bill
-create proc CreateBill
+create or alter proc CreateBill
 @CreatorUserId uniqueidentifier, @AccountId uniqueidentifier
 as
 	insert into Bill(CreationTime, CreatorUserId, IsDeleted, AccountId, Cost) values (getdate(), @CreatorUserId, 0, @AccountId, 0)
 go
 --proc update Bill
-create proc UpdateBill
+create or alter proc UpdateBill
 @LastModifierUserId uniqueidentifier, @Id uniqueidentifier, @Cost int
 as
+	declare @AccountId uniqueidentifier = (select AccountId from Bill where Id = @Id)
 	update Bill set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, Cost = @Cost where Id = @Id
+	update Account set LastModificationTime = getdate(), Point = Point + (@Cost/2000) where Id = @AccountId
 go
 --proc login
 create proc Login
@@ -740,3 +742,5 @@ begin
 	set @n = @n + 1;
 end
 go
+
+exec UpdateBill @LastModifierUserId = '45d5816a-c5f8-4957-b9d3-9a7d36f53f48', @Id = '0bbd6953-484f-4ffa-8b62-a6699a8402b9', @Cost = '4000'

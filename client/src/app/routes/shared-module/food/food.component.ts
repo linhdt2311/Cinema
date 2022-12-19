@@ -158,7 +158,7 @@ export class FoodComponent implements OnInit {
         }
       });
     const user = this.user;
-    user.point += (this.total/2000);
+    user.point += (this.total / 2000);
     localStorage.removeItem('user')
     localStorage.setItem('user', JSON.stringify(user));
     this.billDetail = [];
@@ -167,6 +167,41 @@ export class FoodComponent implements OnInit {
     this.discount = 0;
     this.warningCode = '';
     this.submit.emit();
+  }
+
+  getFoodSize(value: any) {
+    let size = 'S'
+    switch (value) {
+      case 1:
+        size = 'S';
+        break;
+      case 2:
+        size = 'M';
+        break;
+      case 3:
+        size = 'L';
+        break;
+    }
+    return size;
+  }
+
+  getImageFood(food: any) {
+    let image = '';
+    switch (food) {
+      case 'Nước Coca':
+        image = '../../../../assets/coca.jpg';
+        break;
+      case 'Bỏng ngô Phomai':
+        image = '../../../../assets/bong_ngo_phomai.jpg';
+        break;
+      case 'Bỏng ngô Default':
+        image = '../../../../assets/bong_ngo_default.jpg';
+        break;
+      case 'Bỏng ngô Caramel':
+        image = '../../../../assets/bong_ngo_caramel.jpg';
+        break;
+    }
+    return image;
   }
 
   onFilterSize(size: any) {

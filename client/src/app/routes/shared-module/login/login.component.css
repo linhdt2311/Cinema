@@ -1,0 +1,11 @@
+form {
+    justify-content: center;
+}
+
+nz-form-item{
+    margin: 5px 0;
+}
+
+button {
+    width: 100%;
+}

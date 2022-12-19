@@ -131,4 +131,26 @@ export class HistoryComponent implements OnInit {
   changeToMoney(value: any) {
     return new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'VND' }).format(value);
   }
+
+  getRankCustomer(point: any) {
+    let rank = 'Unknown Rank';
+    if (0 <= point && point <= 1000) {
+      rank = 'Unknown Rank';
+    } else if (1001 <= point && point <= 2000) {
+      rank = 'Bronze';
+    } else if (2001 <= point && point <= 3500) {
+      rank = 'Silver';
+    } else if (3501 <= point && point <= 5500) {
+      rank = 'Gold';
+    } else if (5501 <= point && point <= 8000) {
+      rank = 'Platinum';
+    } else if (8001 <= point && point <= 11000) {
+      rank = 'Diamond';
+    } else if (11001 <= point && point <= 14500) {
+      rank = 'Master';
+    } else {
+      rank = 'Challenger';
+    }
+    return rank;
+  }
 }

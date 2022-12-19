@@ -270,7 +270,7 @@ export class StatisticsComponent implements OnInit {
       })
   }
 
-  getRevenueForCinema(){
+  getRevenueForCinema() {
     this.cinemaService
       .getRevenueForCinema()
       .pipe(catchError((err) => of(err)))
@@ -322,6 +322,34 @@ export class StatisticsComponent implements OnInit {
   }
 
   getRankCustomer(name: any) {
-    return this.accounts.find(a => a.name == name)?.point;
+    const point = this.accounts.find(a => a.name == name)?.point;
+    let rank = 'Unknown Rank';
+    switch (point) {
+      case 0 <= point && point <= 1000:
+        rank = 'Unknown Rank';
+        break;
+      case 1001 <= point && point <= 2000:
+        rank = 'Bronze';
+        break;
+      case 2001 <= point && point <= 3500:
+        rank = 'Silver';
+        break;
+      case 3501 <= point && point <= 5500:
+        rank = 'Gold';
+        break;
+      case 5501 <= point && point <= 8000:
+        rank = 'Platinum';
+        break;
+      case 8001 <= point && point <= 11000:
+        rank = 'Diamond';
+        break;
+      case 11001 <= point && point <= 14500:
+        rank = 'Master';
+        break;
+      case 18501 <= point:
+        rank = 'Challenger';
+        break;
+    }
+    return rank;
   }
 }

@@ -624,13 +624,14 @@ insert into Genre(Genre) values ('Action')
 insert into Genre(Genre) values ('Documentary')
 insert into Genre(Genre) values ('Animation')
 --insert loại rank
-insert into Rank(FromPoint, ToPoint, Rank) values (101, 200, 'Bronze')
-insert into Rank(FromPoint, ToPoint, Rank) values (201, 300, 'Silver')
-insert into Rank(FromPoint, ToPoint, Rank) values (301, 500, 'Gold')
-insert into Rank(FromPoint, ToPoint, Rank) values (501, 700, 'Platinum')
-insert into Rank(FromPoint, ToPoint, Rank) values (701, 900, 'Diamond')
-insert into Rank(FromPoint, ToPoint, Rank) values (901, 9999, 'Master')
-insert into Rank(FromPoint, ToPoint, Rank) values (10000, 99999, 'Challenger')
+insert into Rank(FromPoint, ToPoint, Rank) values (0, 1000, 'Unknown Rank')
+insert into Rank(FromPoint, ToPoint, Rank) values (1001, 2000, 'Bronze')
+insert into Rank(FromPoint, ToPoint, Rank) values (2001, 3500, 'Silver')
+insert into Rank(FromPoint, ToPoint, Rank) values (3501, 5500, 'Gold')
+insert into Rank(FromPoint, ToPoint, Rank) values (5501, 8000, 'Platinum')
+insert into Rank(FromPoint, ToPoint, Rank) values (8001, 1100, 'Diamond')
+insert into Rank(FromPoint, ToPoint, Rank) values (1101, 14500, 'Master')
+insert into Rank(FromPoint, ToPoint, Rank) values (14501, max, 'Challenger')
 --insert loại phòng
 insert into RoomType(Type) values ('4DX')
 insert into RoomType(Type) values ('IMAX')
@@ -744,3 +745,4 @@ end
 go
 
 exec UpdateBill @LastModifierUserId = '45d5816a-c5f8-4957-b9d3-9a7d36f53f48', @Id = '0bbd6953-484f-4ffa-8b62-a6699a8402b9', @Cost = '4000'
+select * from Account

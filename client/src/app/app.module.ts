@@ -56,6 +56,7 @@ import { ManageCinemaComponent } from './routes/management/manage-cinema/manage-
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { HistoryComponent } from './routes/history/history.component';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 registerLocaleData(en);
 @NgModule({
   declarations: [
@@ -116,6 +117,7 @@ registerLocaleData(en);
     DragDropModule,
     NzStatisticModule,
     NzTypographyModule,
+    NzCheckboxModule
   ],
   providers: [
     DatePipe,

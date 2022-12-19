@@ -40,11 +40,11 @@
       </thead>
       <tbody>
         <tr *ngFor="let food of foods">
-          <td style="width: 10rem;">
-            <!-- <img src="{{ f }}" alt=""> -->
+          <td style="width: 10rem; display: flex;">
+            <img src="{{ getImageFood(food.name) }}" alt="" width="100px" height="50px">
             {{ food.name }}
           </td>
-          <td style="width: 8rem; text-align: center;">{{ food.size }}</td>
+          <td style="width: 8rem; text-align: center;">{{ getFoodSize(food.size) }}</td>
           <td style="width: 8rem; text-align: center;">{{ changeToVND(food.price) }}</td>
           <td style="width: 8rem; text-align: center;">
             <nz-input-number nzId="{{ food.id }}" [ngModel]="0" [nzMin]="0" [nzMax]="10"

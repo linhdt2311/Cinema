@@ -4,7 +4,7 @@
     <div *ngIf="checkUser == false">
         <div nz-row>
             <div nz-col nzSpan="12">Customer: {{ user.name }}</div>
-            <div nz-col nzSpan="12">Rank: {{ user.point }}</div>
+            <div nz-col nzSpan="12">Rank: {{ getRankCustomer(user.point) }}</div>
         </div>
     </div>
     <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="transactionList" [nzShowTotal]="rangeTemplate"

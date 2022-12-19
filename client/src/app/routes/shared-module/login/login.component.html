@@ -1,5 +1,6 @@
 <form nz-form [nzLayout]="'inline'" [formGroup]="loginForm" (ngSubmit)="submitForm()">
     <nz-form-item>
+        <nz-form-label>Email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</nz-form-label>
         <nz-form-control nzErrorTip="Please input your username!">
             <nz-input-group nzPrefixIcon="user">
                 <input formControlName="email" nz-input placeholder="Username" />
@@ -7,6 +8,7 @@
         </nz-form-control>
     </nz-form-item>
     <nz-form-item>
+        <nz-form-label>Password</nz-form-label>
         <nz-form-control nzErrorTip="Please input your Password!">
             <nz-input-group nzPrefixIcon="lock">
                 <input formControlName="password" nz-input type="password" placeholder="Password"
@@ -14,7 +16,11 @@
             </nz-input-group>
         </nz-form-control>
     </nz-form-item>
-    <nz-form-item>
+    <div>
+        <input type="checkbox" value="remember"/>Remember me!
+        <span style="color: #1890ff;">Forgot the password</span>
+    </div>
+    <nz-form-item style="width: 100%;">
         <nz-form-control>
             <button nz-button nzType="primary" (click)="onSubmit()" (keyup.enter)="onSubmit()">Log in</button>
         </nz-form-control>

@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { catchError, of } from 'rxjs';
 import { User } from 'src/app/models/user';
@@ -48,11 +47,7 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.authenticationService
         .login(this.loginForm.value)
-        .pipe(
-          catchError((err) => {
-            return of(err);
-          })
-        )
+        .pipe(catchError((err) => of(err)))
         .subscribe((response) => {
           if (!response) {
             this.loggedIn = true;

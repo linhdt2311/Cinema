@@ -166,6 +166,24 @@ export class ModalRoomComponent implements OnInit {
       this.isLoading = false;
       this.showLogin = true;
     } else {
+      const point = this.user.point;
+      if (0 <= point && point <= 1000) {
+          this.money = this.money; 
+      } else if (1001 <= point && point <= 2000) {
+          this.money = this.money - 2500;
+      } else if (2001 <= point && point <= 3500) {
+          this.money = this.money - 5000;
+      } else if (3501 <= point && point <= 5500) {
+          this.money = this.money - 7500;
+      } else if (5501 <= point && point <= 8000) {
+          this.money = this.money - 10000;
+      } else if (8001 <= point && point <= 11000) {
+          this.money = this.money - 15000;
+      } else if (11001 <= point && point <= 14500) {
+          this.money = this.money - 20000;
+      } else {
+          this.money = this.money - 30000;
+      }
       this.cinemaId = this.times.cinemaId;
       const payload = {
         creatorUserId: this.user.id,

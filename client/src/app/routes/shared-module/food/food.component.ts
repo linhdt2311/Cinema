@@ -159,8 +159,13 @@ export class FoodComponent implements OnInit {
       });
     const user = this.user;
     user.point += (this.total / 2000);
-    localStorage.removeItem('user')
-    localStorage.setItem('user', JSON.stringify(user));
+    if(localStorage.getItem('user')){
+      localStorage.removeItem('user');
+      localStorage.setItem('user', JSON.stringify(user));
+    } else {
+      sessionStorage.removeItem('user');
+      sessionStorage.setItem('user', JSON.stringify(user));
+    }
     this.billDetail = [];
     this.getAllFood.size = null;
     this.isPromotion = false;

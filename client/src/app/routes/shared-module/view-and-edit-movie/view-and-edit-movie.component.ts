@@ -70,6 +70,7 @@ export class ViewAndEditMovieComponent implements OnInit {
   submit() {
     this.isLoading = true;
     this.form.get('creatorUserId')?.setValue(this.user.id);
+    this.form.get('openingDay')?.setValue(this.datepipe.transform(this.form.value.openingDay, 'YYYY-MM-dd'));
     for (const i in this.form.controls) {
       this.form.controls[i].markAsDirty();
       this.form.controls[i].updateValueAndValidity();
@@ -89,7 +90,6 @@ export class ViewAndEditMovieComponent implements OnInit {
         this.onSubmit.emit(this.form.value);
       } else {
         this.form.get('lastModifierUserId')?.setValue(this.user.id);
-        this.form.get('openingDay')?.setValue(this.datepipe.transform(this.form.get('openingDay')?.value, 'YYYY-MM-dd'));
         this.movieService
           .updateMovie(this.form.value)
           .pipe(catchError((err) => of(err)), finalize(() => this.isLoading = false))

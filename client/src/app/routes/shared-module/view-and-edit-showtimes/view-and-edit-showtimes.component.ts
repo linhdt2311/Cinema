@@ -156,7 +156,7 @@ export class ViewAndEditShowtimesComponent implements OnInit {
     }
   }
 
-  calc(time: any, movieId: any){
+  calc(time: any, movieId: any) {
     const movieTime = this.movies.find(m => m.id == movieId)?.time;
     return Date.parse(time) + movieTime * 60000;
   }
@@ -164,6 +164,7 @@ export class ViewAndEditShowtimesComponent implements OnInit {
   submit() {
     this.isLoading = true;
     this.form.get('creatorUserId')?.setValue(this.user.id);
+    this.form.get('timeStart')?.setValue(this.datepipe.transform(this.form.value.timeStart, 'YYYY-MM-ddTHH:mm:00'));
     for (const i in this.form.controls) {
       this.form.controls[i].markAsDirty();
       this.form.controls[i].updateValueAndValidity();

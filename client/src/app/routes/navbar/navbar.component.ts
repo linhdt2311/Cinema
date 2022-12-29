@@ -58,10 +58,14 @@ export class NavbarComponent implements OnInit {
   }
 
   handleSumit(){
-    this.isVisible = false;
     this.user = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || '{}');
-    if(this.user.role == 2){
-      this.router.navigate(['statistics']);
+    if (Object.keys(this.user).length !== 0) {
+      this.isVisible = false;
+      if(this.user.role == 2){
+        this.router.navigate(['statistics']);
+      }
+    } else {
+
     }
   }
   

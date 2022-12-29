@@ -1,7 +1,7 @@
 <div class="header">
     <button class="btn_create" (click)="open('create', null)">Create</button>
     <div class="filter">
-        <nz-select nzShowSearch nzAllowClear nzMode="multiple" class="search m-2" nzPlaceHolder="Search promotion...">
+        <nz-select nzShowSearch nzAllowClear class="search m-2" nzPlaceHolder="Search promotion...">
             <nz-option *ngFor="let promotion of promotions" [nzLabel]="promotion.code" [nzValue]="promotion.id"></nz-option>
         </nz-select>
         <nz-input-number-group nzAddOnAfter="VNĐ" class="m-2" style="width: 20rem">

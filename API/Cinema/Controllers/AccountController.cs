@@ -105,7 +105,7 @@ namespace Cinema.Controllers
             return false;
         }
         [HttpPost("login")]
-        public AccountDto Login(LoginDto input)
+        public ActionResult<AccountDto> Login(LoginDto input)
         {
             conn.Open();
             string sql = string.Format("exec Login @Email = '" + input.Email + "', @Password = '" + input.Password + "'");
@@ -114,8 +114,14 @@ namespace Cinema.Controllers
             DataTable data = new DataTable();
             SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
             adapter.Fill(data);
-            conn.Close();
-            return new AccountDto(data.Rows[0]);
+            if (data.Rows.Count == 1)
+            {
+                conn.Close();
+                return new AccountDto(data.Rows[0]);
+            } else
+            {
+                return BadRequest("Your email or password was incorrect. Please try again. ");
+            };
         }
     }
 }

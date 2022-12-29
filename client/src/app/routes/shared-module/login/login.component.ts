@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { catchError, of } from 'rxjs';
 import { User } from 'src/app/models/user';
@@ -15,10 +15,10 @@ export class LoginComponent implements OnInit {
   @Output() submit = new EventEmitter();
   @Output() cancel = new EventEmitter();
   user: User;
-  loginForm!: UntypedFormGroup;
+  loginForm!: FormGroup;
   loggedIn: boolean = false;
   constructor(
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
     private authenticationService: AuthenticationService,
     private notification: NzNotificationService,
     ) { }
@@ -33,10 +33,6 @@ export class LoginComponent implements OnInit {
       password: [null, Validators.required],
       remember: [true]
     });
-  }
-
-  submitForm(): void {
-    console.log('submit', this.loginForm.value);
   }
 
   onSubmit(key?: any) {
@@ -57,11 +53,12 @@ export class LoginComponent implements OnInit {
             this.loggedIn = true;
             this.notification.create('success', 'Login success!', '');
             this.submit.emit();
-          }
-          else {
+          } else {
             this.notification.create('error','Email or password not correct!', '');
           }
         });
+    } else {
+      this.notification.create('error','Email or password not correct!', '');
     }
   }
 

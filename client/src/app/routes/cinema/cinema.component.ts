@@ -17,6 +17,7 @@ export class CinemaComponent implements OnInit {
   showtimes: any[] = [];
   movies: any[] = [];
   cinemas: any[] = [];
+  seatInLocal: any[] = [];
   isVisible: boolean = false;
   sId: string = '';
   getAllShowtimes: GetAllShowtimes = new GetAllShowtimes();
@@ -42,6 +43,7 @@ export class CinemaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.seatInLocal = JSON.parse(localStorage.getItem('seat') || '[]');
     this.cinemaData();
     this.movieData();
     this.getAllShowtimes.timeStart = new Date();
@@ -74,8 +76,14 @@ export class CinemaComponent implements OnInit {
   }
 
   showModal(id: any): void {
+    let showtimeId = id;
+    this.seatInLocal.forEach((item) => { showtimeId = item.showtimesId });
+    if (showtimeId !== this.sId) {
+      localStorage.removeItem('seat');
+    };
     this.sId = id;
     this.isVisible = true;
+
   }
 
   onFilterDate(date: any) {

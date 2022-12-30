@@ -6,7 +6,7 @@
     <div nz-row [nzGutter]="1">
       <div nz-col [nzSpan]="3" *ngFor="let seat of seats">
         <!-- Ghế đang chọn -->
-        <button class="custom-btn seat" *ngIf="booking.includes(seat) == true" style="background-color: #0061ff;"
+        <button class="custom-btn seat" *ngIf="checkSeatInLocal(seat) == true" style="background-color: #0061ff;"
           (click)="bookingSeat(seat.seatId)">
           <span>{{ seat.seat }}</span></button>
         <!-- Ghế đã được đặt trước -->
@@ -15,12 +15,12 @@
           <span>{{ seat.seat }}</span></button>
         <!-- Ghế VIP -->
         <button class="custom-btn seat"
-          *ngIf="seat.type == 1 && seat.seatStatus == 1 && booking.includes(seat) == false"
+          *ngIf="seat.type == 1 && seat.seatStatus == 1 && checkSeatInLocal(seat) == false"
           style="background-color: #ffd000;" (click)="bookingSeat(seat.seatId)">
           <span>{{ seat.seat }}</span></button>
         <!-- Ghế thường -->
         <button class="custom-btn seat"
-          *ngIf="seat.type == 2 && seat.seatStatus == 1 && booking.includes(seat) == false"
+          *ngIf="seat.type == 2 && seat.seatStatus == 1 && checkSeatInLocal(seat) == false"
           style="background-color: #b0adb3;" (click)="bookingSeat(seat.seatId)">
           <span>{{ seat.seat }}</span></button>
       </div>
@@ -43,6 +43,7 @@
       </span>
     </div>
     <div><span>Price: </span>{{ changeToVND(money) }}</div>
+    <div><span>The system will reserve your place for </span>{{ counter }}<span> seconds</span></div>
   </div>
 </div>
 <hr />
@@ -53,7 +54,7 @@
     <div class="anotate" style="background-color: #b0adb3;"></div>
     <span class="text-anotate">Normal</span>
     <div class="anotate" style="background-color: #e60b09;"></div>
-    <span class="text-anotate">Reservation</span>
+    <span class="text-anotate">Reserved</span>
     <div class="anotate" style="background-color: #0061ff;"></div>
     <span class="text-anotate">Choose</span>
   </div>

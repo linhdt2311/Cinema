@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { catchError, finalize, of } from 'rxjs';
 import { GetAllFood } from 'src/app/models/getallfood';
@@ -165,7 +165,8 @@ export class FoodComponent implements OnInit {
     } else {
       sessionStorage.removeItem('user');
       sessionStorage.setItem('user', JSON.stringify(user));
-    }
+    };
+    localStorage.removeItem('seat')
     this.billDetail = [];
     this.getAllFood.size = null;
     this.isPromotion = false;

@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { catchError, of } from 'rxjs';
+import { catchError, interval, of, takeWhile, tap, timer } from 'rxjs';
 import { FormatMovieScreen } from 'src/app/helpers/FormatMovieScreen';
 import { GetAllShowtimes } from 'src/app/models/getallshowtimes';
 import { User } from 'src/app/models/user';
@@ -38,6 +38,7 @@ export class ModalRoomComponent implements OnInit {
   checkUser: boolean = true;
   money: number = 0;
   createDate: any;
+  counter: any = 900;
   formatMovieScreen: any[] = [{ value: FormatMovieScreen.IMAX, viewValue: 'IMAX' },
   { value: FormatMovieScreen.TwoD, viewValue: '2D' },
   { value: FormatMovieScreen.ThreeD, viewValue: '3D' },
@@ -54,12 +55,17 @@ export class ModalRoomComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || '{}');
+    this.booking = JSON.parse(localStorage.getItem('seat') || '[]');
+    this.booking.forEach(item => { this.money += item.price })
     this.checkUser = Object.keys(this.user).length === 0;
     this.getAllShowtimes.id = this.showtimesId
     this.showtimesData();
     this.seatData();
     this.movieData();
     this.accountData();
+    if(Object.keys(this.booking).length !== 0){
+      this.countTime();
+    }
   }
 
   seatData() {
@@ -129,24 +135,54 @@ export class ModalRoomComponent implements OnInit {
   }
 
   bookingSeat(id: any) {
-    this.seat = this.seats.find(s => s.seatId === id)
+    this.seat = this.seats.find(s => s.seatId === id);
+    let seatLocal: any = `[`;
     if (this.seat.seatStatus == 1) {
       if (!this.booking.find(b => b.seatId === id)) {
         if (this.booking.length < 6) {
           this.booking.push(this.seat);
-          this.money = this.money + this.seat.price
-        }
-        else {
+          this.money = this.money + this.seat.price;
+        } else {
           this.notification.create('warning', 'You cannot book more than 6 seat!', '');
         }
       } else {
-        this.booking.splice(this.booking.indexOf(this.seat), 1)
-        this.money = this.money - this.seat.price
+        let index = this.booking.findIndex((item) => item.seatId == id);
+        this.booking.splice(index, 1);
+        this.booking = [...this.booking];
+        this.money = this.money - this.seat.price;
       }
     } else {
       this.notification.create('warning', 'This seat has been booked. You cannot be selected!', '')
     }
-    return this.booking
+    for (const book of this.booking) {
+      if (this.booking[this.booking.length - 1] !== book) {
+        seatLocal += `{
+          "name":${book.name},
+          "price":${book.price},
+          "seat":"${book.seat}",
+          "seatId":"${book.seatId}",
+          "seatStatus":${book.seatStatus},
+          "showtimesId":"${book.showtimesId}",
+          "status":${book.status},
+          "type":${book.type}
+        }, `;
+      } else {
+        seatLocal += `{
+          "name":${book.name},
+          "price":${book.price},
+          "seat":"${book.seat}",
+          "seatId":"${book.seatId}",
+          "seatStatus":${book.seatStatus},
+          "showtimesId":"${book.showtimesId}",
+          "status":${book.status},
+          "type":${book.type}
+        }`
+      }
+    }
+    seatLocal += `]`;
+    localStorage.setItem('seat', seatLocal);
+    this.countTime();
+    return this.booking;
   }
 
   handleCancel(): void {
@@ -168,21 +204,21 @@ export class ModalRoomComponent implements OnInit {
     } else {
       const point = this.user.point;
       if (0 <= point && point <= 1000) {
-          this.money = this.money; 
+        this.money = this.money;
       } else if (1001 <= point && point <= 2000) {
-          this.money = this.money - 2500;
+        this.money = this.money - 2500;
       } else if (2001 <= point && point <= 3500) {
-          this.money = this.money - 5000;
+        this.money = this.money - 5000;
       } else if (3501 <= point && point <= 5500) {
-          this.money = this.money - 7500;
+        this.money = this.money - 7500;
       } else if (5501 <= point && point <= 8000) {
-          this.money = this.money - 10000;
+        this.money = this.money - 10000;
       } else if (8001 <= point && point <= 11000) {
-          this.money = this.money - 15000;
+        this.money = this.money - 15000;
       } else if (11001 <= point && point <= 14500) {
-          this.money = this.money - 20000;
+        this.money = this.money - 20000;
       } else {
-          this.money = this.money - 30000;
+        this.money = this.money - 30000;
       }
       this.cinemaId = this.times.cinemaId;
       const payload = {
@@ -226,5 +262,25 @@ export class ModalRoomComponent implements OnInit {
     this.money = 0;
     this.booking = [];
     this.submit.emit();
+  }
+
+  checkSeatInLocal(seat: any) {
+    if (this.booking.find(s => s.seatId === seat.seatId)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  countTime() {
+    this.counter = 900;
+    timer(1000, 1000).pipe(
+      takeWhile(() => this.counter > 0),
+      tap(() => this.counter--))
+      .subscribe(this.counter = this.counter);
+    interval(this.counter * 1000).subscribe(() => {
+      localStorage.removeItem('seat');
+      this.handleCancel();
+    });
   }
 }

@@ -743,6 +743,3 @@ begin
 	set @n = @n + 1;
 end
 go
-
-exec UpdateBill @LastModifierUserId = '45d5816a-c5f8-4957-b9d3-9a7d36f53f48', @Id = '0bbd6953-484f-4ffa-8b62-a6699a8402b9', @Cost = '4000'
-select * from Account

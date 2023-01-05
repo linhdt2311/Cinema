@@ -83,7 +83,7 @@ export class ModalRoomComponent implements OnInit {
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.showtimes = response;
-        this.times = this.showtimes.find(t => t.id == this.showtimesId)
+        this.times = this.showtimes.find(t => t.id == this.showtimesId);
       });
   }
 
@@ -106,32 +106,32 @@ export class ModalRoomComponent implements OnInit {
   }
 
   getMovieName(id: any) {
-    return this.movies.find(m => m.id == id)?.name
+    return this.movies.find(m => m.id == id)?.name;
   }
 
   getPoster(id: any) {
-    this.url = this.movies.find(m => m.id == id)?.poster
+    this.url = this.movies.find(m => m.id == id)?.poster;
     if (this.url == '') {
-      this.url = 'https://i.pinimg.com/originals/85/9f/52/859f5219ba0b8d67f399c0db5a648694.jpg';
-    }
-    return this.url
+      this.url = 'https://picsum.photos/200/300';
+    };
+    return this.url;
   }
 
   getFormatMovieScreen(screen: any) {
-    return this.formatMovieScreen.find(f => f.value == screen)?.viewValue
+    return this.formatMovieScreen.find(f => f.value == screen)?.viewValue;
   }
 
   getMovieTime(id: any) {
-    return this.movies.find(m => m.id == id)?.time
+    return this.movies.find(m => m.id == id)?.time;
   }
 
   seatInfo(id: any) {
-    this.seat = this.seats.find(s => s.seatId === id)
-    return this.seat
+    this.seat = this.seats.find(s => s.seatId === id);
+    return this.seat;
   }
 
   changeToVND(price: any) {
-    return new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'VND' }).format(price)
+    return new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'VND' }).format(price);
   }
 
   bookingSeat(id: any) {
@@ -144,7 +144,7 @@ export class ModalRoomComponent implements OnInit {
           this.money = this.money + this.seat.price;
         } else {
           this.notification.create('warning', 'You cannot book more than 6 seat!', '');
-        }
+        };
       } else {
         let index = this.booking.findIndex((item) => item.seatId == id);
         this.booking.splice(index, 1);
@@ -152,7 +152,7 @@ export class ModalRoomComponent implements OnInit {
         this.money = this.money - this.seat.price;
       }
     } else {
-      this.notification.create('warning', 'This seat has been booked. You cannot be selected!', '')
+      this.notification.create('warning', 'This seat has been booked. You cannot be selected!', '');
     }
     for (const book of this.booking) {
       if (this.booking[this.booking.length - 1] !== book) {
@@ -181,7 +181,9 @@ export class ModalRoomComponent implements OnInit {
     }
     seatLocal += `]`;
     localStorage.setItem('seat', seatLocal);
-    this.countTime();
+    if(this.booking.length === 1) {
+      this.countTime();
+    }
     return this.booking;
   }
 
@@ -253,7 +255,7 @@ export class ModalRoomComponent implements OnInit {
 
   loginSubmit() {
     this.user = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || '{}');
-    this.checkUser = Object.keys(this.user).length === 0
+    this.checkUser = Object.keys(this.user).length === 0;
     this.showLogin = false;
   }
 
@@ -274,7 +276,7 @@ export class ModalRoomComponent implements OnInit {
 
   countTime() {
     this.counter = 900;
-    timer(1000, 1000).pipe(
+    timer(this.counter, 1000).pipe(
       takeWhile(() => this.counter > 0),
       tap(() => this.counter--))
       .subscribe(this.counter = this.counter);

@@ -10,7 +10,6 @@ import { AccountService } from 'src/app/services/account.service';
 import { DatePipe } from '@angular/common';
 import { CinemaService } from 'src/app/services/cinema.service';
 import { Size } from 'src/app/helpers/Size';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Chart, registerables } from 'node_modules/chart.js'
 Chart.register(...registerables)
 @Component({

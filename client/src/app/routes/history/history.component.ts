@@ -6,7 +6,6 @@ import { BillService } from 'src/app/services/bill.service';
 import { TicketService } from 'src/app/services/ticket.service';
 import { catchError, of } from 'rxjs';
 import { FoodService } from 'src/app/services/food.service';
-import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-history',

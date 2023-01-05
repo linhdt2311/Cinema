@@ -50,7 +50,7 @@
     <div style="width: 100%">
         <img *ngIf="form.value.poster !== ''" class="poster" src="{{ form.value.poster }}" alt="Poster">
         <img *ngIf="form.value.poster === ''" class="poster"
-            src="https://i.pinimg.com/originals/85/9f/52/859f5219ba0b8d67f399c0db5a648694.jpg" alt="Poster">
+            src="https://picsum.photos/200/300" alt="Poster">
     </div>
     <div *ngIf="isEdit" class="footer">
         <button nz-button nzType="primary" (click)="submit()">

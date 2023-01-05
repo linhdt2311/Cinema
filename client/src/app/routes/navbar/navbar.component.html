@@ -2,19 +2,19 @@
   <ul nz-menu nzMode="horizontal" nzTheme="dark" [nzInlineCollapsed]="isCollapsed" style="text-align: center;">
     <img src="../../../assets/HBQHM.png" alt="LogoHBQHM" class="logo">
     <img src="../../../assets/LogoText.png" alt="LogoHBQHM" class="logo_text nav-item">
-    <li nz-menu-item routerLink="cinema" class="nav-item">
+    <li id="/cinema" nz-menu-item routerLink="cinema" class="nav-item">
       <span>Cinema</span>
     </li>
-    <li nz-menu-item routerLink="movie" class="nav-item">
+    <li id="/movie" nz-menu-item routerLink="movie" class="nav-item">
       <span>Movie</span>
     </li>
-    <li nz-menu-item routerLink="promotion" class="nav-item">
+    <li id="/promotion" nz-menu-item routerLink="promotion" class="nav-item">
       <span>Promotion</span>
     </li>
-    <li *ngIf="user.role != 2" nz-menu-item routerLink="membership" class="nav-item">
+    <li id="/membership" *ngIf="user.role != 2" nz-menu-item routerLink="membership" class="nav-item">
       <span>Membership</span>
     </li>
-    <li nz-menu-item routerLink="support" class="nav-item">
+    <li id="/support" nz-menu-item routerLink="support" class="nav-item">
       <span>Support</span>
     </li>
     <li *ngIf="user.role == 2" nz-submenu nzPlacement="bottomCenter" nzTitle="Staff">
@@ -30,7 +30,7 @@
     </div>
     <div *ngIf="checkUser == true" class="avatar">
       <span class="login" (click)="openLogin()">Login</span> |
-      <span class="login" href="membership">Register</span>
+      <span class="login" (click)="openRegister()">Register</span>
     </div>
   </ul>
 </nz-affix>
@@ -56,7 +56,7 @@
     </div>
   </ng-template>
 </nz-drawer>
-<nz-modal [nzStyle]="{ width: '20rem' }" [(nzVisible)]="isVisible" [nzTitle]="modalTitle" [nzContent]="modalContent"
+<nz-modal [nzStyle]="{ width: '27.5rem' }" [(nzVisible)]="isVisible" [nzTitle]="modalTitle" [nzContent]="modalContent"
     [nzFooter]="null" (nzOnCancel)="handleCancel()" style="width: 1100px;">
     <ng-template #modalTitle>
         <div style="text-align: center;">Login</div>

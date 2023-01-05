@@ -8,10 +8,10 @@ import { LoginComponent } from '../shared-module/login/login.component';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
-  @ViewChild('modalLogin', {static: true}) modalLogin!: LoginComponent;
+  @ViewChild('modalLogin', { static: true }) modalLogin!: LoginComponent;
   checkSetting: boolean = true;
   setting: Setting;
   isVisible: boolean = false;
@@ -27,7 +27,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this.setting = JSON.parse(localStorage.getItem('setting') || '{}');
     this.checkSetting = Object.keys(this.setting).length === 0;
-    if(this.checkSetting == true){
+    if (this.checkSetting == true) {
       this.setting.tabSelectedIndex = 0;
       this.setting.tabPosition = 'top';
       this.setting.tabBarGutter = 0;
@@ -39,41 +39,43 @@ export class NavbarComponent implements OnInit {
       this.setting.paginationSimple = false;
       this.setting.paginationType = 'default';
       localStorage.setItem('setting', JSON.stringify(this.setting));
-  } else {
+    } else {
       this.setting = JSON.parse(localStorage.getItem('setting') || '{}');
     }
   }
 
+  ngAfterViewInit(){
+    (<HTMLElement>document.getElementById(document.location.pathname))?.click();
+  }
+  
   ngDoCheck() {
     this.user = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || '{}');
     this.checkUser = Object.keys(this.user).length === 0
   }
-  
-  openLogin(){
+
+  openLogin() {
     this.isVisible = true;
   }
-  
-  handleCancel(){
+
+  handleCancel() {
     this.isVisible = false;
   }
 
-  handleSumit(){
+  handleSumit() {
     this.user = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || '{}');
     if (Object.keys(this.user).length !== 0) {
       this.isVisible = false;
-      if(this.user.role == 2){
+      if (this.user.role == 2) {
         this.router.navigate(['statistics']);
       }
-    } else {
-
     }
   }
-  
+
   logout() {
     this.authenticationService.logout();
   }
 
-  refresh(){
+  refresh() {
     document.location.reload();
   }
 
@@ -83,5 +85,10 @@ export class NavbarComponent implements OnInit {
 
   close(): void {
     this.visible = false;
+  }
+
+  openRegister() {
+    (<HTMLElement>document.getElementById('/membership')).click();
+    this.router.navigate(['membership']);
   }
 }

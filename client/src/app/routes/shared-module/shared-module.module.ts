@@ -28,6 +28,7 @@ import { ViewAndEditCustomerComponent } from './view-and-edit-customer/view-and-
 import { ViewAndEditPromotionComponent } from './view-and-edit-promotion/view-and-edit-promotion.component';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { ViewAndEditFoodComponent } from './view-and-edit-food/view-and-edit-food.component';
+import { AppRoutingModule } from 'src/app/app-routing.module';
 registerLocaleData(en);
 
 @NgModule({
@@ -45,6 +46,7 @@ registerLocaleData(en);
   imports: [
     FormsModule,
     ReactiveFormsModule,
+    AppRoutingModule,
     NzModalModule,
     CommonModule,
     ReactiveFormsModule,

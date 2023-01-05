@@ -14,3 +14,7 @@ button {
     cursor: pointer;
     text-decoration: underline;
 }
+
+.ant-tabs-tab-btn {
+    visibility: hidden;
+}

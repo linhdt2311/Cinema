@@ -1,27 +1,68 @@
-<form nz-form [nzLayout]="'inline'" [formGroup]="loginForm">
-    <nz-form-item>
-        <nz-form-label>Email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</nz-form-label>
-        <nz-form-control nzErrorTip="Please input your username!">
-            <nz-input-group nzPrefixIcon="user">
-                <input formControlName="email" nz-input placeholder="Username" />
-            </nz-input-group>
-        </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-        <nz-form-label>Password</nz-form-label>
-        <nz-form-control nzErrorTip="Please input your Password!">
-            <nz-input-group nzPrefixIcon="lock">
-                <input formControlName="password" nz-input type="password" placeholder="Password"/>
-            </nz-input-group>
-        </nz-form-control>
-    </nz-form-item>
-    <div style="width: 100%; margin: 10px 0">
-        <input type="checkbox" id="remember" value="remember" style="float: left;"/> Remember me!
-        <span style="color: #1890ff; float: right;" class="forgot">Forgot the password?</span>
-    </div>
-    <nz-form-item style="width: 100%;">
-        <nz-form-control>
-            <button nz-button nzType="primary" (click)="onSubmit()">Log in</button>
-        </nz-form-control>
-    </nz-form-item>
-</form>
+<nz-tabset [nzSelectedIndex]="index">
+    <nz-tab>
+        <form nz-form [nzLayout]="'inline'" [formGroup]="loginForm">
+            <nz-form-item>
+                <nz-form-label>Email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</nz-form-label>
+                <nz-form-control nzErrorTip="Please input your username!">
+                    <nz-input-group nzPrefixIcon="user">
+                        <input formControlName="email" nz-input placeholder="Username" />
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>Password</nz-form-label>
+                <nz-form-control nzErrorTip="Please input your Password!">
+                    <nz-input-group nzPrefixIcon="lock">
+                        <input formControlName="password" nz-input type="password" placeholder="Password" />
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+            <div style="width: 100%; margin: 10px 0">
+                <input type="checkbox" id="remember" value="remember" style="float: left;" /> Remember me!
+                <span style="color: #1890ff; float: right;" class="forgot" (click)="routerRegister()">Forgot the password?</span>
+            </div>
+            <nz-form-item style="width: 100%;">
+                <nz-form-control>
+                    <button nz-button nzType="primary" (click)="onSubmit()">Log in</button>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </nz-tab>
+    <nz-tab>
+        <div (click)="back()" style="cursor: pointer">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back
+        </div>
+        <form nz-form [nzLayout]="'inline'" [formGroup]="passwordForm">
+            <nz-form-item>
+                <nz-form-label>Email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</nz-form-label>
+                <nz-form-control nzErrorTip="Please input your username!">
+                    <nz-input-group nzPrefixIcon="user">
+                        <input formControlName="email" nz-input placeholder="Email" />
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>New Password</nz-form-label>
+                <nz-form-control nzErrorTip="Please input new Password!">
+                    <nz-input-group nzPrefixIcon="lock">
+                        <input formControlName="newPassword" nz-input type="password" placeholder="New Password" />
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>Confirm Password</nz-form-label>
+                <nz-form-control nzErrorTip="Please input confirm Password!">
+                    <nz-input-group nzPrefixIcon="lock">
+                        <input formControlName="confirmPassword" nz-input type="password" placeholder="Confirm Password" />
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item style="width: 100%;">
+                <nz-form-control>
+                    <button nz-button nzType="primary" (click)="submitForgotPasswordForm()">Change Password</button>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </nz-tab>
+  </nz-tabset>

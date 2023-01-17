@@ -1,8 +1,8 @@
-<nz-tabset [nzSelectedIndex]="index">
+<nz-tabset [nzSelectedIndex]="index" style="margin-top: -48px;">
     <nz-tab>
         <form nz-form [nzLayout]="'inline'" [formGroup]="loginForm">
-            <nz-form-item>
-                <nz-form-label>Email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</nz-form-label>
+            <nz-form-item >
+                <nz-form-label>Email</nz-form-label>
                 <nz-form-control nzErrorTip="Please input your username!">
                     <nz-input-group nzPrefixIcon="user">
                         <input formControlName="email" nz-input placeholder="Username" />
@@ -17,11 +17,15 @@
                     </nz-input-group>
                 </nz-form-control>
             </nz-form-item>
-            <div style="width: 100%; margin: 10px 0">
-                <input type="checkbox" id="remember" value="remember" style="float: left;" /> Remember me!
-                <span style="color: #1890ff; float: right;" class="forgot" (click)="routerRegister()">Forgot the password?</span>
+            <div style="width: 100%">
+                <span class="remember">
+                    <input type="checkbox" id="remember" value="remember"/>Remember me!
+                </span>
+                <span class="forgot" (click)="routerRegister()">
+                    Forgot the password?
+                </span>
             </div>
-            <nz-form-item style="width: 100%;">
+            <nz-form-item style="width: 100%">
                 <nz-form-control>
                     <button nz-button nzType="primary" (click)="onSubmit()">Log in</button>
                 </nz-form-control>
@@ -54,7 +58,8 @@
                 <nz-form-label>Confirm Password</nz-form-label>
                 <nz-form-control nzErrorTip="Please input confirm Password!">
                     <nz-input-group nzPrefixIcon="lock">
-                        <input formControlName="confirmPassword" nz-input type="password" placeholder="Confirm Password" />
+                        <input formControlName="confirmPassword" nz-input type="password"
+                            placeholder="Confirm Password" />
                     </nz-input-group>
                 </nz-form-control>
             </nz-form-item>
@@ -65,4 +70,4 @@
             </nz-form-item>
         </form>
     </nz-tab>
-  </nz-tabset>
+</nz-tabset>

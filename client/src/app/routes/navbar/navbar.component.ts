@@ -43,10 +43,6 @@ export class NavbarComponent implements OnInit {
       this.setting = JSON.parse(localStorage.getItem('setting') || '{}');
     }
   }
-
-  ngAfterViewInit(){
-    (<HTMLElement>document.getElementById(document.location.pathname))?.click();
-  }
   
   ngDoCheck() {
     this.user = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || '{}');

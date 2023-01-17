@@ -1,13 +1,16 @@
 form {
     justify-content: center;
+    width: 100%;
 }
 
-nz-form-item{
-    margin: 5px 0;
+nz-form-item {
+    margin: 0;
+    width: 95%;
 }
 
 button {
     width: 100%;
+    margin: 10px 0;
 }
 
 .forgot:hover{
@@ -17,4 +20,18 @@ button {
 
 .ant-tabs-tab-btn {
     visibility: hidden;
+}
+
+nz-form-label, .remember {
+    text-align: left;
+    width: 35%;
+}
+
+.forgot {
+    width: 65%;
+    color: #1890ff;
+    display: flex;
+    float: right;
+    justify-content: right;
+    margin-right: 1rem;
 }

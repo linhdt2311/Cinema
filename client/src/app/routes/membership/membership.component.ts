@@ -84,7 +84,6 @@ export class MembershipComponent implements OnInit {
   }
 
   submitForm(): void {
-    console.log('registerForm', this.registerForm.value);
   }
 
   onSubmit(key?: any) {

@@ -6,7 +6,7 @@ export class GetAllMovie {
   director!: string;
 }
 export class SearchMoive {
-  id!: any[];
+  movieId!: string;
   startDate!: string |null;
   endDate!: string | null;
   country!: string;

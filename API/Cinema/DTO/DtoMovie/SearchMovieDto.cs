@@ -7,7 +7,7 @@ namespace Cinema.DTO.DtoMovie
 {
     public class SearchMovieDto
     {
-        public List<Guid> id { get; set; }
+        public Guid? movieId { get; set; }
         public string startDate { get; set; }
         public string endDate { get; set; }
         public string country { get; set; }

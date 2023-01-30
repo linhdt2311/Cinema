@@ -12,6 +12,8 @@ namespace Cinema.DTO.DtoShowTimes
         public Guid? movieId { get; set; }
         public string timeStart { get; set; }
         public string timeEnd { get; set; }
-        public int? format { get; set; }
+        public int? formatMovieScreen { get; set; }
+
+        public List<Guid>? roomId { get; set; }
     }
 }

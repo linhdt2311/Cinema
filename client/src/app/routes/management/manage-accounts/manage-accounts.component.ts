@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { catchError, of } from 'rxjs';
-import { AccountsDataItem } from 'src/app/models/accountDataItem';
+import { AccountsDataItem, searchAccount } from 'src/app/models/accountDataItem';
 import { Setting } from 'src/app/models/setting';
 import { User } from 'src/app/models/user';
 import { AccountService } from 'src/app/services/account.service';
@@ -31,8 +31,9 @@ export class ManageAccountsComponent implements OnInit {
   confirmModal?: NzModalRef;
   mode: string = 'create';
   data: any;
+  acc:any;
   isEdit: boolean = true;
-  search: searchPromotion = new searchPromotion();
+  search: searchAccount = new searchAccount();
   constructor(
     private accountService: AccountService,
     private modal: NzModalService,
@@ -54,12 +55,32 @@ export class ManageAccountsComponent implements OnInit {
         this.accounts = response;
       })
   }
+  SearchAcc(){
+    this.accountService
+    .searchAccount(this.search)
+    .pipe(catchError((err) => of(err)))
+    .subscribe((response) => {
+      this.accounts = response;
+    })
+  }
+  onFilterAcc(id : any){
+    this.search.id =  id;
+    this.SearchAcc();
+  }
   onFilterDate(id : any){
     id[0] =  this.datepipe.transform(id[0], 'YYYY-MM-dd') ;
     this.search.startDate =  id[0];
     id[1] =  this.datepipe.transform(id[1], 'YYYY-MM-dd') ;
     this.search.endDate =  id[1];
-    this.movieData();
+    this.SearchAcc();
+  }
+  onFilterFromPoint(id : any){
+    this.search.discountFrom = id;
+    this.SearchAcc();
+  }
+  onFilterToPoint(id : any){
+    this.search.discountTo = id;
+    this.SearchAcc();
   }
 
   drop(event: CdkDragDrop<any[]>): void {

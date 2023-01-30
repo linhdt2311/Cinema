@@ -1,11 +1,11 @@
 <div class="header">
     <button class="btn_create" (click)="open('create', null)">Create</button>
     <div class="filter">
-        <nz-select nzShowSearch nzAllowClear class="search m-2" nzPlaceHolder="Search promotion...">
+        <nz-select nzShowSearch nzAllowClear class="search m-2" nzPlaceHolder="Search promotion..." [ngModel]="null"  (ngModelChange)="onFilterPromotion($event)">
             <nz-option *ngFor="let promotion of promotions" [nzLabel]="promotion.code" [nzValue]="promotion.id"></nz-option>
         </nz-select>
-        <nz-input-number-group nzAddOnAfter="VNĐ" class="m-2" style="width: 20rem">
-            <nz-input-number nzPlaceHolder="Search discount..." [nzMin]="1000" [nzMax]="60000" [nzStep]="1000" ></nz-input-number>
+        <nz-input-number-group nzAddOnAfter="VNĐ" class="m-2" style="width: 20rem" >
+            <nz-input-number nzPlaceHolder="Search discount..." [nzMin]="1000" [nzMax]="60000" [nzStep]="1000" [ngModel]="null" (ngModelChange)="onFilterdiscount($event)" ></nz-input-number>
         </nz-input-number-group>
         <nz-range-picker class="m-2" nzFormat="dd-MM-YYYY"  [(ngModel)]="date" (ngModelChange)="onFilterDate($event)"></nz-range-picker>
         <button nz-button class="m-2" nzType="primary">

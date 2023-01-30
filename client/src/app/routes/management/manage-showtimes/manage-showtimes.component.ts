@@ -32,6 +32,7 @@ export class ManageShowtimesComponent implements OnInit {
   visible: boolean = false
   setting: Setting;
   checked = false;
+  date:any;
   indeterminate = false;
   listOfCurrentPageData: readonly ShowtimesDataItem[] = [];
   setOfCheckedId = new Set<string>();

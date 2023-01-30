@@ -6,7 +6,7 @@ import { Setting } from 'src/app/models/setting';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { CinemaService } from 'src/app/services/cinema.service';
-import { CinemaDataItem } from 'src/app/models/cinemaDataItem';
+import { CinemaDataItem, SearchCinemaDataItem } from 'src/app/models/cinemaDataItem';
 
 @Component({
   selector: 'app-manage-cinema',
@@ -20,10 +20,13 @@ export class ManageCinemaComponent implements OnInit {
   visible: boolean = false
   setting: Setting;
   checked = false;
+  cinema:any;
+  quantity:any;
   indeterminate = false;
   listOfCurrentPageData: readonly CinemaDataItem[] = [];
   setOfCheckedId = new Set<string>();
   confirmModal?: NzModalRef;
+  cinemadata : SearchCinemaDataItem = new  SearchCinemaDataItem();
   mode: string = 'create';
   data: any;
   isEdit: boolean = true;
@@ -46,6 +49,12 @@ export class ManageCinemaComponent implements OnInit {
       .subscribe((response) => {
         this.cinemas = response;
       })
+  }
+  searchCinema(){
+    this.cinemaService.searchCinemaData(this.cinemadata).pipe(catchError((err) => of(err)))
+    .subscribe((response) => {
+      this.cinemas = response;
+    })
   }
 
   drop(event: CdkDragDrop<any[]>): void {
@@ -96,6 +105,14 @@ export class ManageCinemaComponent implements OnInit {
     } else {
       this.cinemas = [data, ...this.cinemas];
     }
+  }
+  onFilterCinema(id :any){
+    this.cinemadata.id =id;
+    this.searchCinema();
+  }
+  onFilterQuantity(event : any){
+    this.cinemadata.quantity = event;
+    this.searchCinema();
   }
 
   showConfirm(movieId: any): void {

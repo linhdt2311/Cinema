@@ -43,10 +43,11 @@ namespace Cinema.Controllers
         public List<MovieDto> SearchMovie(SearchMovieDto input)
         {
             conn.Open();
-            string movieId = input.id.Count >= 1 ? string.Join(",", input.id) : "00000000-0000-0000-0000-000000000000";
+            string id = string.Format("00000000-0000-0000-0000-000000000000");
+            if (input.movieId == null) input.movieId = new Guid(id);
             var countryMovie = string.IsNullOrWhiteSpace(input.country) ? "" : input.country;
             var directorMovie = string.IsNullOrWhiteSpace(input.director) ? "" : input.director;
-            string sql = string.Format("exec SearchMovie @Id = '" + movieId + "',@Country ='" + countryMovie + "', @Director = '" + directorMovie + "', @ToDate ='" + input.startDate + "', @FromDate ='" + input.endDate + "'");
+            string sql = string.Format("exec SearchMovie @Id = '" + input.movieId + "',@Country ='" + countryMovie + "', @Director = '" + directorMovie + "', @ToDate ='" + input.startDate + "', @FromDate ='" + input.endDate + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             DataTable data = new DataTable();
             SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
@@ -60,6 +61,7 @@ namespace Cinema.Controllers
             conn.Close();
             return movieList.ToList();
         }
+
         [HttpGet("getthebestmovie")]
         public GetTop1Dto GetTheBestMovie(bool bestOrWorst)
         {

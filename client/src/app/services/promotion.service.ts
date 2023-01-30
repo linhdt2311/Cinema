@@ -11,19 +11,19 @@ export class PromotionService {
 
   constructor(private http: HttpClient) { }
 
-  getAllPromotion():Observable<any>{
+  getAllPromotion(): Observable<any> {
     return this.http.get(this.baseUrl + '/getall');
-   }
-   searchPromotion():Observable<any>{
-    return this.http.get(this.baseUrl + '/getall');
-   }
-  createPromotion(payload:any):Observable<any>{
+  }
+  searchPromotion(payload: any): Observable<any> {
+    return this.http.post(this.baseUrl + '/search?', payload);
+  }
+  createPromotion(payload: any): Observable<any> {
     return this.http.post(this.baseUrl + '/create', payload);
   }
-  updatePromotion(payload:any):Observable<any>{
+  updatePromotion(payload: any): Observable<any> {
     return this.http.put(this.baseUrl + '/update', payload);
   }
-  deletePromotion(payload:any):Observable<any>{
+  deletePromotion(payload: any): Observable<any> {
     return this.http.delete(this.baseUrl + '/delete', payload);
   }
 }

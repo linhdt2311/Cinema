@@ -1,20 +1,20 @@
 <div class="header">
     <button class="btn_create" (click)="open('create', null)">Create</button>
     <div class="filter">
-        <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate" class="search m-2">
-            <input nz-input type="text" placeholder="Search food name..." />
+        <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate" class="search m-2" >
+            <input nz-input type="text" placeholder="Search food name..." [ngModel]="null"  (ngModelChange)="onFilterFood($event)"/>
         </nz-input-group>
         <ng-template #addOnBeforeTemplate>
             <i class="fa-solid fa-magnifying-glass"></i>
         </ng-template>
-        <nz-select class="m-2" style="width: 20rem;" nzPlaceHolder="Search cinema...">
+        <nz-select class="m-2" style="width: 20rem;"  nzPlaceHolder="Search cinema..."  [(ngModel)]="cinema"  (ngModelChange)="onFilterCinema($event)">
             <nz-option *ngFor="let cinema of cinemas" [nzLabel]="cinema.name" [nzValue]="cinema.id"></nz-option>
         </nz-select>
-        <nz-input-number-group nzAddOnAfter="VNĐ" class="m-2" style="width: 10rem">
+        <nz-input-number-group nzAddOnAfter="VNĐ" class="m-2" style="width: 10rem" [(ngModel)]="price"  (ngModelChange)="onFilterPrice($event)">
             <nz-input-number nzPlaceHolder="Search price..." [nzMin]="1000" [nzMax]="60000" [nzStep]="1000">
             </nz-input-number>
         </nz-input-number-group>
-        <nz-select class="m-2" [ngModel]="'S'">
+        <nz-select class="m-2" [ngModel]="'S'" (ngModelChange)="onFilterSize($event)">
             <nz-option nzLabel="S" nzValue="1"></nz-option>
             <nz-option nzLabel="M" nzValue="2"></nz-option>
             <nz-option nzLabel="L" nzValue="3"></nz-option>

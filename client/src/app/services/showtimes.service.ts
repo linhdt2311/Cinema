@@ -29,6 +29,9 @@ export class ShowtimesService {
       if(!payload.cinemaId){
         payload.cinemaId = ['00000000-0000-0000-0000-000000000000'];
       }
+      if(!payload.roomId){
+        payload.roomId = ['00000000-0000-0000-0000-000000000000'];
+      }
       return this.http.post('https://localhost:5001/api/showtimes/search?' ,payload );
   }
   getTheBestTime():Observable<any>{

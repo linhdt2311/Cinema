@@ -7,10 +7,10 @@ namespace Cinema.DTO.DtoAccount
 {
     public class SearchCustomerDto
     {
-        public List<Guid> id { get; set; }
+        public Guid? id { get; set; }
         public string startDate { get; set; }
         public string endDate { get; set; }
-        public int fromPoint { get; set; }
-        public int toPoint { get; set; }
+        public int discountTo { get; set; }
+        public int discountFrom { get; set; }
     }
 }

@@ -40,8 +40,9 @@ namespace Cinema.Controllers
         public List<AccountDto> SearchAccountDto(SearchCustomerDto input)
         {
             conn.Open();
-            string Id = input.id.Count >= 1 ? string.Join(",", input.id) : "00000000-0000-0000-0000-000000000000";
-            string sql = string.Format("exec SearchAccount @Id= '" + Id + "',@TimeStart = '" + input.startDate + "', @TimeEnd = '" + input.endDate + "', @FromPoint = '" + input.fromPoint + "', @ToPoint= '" + input.toPoint + "'");
+            string id = string.Format("00000000-0000-0000-0000-000000000000");
+            if (input.id == null) input.id = new Guid(id);
+            string sql = string.Format("exec SearchAccount @Id= '" + input.id + "',@TimeStart = '" + input.startDate + "', @TimeEnd = '" + input.endDate + "', @FromPoint = '" + input.discountFrom + "', @ToPoint= '" + input.discountTo + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             DataTable data = new DataTable();
             SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);

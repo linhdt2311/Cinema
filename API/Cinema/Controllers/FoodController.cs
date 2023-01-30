@@ -37,8 +37,9 @@ namespace Cinema.Controllers
         public List<GetAllFoodDto> Search(SearchFoodAndDrinksDto input)
         {
             conn.Open();
-            string listId = input.cinemaId.Count >= 1 ? string.Join(",", input.cinemaId) : "00000000-0000-0000-0000-000000000000";
-            string sql = string.Format("exec SearchFoodByCinema @CinemaId = '" + listId + "', @Name = '" + input.name + "', @Size = '" + input.size + "', @@Price = '" + input.price + "'");
+            string id = string.Format("00000000-0000-0000-0000-000000000000");
+            if (input.cinemaId == null) input.cinemaId = new Guid(id);
+            string sql = string.Format("exec SearchFoodByCinema @CinemaId = '" + input.cinemaId + "', @Name = '" + input.name + "', @Size = '" + input.size + "', @Price = '" + input.price + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             DataTable data = new DataTable();
             SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);

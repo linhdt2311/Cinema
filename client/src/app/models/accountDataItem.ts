@@ -13,3 +13,10 @@ export class search{
     startDate!: string |null;
     endDate!: string | null;
   }
+  export class searchAccount{
+    id!: string;
+    startDate!: string |null;
+    endDate!: string | null;
+    discountTo!: number;
+    discountFrom!: number;
+  }

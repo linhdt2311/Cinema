@@ -6,7 +6,7 @@ export interface PromotionDataItem {
     endDate: Date;
 }
 export class searchPromotion {
-    id!: any[];
+    id!: string;
     code: string;
     discount: number;
     startDate: Date;

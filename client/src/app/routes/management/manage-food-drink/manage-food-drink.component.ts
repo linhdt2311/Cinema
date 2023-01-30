@@ -1,3 +1,4 @@
+import { search } from './../../../models/accountDataItem';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
@@ -6,7 +7,7 @@ import { Setting } from 'src/app/models/setting';
 import { User } from 'src/app/models/user';
 import { FoodService } from 'src/app/services/food.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { FoodDataItem } from 'src/app/models/foodDataItem';
+import { FoodDataItem,searchFoodData } from 'src/app/models/foodDataItem';
 import { CinemaService } from 'src/app/services/cinema.service';
 import { Size } from 'src/app/helpers/Size';
 import { ViewAndEditFoodComponent } from '../../shared-module/view-and-edit-food/view-and-edit-food.component';
@@ -25,10 +26,14 @@ export class ManageFoodDrinkComponent implements OnInit {
   visible: boolean = false
   setting: Setting;
   checked = false;
+  food:any;
+  cinema:any;
+  price:any;
   indeterminate = false;
   listOfCurrentPageData: readonly FoodDataItem[] = [];
   setOfCheckedId = new Set<string>();
   confirmModal?: NzModalRef;
+  search : searchFoodData = new searchFoodData();
   mode: string = 'create';
   data: any;
   isEdit: boolean = true;
@@ -67,6 +72,30 @@ export class ManageFoodDrinkComponent implements OnInit {
         this.cinemas = response;
       })
   }
+  searchFood(){
+    this.foodService
+    .searchFoodDataItem(this.search)
+    .pipe(catchError((err) => of(err)))
+    .subscribe((response) => {
+      this.foods = response;
+    })
+  }
+  onFilterCinema(id : any){
+    this.search.cinemaId = id;
+    this.searchFood();
+  }
+  onFilterFood(id : any){
+    this.search.name = id;
+    this.searchFood();
+  }
+  onFilterPrice(id : any){
+    this.search.price = id;
+    this.searchFood();
+  }
+  onFilterSize(id : any){
+    this.search.size = id;
+    this.searchFood();
+  }
 
   getCinemaName(id: any) {
     return this.cinemas.find(c => c.id == id)?.name
@@ -75,6 +104,7 @@ export class ManageFoodDrinkComponent implements OnInit {
   getSizeName(value: any) {
     return this.size.find(s => s.value == value)?.viewValue
   }
+
 
   getPriceName(price: any) {
     return new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'VND' }).format(price);

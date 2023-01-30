@@ -9,7 +9,6 @@ export class GetAllShowtimes {
 export class SearchShowTime{
   id!: string;
   movieId!: string;
-  //timeStart!: string |null;
   timeStart!:Date;
   timeEnd!: Date;
   formatMovieScreen!: number | undefined;

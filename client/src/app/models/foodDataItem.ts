@@ -5,3 +5,10 @@ export interface FoodDataItem {
     size: number;
     price: number;
 }
+
+export class searchFoodData {
+    name!: string;
+    cinemaId!: string;
+    size!: number;
+    price!: number;
+}

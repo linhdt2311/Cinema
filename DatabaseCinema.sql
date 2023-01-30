@@ -246,7 +246,7 @@ create proc SearchPromotion
 as
 	select * from Promotion m where IsDeleted <> 1
 	and (isnull(@Id, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or m.Id  in (SELECT * FROM STRING_SPLIT(cast(@Id as varchar(Max)),',')))
-    and (isnull(@Discount, '') = '' or upper(m.Discount) like '%' + upper(@Discount) + '%')
+    and (isnull(@Discount, '') = '' or m.Discount = @Discount )
     and (isnull(@StartDate, '') = '' or cast(m.StartDate as date) = @StartDate)
     and (isnull(@EndDate, '') = '' or cast(m.EndDate as date ) = @EndDate)
       
@@ -361,7 +361,7 @@ go
 
 
 create proc SearchShowtimes
-@ShowtimesId uniqueidentifier, @CinemaId varchar(max), @MovieId uniqueidentifier, @TimeStart datetime, @TimeEnd datetime, @FormatMovieScreen int
+@ShowtimesId uniqueidentifier, @CinemaId varchar(max), @MovieId uniqueidentifier, @TimeStart datetime, @TimeEnd datetime, @FormatMovieScreen int ,  @RoomId varchar(max)
 as
 		select * from Showtimes t join Movie m on m.Id = t.MovieId join Room r on r.Id = t.RoomId 
 		join Cinema c on c.Id = r.CinemaId where t.IsDeleted <> 1 
@@ -370,8 +370,10 @@ as
 		and (isnull(@MovieId, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or t.MovieId = @MovieId)
 		and (isnull(@TimeStart, '') = '' or cast (t.TimeStart  as date) between @TimeStart and @TimeEnd)
 		and (isnull(@FormatMovieScreen, '') = '' or upper(r.FormatMovieScreen) like '%' + upper(@FormatMovieScreen) + '%')
+		and (isnull(@RoomId, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or r.Id  in (SELECT * FROM STRING_SPLIT(cast(@RoomId as varchar(Max)),',')))
 		option (recompile)
 go
+
 --SUBSTRING(string, start, length)
 --proc view Account nếu có tìm kiếm sẽ tìm theo yêu cầu không thì sẽ hiện full
 create proc GetViewAccount

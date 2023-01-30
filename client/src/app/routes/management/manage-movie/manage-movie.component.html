@@ -1,7 +1,7 @@
 <div class="header">
     <button class="btn_create" (click)="open('create', null)">Create</button>
     <div class="filter">
-        <nz-select nzShowSearch nzAllowClear ngModel="" class="search m-2" nzPlaceHolder="Search movie name..." (ngModelChange)="onFilterMovie($event)">
+        <nz-select nzShowSearch nzAllowClear [ngModel]="null"  class="search m-2" nzPlaceHolder="Search movie name..." (ngModelChange)="onFilterMovie($event)">
             <nz-option *ngFor="let movie of movies" [nzLabel]="movie.name" [nzValue]="movie.id"></nz-option>
         </nz-select>
         <nz-range-picker class="m-2" nzFormat="YYYY-MM-dd" [(ngModel)]="date" (ngModelChange)="onFilterDate($event)" ></nz-range-picker>

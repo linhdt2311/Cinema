@@ -46,11 +46,12 @@ namespace Cinema.Controllers
             conn.Open();
             string id = string.Format("00000000-0000-0000-0000-000000000000");
             string list = input.cinemaId.Count >= 1? string.Join(",", input.cinemaId) :"00000000-0000-0000-0000-000000000000";
-            string dataliset = list.ToUpper();
+            string dataCinema = list.ToUpper();
+            string listroom = input.roomId.Count >= 1 ? string.Join(",", input.roomId) : "00000000-0000-0000-0000-000000000000";
+            string dataroom = listroom.ToUpper();
             if (input.showtimesId == null) input.showtimesId = new Guid(id);
             if (input.movieId == null) input.movieId = new Guid(id);
-            input.format = 2;
-            string sql = string.Format("exec SearchShowtimes @ShowtimesId = '" + input.showtimesId + "', @CinemaId = '" + dataliset + "', @MovieId = '" + input.movieId + "', @TimeStart = '" + input.timeStart + "', @TimeEnd = '" + input.timeEnd + "', @FormatMovieScreen = '" + input.format + "'");
+            string sql = string.Format("exec SearchShowtimes @ShowtimesId = '" + input.showtimesId + "', @CinemaId = '" + dataCinema + "', @MovieId = '" + input.movieId + "', @TimeStart = '" + input.timeStart + "', @TimeEnd = '" + input.timeEnd + "', @FormatMovieScreen = '" + input.formatMovieScreen + "' , @RoomId = '" + dataroom + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             DataTable data = new DataTable();
             SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);

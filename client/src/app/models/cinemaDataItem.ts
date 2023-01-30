@@ -3,3 +3,7 @@ export interface CinemaDataItem {
     name: string;
     quantityRoom: number;
 }
+export class SearchCinemaDataItem{
+    id!: string;
+    quantity!: number;
+}

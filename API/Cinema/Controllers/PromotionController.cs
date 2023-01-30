@@ -37,9 +37,9 @@ namespace Cinema.Controllers
         public List<PromotionDto> SearchromotionDto(SearchPromotionDto input)
         {
             conn.Open();
-            string list = input.id.Count >= 1 ? string.Join(",", input.id) : "00000000-0000-0000-0000-000000000000";
-            string dataliset = list.ToUpper();
-            string sql = string.Format("select * from SearchPromotion @Id = '" + dataliset + "', @Discount = '" + input.discount + "', @StartDate = '" + input.startDate + "',@EndDate= '" + input.endDate  + "'");
+            string id = string.Format("00000000-0000-0000-0000-000000000000");
+            if (input.id == null) input.id = new Guid(id);
+            string sql = string.Format("exec SearchPromotion @Id = '" + input.id + "', @Discount = '" + input.discount + "', @StartDate = '" + input.startDate + "',@EndDate= '" + input.endDate  + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             DataTable data = new DataTable();
             SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);

@@ -7,8 +7,8 @@ namespace Cinema.DTO.DtoCinema
 {
     public class SearchCinemaDto
     {
-        public List<Guid> Id { get; set; }
-        public string Quantity { get; set; }
+        public Guid? id { get; set; }
+        public int? Quantity { get; set; }
 
     }
 }

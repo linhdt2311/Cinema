@@ -1,15 +1,15 @@
 <div class="header">
     <button class="btn_create" (click)="open('create', null)">Create</button>
     <div class="filter">
-        <nz-select nzShowSearch nzAllowClear class="search m-2" nzPlaceHolder="Search customer name..">
+        <nz-select nzShowSearch nzAllowClear class="search m-2" nzPlaceHolder="Search customer name.." [(ngModel)]="acc" (ngModelChange)="onFilterAcc($event)">
             <nz-option *ngFor="let account of accounts" [nzLabel]="account.name" [nzValue]="account.id"></nz-option>
         </nz-select>
         <nz-range-picker class="m-2" nzFormat="YYYY-MM-dd" [(ngModel)]="date" (ngModelChange)="onFilterDate($event)"></nz-range-picker>
-        <nz-input-number-group nzAddOnBefore="From">
-            <nz-input-number nz-input nzPlaceHolder="Point..."></nz-input-number>
+        <nz-input-number-group nzAddOnBefore="From" >
+            <nz-input-number nz-input nzPlaceHolder="Point..."  [nzMin]="1000" [nzMax]="60000" [nzStep]="1"  [ngModel]="null" (ngModelChange)="onFilterFromPoint($event)"></nz-input-number>
         </nz-input-number-group>
-        <nz-input-number-group nzAddOnBefore="To">
-            <nz-input-number nz-input nzPlaceHolder="Point..."></nz-input-number>
+        <nz-input-number-group nzAddOnBefore="To"   >
+            <nz-input-number nz-input nzPlaceHolder="Point..." [nzMin]="1000" [nzMax]="60000" [nzStep]="1" [ngModel]="null" (ngModelChange)="onFilterToPoint($event)" ></nz-input-number>
         </nz-input-number-group>
         <button nz-button class="m-2" nzType="primary">
             <i class="fa-solid fa-arrows-rotate" style="margin-right: 5px;"></i>

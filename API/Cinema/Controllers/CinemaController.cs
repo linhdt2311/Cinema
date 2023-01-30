@@ -6,6 +6,7 @@ using System.Data;
 using Cinema.DTO.DtoCinema;
 using System.Linq;
 using Cinema.DTO;
+using System;
 
 namespace Cinema.Controllers
 {
@@ -35,7 +36,9 @@ namespace Cinema.Controllers
         public List<CinemaDto> Search(SearchCinemaDto input)
         {
             conn.Open();
-            string sql = string.Format("exec SearchCinema @Id = '" + input.Id + "'");
+            string id = string.Format("00000000-0000-0000-0000-000000000000");
+            if (input.id == null) input.id = new Guid(id);
+            string sql = string.Format("exec SearchCinema @Id = '" + input.id + "' ,@QuantityRoom = '"+ input.Quantity +"'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             DataTable data = new DataTable();
             SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);

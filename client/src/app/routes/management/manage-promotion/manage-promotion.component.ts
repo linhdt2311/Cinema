@@ -32,6 +32,7 @@ export class ManagePromotionComponent implements OnInit {
   date: any[] =[];
   search: searchPromotion = new searchPromotion();
   isEdit: boolean = true;
+  discount:any;
   constructor(
     private promotionService: PromotionService,
     private modal: NzModalService,
@@ -44,12 +45,7 @@ export class ManagePromotionComponent implements OnInit {
     this.user = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || '{}');
     this.promotionData();
   }
-  onFilterDate(id : any){
-    id[0] =  this.datepipe.transform(id[0], 'YYYY-MM-dd') ;
-    this.search.startDate =  id[0];
-    id[1] =  this.datepipe.transform(id[1], 'YYYY-MM-dd') ;
-    this.search.endDate =  id[1];
-  }
+
 
   promotionData() {
     this.promotionService
@@ -59,7 +55,29 @@ export class ManagePromotionComponent implements OnInit {
         this.promotions = response;
       })
   }
-
+  searchpromotionData() {
+    this.promotionService
+      .searchPromotion(this.search)
+      .pipe(catchError((err) => of(err)))
+      .subscribe((response) => {
+        this.promotions = response;
+      })
+  }
+  onFilterPromotion(id : any){
+    this.search.id =  id;
+    this.searchpromotionData();
+  }
+  onFilterDate(id : any){
+    id[0] =  this.datepipe.transform(id[0], 'YYYY-MM-dd') ;
+    this.search.startDate =  id[0];
+    id[1] =  this.datepipe.transform(id[1], 'YYYY-MM-dd') ;
+    this.search.endDate =  id[1];
+    this.searchpromotionData();
+  }
+  onFilterdiscount(id : any){
+    this.search.discount =  id;
+    this.searchpromotionData();
+  }
 
   checkStatus(endDate: Date){
     if(new Date(endDate) > new Date()) {

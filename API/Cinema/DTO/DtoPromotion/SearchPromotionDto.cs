@@ -7,7 +7,7 @@ namespace Cinema.DTO.DtoPromotion
 {
     public class SearchPromotionDto
     {
-        public List<Guid> id { get; set; }
+        public Guid? id { get; set; }
         public int discount { get; set; }
         public string startDate { get; set; }
         public string endDate { get; set; }

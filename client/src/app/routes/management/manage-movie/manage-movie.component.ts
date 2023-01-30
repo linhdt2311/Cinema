@@ -48,18 +48,10 @@ export class ManageMovieComponent implements OnInit {
   }
 
   movieData() {
-    this.movieService
-      .searchMovie(this.searchMovie)
-      .pipe(catchError((err) => of(err)))
-      .subscribe((response) => {
-        this.movies = response;
+    this.movieService.searchMovie(this.searchMovie)
+      .pipe(catchError((err) => of(err))).subscribe((response) => {
+        this.movies = response ?? [];
       })
-    // this.movieService
-    //   .getAllMovie()
-    //   .pipe(catchError((err) => of(err)))
-    //   .subscribe((response) => {
-    //     this.movies = response;
-    //   })
   }
 
   drop(event: CdkDragDrop<any[]>): void {
@@ -140,7 +132,7 @@ export class ManageMovieComponent implements OnInit {
     });
   }
   onFilterMovie(id :any){
-    this.searchMovie.id =  id;
+    this.searchMovie.movieId =  id;
     this.movieData();
   }
   onFilterDate(id : any){

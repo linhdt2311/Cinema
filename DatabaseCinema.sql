@@ -214,7 +214,7 @@ create table Ticket(
 	SeatId uniqueidentifier not null,
 	Price int not null,
 	PromotionId uniqueidentifier null,
-	BillId uniqueidentifier not null,
+	BillId uniqueidentifier null,
 	constraint FK_TicketBill foreign key (BillId) references Bill(Id),
 	constraint FK_TicketSeat foreign key (SeatId) references Seat(Id),
 	constraint FK_TicketPromotion foreign key (PromotionId) references Promotion(Id),
@@ -401,7 +401,7 @@ go
 create or alter proc GetViewTicket
 @Date datetime, @PromotionId uniqueidentifier
 as
-	select * from Ticket t where t.IsDeleted <> 1 
+	select * from Ticket t where t.IsDeleted <> 1
 		and (isnull(@PromotionId, '00000000-0000-0000-0000-000000000000') = '00000000-0000-0000-0000-000000000000' or t.PromotionId = @PromotionId) 
 		and (isnull(@Date, '') = '' or t.Date between convert(datetime, @Date,110) and convert(datetime, cast(@Date as datetime) + 0.0000001, 110))
         option (recompile)
@@ -472,22 +472,22 @@ as
 go
 --proc add Ticket
 create or alter proc CreateTicket
-@CreatorUserId uniqueidentifier, @SeatId uniqueidentifier, @Price int, @PromotionId uniqueidentifier, @BillId uniqueidentifier
+@CreatorUserId uniqueidentifier, @SeatId uniqueidentifier, @Price int
 as
-	if (@PromotionId = '00000000-0000-0000-0000-000000000000')
-	begin
-		insert into Ticket(CreationTime, CreatorUserId, IsDeleted, BillId, Date, SeatId, Price) values (getdate(), @CreatorUserId, 0, @BillId, getdate(), @SeatId, @Price)
-	end
-	else
-	begin
-		insert into Ticket(CreationTime, CreatorUserId, IsDeleted, BillId, Date, SeatId, Price, PromotionId) values (getdate(), @CreatorUserId, 0, @BillId, getdate(), @SeatId, @Price, @PromotionId)
-	end
+	insert into Ticket(CreationTime, CreatorUserId, IsDeleted, Date, SeatId, Price) values (getdate(), @CreatorUserId, 0, getdate(), @SeatId, @Price)
 go
 --proc update Ticket
 create proc UpdateTicket
-@LastModifierUserId uniqueidentifier, @Id uniqueidentifier, @Date datetime, @SeatId uniqueidentifier, @Price int, @PromotionId uniqueidentifier
+@LastModifierUserId uniqueidentifier, @Date datetime, @SeatId uniqueidentifier, @Price int, @PromotionId uniqueidentifier, @BillId uniqueidentifier
 as
-	update Ticket set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, Date = @Date, SeatId = @SeatId, Price = @Price, PromotionId = @PromotionId where Id = @Id
+	if (@PromotionId = '00000000-0000-0000-0000-000000000000')
+	begin
+		update Ticket set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, Date = @Date, Price = @Price, BillId = @BillId where SeatId = @SeatId
+	end
+	else
+	begin
+		update Ticket set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, Date = @Date, Price = @Price, PromotionId = @PromotionId, BillId = @BillId where SeatId = @SeatId
+	end
 go
 --proc add Food
 create proc CreateFood
@@ -574,6 +574,15 @@ as
 		update Seat set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, Status = 2 where Id = @SeatId
 		print 'Successfully'
 	end
+go
+--trigger update status seat
+create or alter trigger ResetSeat
+on Ticket
+for delete
+as
+	declare @SeatId uniqueidentifier = (select SeatId from Inserted)
+	declare @LastModifierUserId uniqueidentifier = (select CreatorUserId from Inserted)
+	update Seat set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, Status = 1 where Id = @SeatId
 go
 --trigger chặn ko cho đặt chỗ khi phim đã chiếu
 --create trigger NoBookTicket
@@ -745,3 +754,4 @@ begin
 	set @n = @n + 1;
 end
 go
+exec CreateTicket @CreatorUserId = 'd85e935f-5373-4de5-ab69-5b87e9a3cd98', @SeatId = 'c90467cd-a062-4ca8-82a1-e5ca48abf546', @Price = 50000

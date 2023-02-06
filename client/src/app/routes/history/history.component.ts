@@ -81,9 +81,13 @@ export class HistoryComponent implements OnInit {
     this.ticketService
       .getAllTicket()
       .pipe(catchError((err) => of(err)))
-      .subscribe((response) => {
+      .subscribe((response: any[]) => {
         if (response) {
-          this.tickets = response;
+          response.forEach((item) => {
+            if(item.billId != null) {
+              this.tickets.push(item);
+            }
+          })
           this.billFoodData();
         }
       })

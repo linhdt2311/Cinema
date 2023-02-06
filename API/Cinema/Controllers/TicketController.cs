@@ -40,9 +40,7 @@ namespace Cinema.Controllers
         public bool CreateTicket(CreateTicketDto input)
         {
             conn.Open();
-            string id = string.Format("00000000-0000-0000-0000-000000000000");
-            if (input.PromotionId == null) input.PromotionId = new Guid(id);
-            string sql = string.Format("exec CreateTicket @CreatorUserId = '" + input.CreatorUserId + "', @SeatId = '" + input.SeatId + "', @Price = " + input.Price + ", @PromotionId = '" + input.PromotionId + "', @BillId = '" + input.BillId + "'");
+            string sql = string.Format("exec CreateTicket @CreatorUserId = '" + input.CreatorUserId + "', @SeatId = '" + input.SeatId + "', @Price = " + input.Price);
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();
@@ -52,17 +50,19 @@ namespace Cinema.Controllers
         public bool UpdateTicket(UpdateTicketDto input)
         {
             conn.Open();
-            string sql = string.Format("exec UpdateTicket @LastModifierUserId = '" + input.LastModifierUserId + "', @Id = '" + input.Id + "', @Date = '" + input.Date + "', @SeatId = '" + input.SeatId + "', @Price = '" + input.Price + "', @PromotionId = '" + input.PromotionId + "'");
+            string id = string.Format("00000000-0000-0000-0000-000000000000");
+            if (input.PromotionId == null) input.PromotionId = new Guid(id);
+            string sql = string.Format("exec UpdateTicket @LastModifierUserId = '" + input.LastModifierUserId + "', @Date = '" + input.Date.ToString("yyyy-MM-dd HH:mm:ss") + "', @SeatId = '" + input.SeatId + "', @Price = '" + input.Price + "', @PromotionId = '" + input.PromotionId + "', @BillId= '" + input.BillId + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();
             return false;
         }
         [HttpDelete("delete")]
-        public bool DeleteTicket(DeleteDto input)
+        public bool DeleteTicket(Guid seatId)
         {
             conn.Open();
-            string sql = string.Format("update Ticket set IsDeleted = 1, DeleteTime = getdate(), DeleterUserId = '" + input.DeleterUserId + "' where Id = '" + input.Id + "'");
+            string sql = string.Format("delete from Ticket where SeatId = '" + seatId + "'");
             SqlCommand sqlCommand = new SqlCommand(sql, conn);
             if (sqlCommand.ExecuteNonQuery() > 0) return true;
             conn.Close();

@@ -6,22 +6,24 @@
     <div nz-row [nzGutter]="1">
       <div nz-col [nzSpan]="3" *ngFor="let seat of seats">
         <!-- Ghế đang chọn -->
-        <button class="custom-btn seat" *ngIf="checkSeatInLocal(seat) == true" style="background-color: #0061ff;"
+        <button class="custom-btn seat" *ngIf="checkSeat(seat.seatId)=='blue'" style="background-color: #0061ff;"
           (click)="bookingSeat(seat.seatId)">
           <span>{{ seat.seat }}</span></button>
         <!-- Ghế đã được đặt trước -->
-        <button class="custom-btn seat" *ngIf="seat.seatStatus == 2" style="background-color: #e60b09;"
+        <button class="custom-btn seat" *ngIf="checkSeat(seat.seatId)=='red'" style="background-color: #e60b09;"
           (click)="bookingSeat(seat.seatId)">
           <span>{{ seat.seat }}</span></button>
         <!-- Ghế VIP -->
-        <button class="custom-btn seat"
-          *ngIf="seat.type == 1 && seat.seatStatus == 1 && checkSeatInLocal(seat) == false"
-          style="background-color: #ffd000;" (click)="bookingSeat(seat.seatId)">
+        <button class="custom-btn seat" *ngIf="checkSeat(seat.seatId)=='yellow'" style="background-color: #ffd000;"
+          (click)="bookingSeat(seat.seatId)">
           <span>{{ seat.seat }}</span></button>
         <!-- Ghế thường -->
-        <button class="custom-btn seat"
-          *ngIf="seat.type == 2 && seat.seatStatus == 1 && checkSeatInLocal(seat) == false"
-          style="background-color: #b0adb3;" (click)="bookingSeat(seat.seatId)">
+        <button class="custom-btn seat" *ngIf="checkSeat(seat.seatId)=='gray'" style="background-color: #b0adb3;"
+          (click)="bookingSeat(seat.seatId)">
+          <span>{{ seat.seat }}</span></button>
+          <!-- Ghế được người khác chọn -->
+        <button class="custom-btn seat" *ngIf="checkSeat(seat.seatId)=='green'" style="background-color: #00ff26;"
+          (click)="bookingSeat(seat.seatId)">
           <span>{{ seat.seat }}</span></button>
       </div>
     </div>

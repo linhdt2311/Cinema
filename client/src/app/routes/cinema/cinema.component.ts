@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { catchError, of } from 'rxjs';
+import { catchError, finalize, of } from 'rxjs';
 import { FormatMovieScreen } from 'src/app/helpers/FormatMovieScreen';
 import { GetAllShowtimes } from 'src/app/models/getallshowtimes';
 import { CinemaService } from 'src/app/services/cinema.service';
 import { MovieService } from 'src/app/services/movie.service';
 import { ShowtimesService } from 'src/app/services/showtimes.service';
 import { DatePipe } from '@angular/common';
+import { TicketService } from 'src/app/services/ticket.service';
 
 @Component({
   selector: 'app-cinema',
@@ -39,7 +40,8 @@ export class CinemaComponent implements OnInit {
     private cinemaService: CinemaService,
     private showtimesService: ShowtimesService,
     private movieService: MovieService,
-    private datepipe: DatePipe
+    private datepipe: DatePipe,
+    private ticketService: TicketService,
   ) { }
 
   ngOnInit(): void {
@@ -80,10 +82,16 @@ export class CinemaComponent implements OnInit {
     this.seatInLocal.forEach((item) => { showtimeId = item.showtimesId });
     if (showtimeId !== this.sId) {
       localStorage.removeItem('seat');
-    };
+      const resetseat: any[] = JSON.parse(localStorage.getItem('seat') || '[]');
+      resetseat.forEach((item) => {
+        this.ticketService
+          .deleteTicket(item.seatId)
+          .pipe(catchError((err) => of(err)), finalize(() =>
+            setTimeout(() => { this.isLoading = false }, 1000)))
+          .subscribe()
+    })}
     this.sId = id;
     this.isVisible = true;
-
   }
 
   onFilterDate(date: any) {

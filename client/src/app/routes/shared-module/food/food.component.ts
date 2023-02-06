@@ -99,14 +99,15 @@ export class FoodComponent implements OnInit {
     for (let i = 0; i < this.booking.length; i++) {
       this.isLoading = true;
       const payload = {
-        billId: this.billId,
-        creatorUserId: this.user.id,
+        lastModifierUserId: this.user.id,
+        date: new Date(),
         seatId: this.booking[i].seatId,
         price: this.booking[i].price,
         promotionId: this.isPromotion ? this.promotionId : null,
+        billId: this.billId,
       }
       this.ticketService
-        .createTicket(payload)
+        .updateTicket(payload)
         .pipe(catchError((err) => of(err)), finalize(() =>
           setTimeout(() => { this.isLoading = false }, 1000)))
         .subscribe((response) => {
@@ -166,7 +167,7 @@ export class FoodComponent implements OnInit {
       sessionStorage.removeItem('user');
       sessionStorage.setItem('user', JSON.stringify(user));
     };
-    localStorage.removeItem('seat')
+    localStorage.removeItem('seat');
     this.billDetail = [];
     this.getAllFood.size = null;
     this.isPromotion = false;

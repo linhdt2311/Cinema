@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { catchError, interval, of, takeWhile, tap, timer } from 'rxjs';
+import { catchError, finalize, interval, of, takeWhile, tap, timer } from 'rxjs';
 import { FormatMovieScreen } from 'src/app/helpers/FormatMovieScreen';
 import { GetAllShowtimes } from 'src/app/models/getallshowtimes';
 import { User } from 'src/app/models/user';
@@ -10,6 +10,7 @@ import { BillService } from 'src/app/services/bill.service';
 import { MovieService } from 'src/app/services/movie.service';
 import { SeatService } from 'src/app/services/seat.service';
 import { ShowtimesService } from 'src/app/services/showtimes.service';
+import { TicketService } from 'src/app/services/ticket.service';
 
 @Component({
   selector: 'app-modal-room',
@@ -27,6 +28,7 @@ export class ModalRoomComponent implements OnInit {
   screen: boolean = true;
   movies: any[] = [];
   seats: any[] = [];
+  tickets: any[] = [];
   booking: any[] = [];
   showtimes: any[] = [];
   accounts: any[] = [];
@@ -51,19 +53,22 @@ export class ModalRoomComponent implements OnInit {
     private notification: NzNotificationService,
     private datepipe: DatePipe,
     private billService: BillService,
+    private ticketService: TicketService,
   ) { }
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || '{}');
     this.booking = JSON.parse(localStorage.getItem('seat') || '[]');
+    this.tickets = JSON.parse(localStorage.getItem('tickets') || '[]');
     this.booking.forEach(item => { this.money += item.price })
     this.checkUser = Object.keys(this.user).length === 0;
     this.getAllShowtimes.id = this.showtimesId
     this.showtimesData();
     this.seatData();
     this.movieData();
+    this.ticketData();
     this.accountData();
-    if(Object.keys(this.booking).length !== 0){
+    if (Object.keys(this.booking).length !== 0) {
       this.countTime();
     }
   }
@@ -105,6 +110,15 @@ export class ModalRoomComponent implements OnInit {
       });
   }
 
+  ticketData() {
+    this.ticketService
+      .getAllTicket()
+      .pipe(catchError((err) => of(err)))
+      .subscribe((response) => {
+        localStorage.setItem('tickets', JSON.stringify(response));
+      })
+  }
+
   getMovieName(id: any) {
     return this.movies.find(m => m.id == id)?.name;
   }
@@ -135,54 +149,70 @@ export class ModalRoomComponent implements OnInit {
   }
 
   bookingSeat(id: any) {
-    this.seat = this.seats.find(s => s.seatId === id);
-    let seatLocal: any = `[`;
-    if (this.seat.seatStatus == 1) {
-      if (!this.booking.find(b => b.seatId === id)) {
-        if (this.booking.length < 6) {
-          this.booking.push(this.seat);
-          this.money = this.money + this.seat.price;
-        } else {
-          this.notification.create('warning', 'You cannot book more than 6 seat!', '');
-        };
-      } else {
-        let index = this.booking.findIndex((item) => item.seatId == id);
-        this.booking.splice(index, 1);
-        this.booking = [...this.booking];
-        this.money = this.money - this.seat.price;
-      }
+    let allow = false;
+    if (this.checkSeat(id) === 'red' || this.checkSeat(id) === 'green') {
+      allow = false;
     } else {
-      this.notification.create('warning', 'This seat has been booked. You cannot be selected!', '');
+      allow = true;
     }
-    for (const book of this.booking) {
-      if (this.booking[this.booking.length - 1] !== book) {
-        seatLocal += `{
-          "name":${book.name},
-          "price":${book.price},
-          "seat":"${book.seat}",
-          "seatId":"${book.seatId}",
-          "seatStatus":${book.seatStatus},
-          "showtimesId":"${book.showtimesId}",
-          "status":${book.status},
-          "type":${book.type}
-        }, `;
+    if (this.checkUser == true) {
+      this.notification.create('warning', 'You must be login!', '');
+      this.isLoading = false;
+      this.showLogin = true;
+    } else {
+      this.seat = this.seats.find(s => s.seatId === id);
+      if (allow == true) {
+        if (!this.booking.find(b => b.seatId === id)) {
+          if (this.booking.length < 6) {
+            this.booking.push(this.seat);
+            this.money = this.money + this.seat.price;
+            const payload = {
+              creatorUserId: this.user.id,
+              seatId: this.seat.seatId,
+              price: this.seat.price,
+            }
+            this.ticketService
+              .createTicket(payload)
+              .pipe(catchError((err) => of(err)), finalize(() =>
+                setTimeout(() => { this.isLoading = false }, 1000)))
+              .subscribe(() => {
+                const ticket = {
+                  "date": this.datepipe.transform(new Date(), "YYYY-MM-ddTHH:mm:ss"),
+                  "seatId": this.seat.seatId,
+                  "price": this.seat.price,
+                  "promotionId": "",
+                  "billId": null,
+                  "creatorUserId": this.user.id
+                }
+                this.tickets = [ticket, ...this.tickets];
+                localStorage.setItem('tickets', JSON.stringify(this.tickets));
+              })
+          } else {
+            this.notification.create('warning', 'You cannot book more than 6 seat!', '');
+          };
+        } else {
+          let index = this.booking.findIndex((item) => item.seatId == id);
+          this.booking.splice(index, 1);
+          this.booking = [...this.booking];
+          this.money = this.money - this.seat.price;
+          this.ticketService
+            .deleteTicket(this.seat.seatId)
+            .pipe(catchError((err) => of(err)), finalize(() =>
+              setTimeout(() => { this.isLoading = false }, 1000)))
+            .subscribe(() => {
+              const index = this.tickets.findIndex((item) => item.seatId == id);
+              this.tickets.splice(index, 1);
+              this.tickets = [...this.tickets];
+              localStorage.setItem('tickets', JSON.stringify(this.tickets));
+            })
+        }
       } else {
-        seatLocal += `{
-          "name":${book.name},
-          "price":${book.price},
-          "seat":"${book.seat}",
-          "seatId":"${book.seatId}",
-          "seatStatus":${book.seatStatus},
-          "showtimesId":"${book.showtimesId}",
-          "status":${book.status},
-          "type":${book.type}
-        }`
+        this.notification.create('warning', 'This seat has been booked. You cannot be selected!', '');
       }
-    }
-    seatLocal += `]`;
-    localStorage.setItem('seat', seatLocal);
-    if(this.booking.length === 1) {
-      this.countTime();
+      localStorage.setItem('seat', JSON.stringify(this.booking));
+      if (this.booking.length === 1) {
+        this.countTime();
+      }
     }
     return this.booking;
   }
@@ -195,57 +225,47 @@ export class ModalRoomComponent implements OnInit {
 
   handleOk(): void {
     this.isLoading = true;
-    if (this.checkUser == true) {
-      this.notification.create(
-        'warning',
-        'You must be login!',
-        ''
-      );
-      this.isLoading = false;
-      this.showLogin = true;
+    const point = this.user.point;
+    if (0 <= point && point <= 1000) {
+      this.money = this.money;
+    } else if (1001 <= point && point <= 2000) {
+      this.money = this.money - 2500;
+    } else if (2001 <= point && point <= 3500) {
+      this.money = this.money - 5000;
+    } else if (3501 <= point && point <= 5500) {
+      this.money = this.money - 7500;
+    } else if (5501 <= point && point <= 8000) {
+      this.money = this.money - 10000;
+    } else if (8001 <= point && point <= 11000) {
+      this.money = this.money - 15000;
+    } else if (11001 <= point && point <= 14500) {
+      this.money = this.money - 20000;
     } else {
-      const point = this.user.point;
-      if (0 <= point && point <= 1000) {
-        this.money = this.money;
-      } else if (1001 <= point && point <= 2000) {
-        this.money = this.money - 2500;
-      } else if (2001 <= point && point <= 3500) {
-        this.money = this.money - 5000;
-      } else if (3501 <= point && point <= 5500) {
-        this.money = this.money - 7500;
-      } else if (5501 <= point && point <= 8000) {
-        this.money = this.money - 10000;
-      } else if (8001 <= point && point <= 11000) {
-        this.money = this.money - 15000;
-      } else if (11001 <= point && point <= 14500) {
-        this.money = this.money - 20000;
-      } else {
-        this.money = this.money - 30000;
-      }
-      this.cinemaId = this.times.cinemaId;
-      const payload = {
-        creatorUserId: this.user.id,
-        accountId: this.user.id,
-      }
-      this.billService
-        .createBill(payload)
-        .pipe(catchError((err) => of(err)))
-        .subscribe((response) => {
-          this.createDate = this.datepipe.transform(new Date(), 'YYYY-MM-dd%20HH%3Amm%3Ass');
-          if (response) {
-            setTimeout(() => {
-              console.log("create bill successfully!")
-              this.isLoading = false;
-            }, 1000);
-          } else {
-            setTimeout(() => {
-              console.log("create bill failed!")
-              this.isLoading = false;
-            }, 1000);
-          }
-        });
-      this.showFood = true;
+      this.money = this.money - 30000;
     }
+    this.cinemaId = this.times.cinemaId;
+    const payload = {
+      creatorUserId: this.user.id,
+      accountId: this.user.id,
+    }
+    this.billService
+      .createBill(payload)
+      .pipe(catchError((err) => of(err)))
+      .subscribe((response) => {
+        this.createDate = this.datepipe.transform(new Date(), 'YYYY-MM-dd%20HH%3Amm%3Ass');
+        if (response) {
+          setTimeout(() => {
+            console.log("create bill successfully!")
+            this.isLoading = false;
+          }, 1000);
+        } else {
+          setTimeout(() => {
+            console.log("create bill failed!")
+            this.isLoading = false;
+          }, 1000);
+        }
+      });
+    this.showFood = true;
   }
 
   close() {
@@ -266,14 +286,6 @@ export class ModalRoomComponent implements OnInit {
     this.submit.emit();
   }
 
-  checkSeatInLocal(seat: any) {
-    if (this.booking.find(s => s.seatId === seat.seatId)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   countTime() {
     this.counter = 900;
     timer(this.counter, 1000).pipe(
@@ -281,8 +293,49 @@ export class ModalRoomComponent implements OnInit {
       tap(() => this.counter--))
       .subscribe(this.counter = this.counter);
     interval(this.counter * 1000).subscribe(() => {
-      localStorage.removeItem('seat');
-      this.handleCancel();
-    });
+      this.tickets = [];
+      this.ticketService
+        .getAllTicket()
+        .pipe(catchError((err) => of(err)))
+        .subscribe((response: any[]) => {
+          response.forEach((item) => {
+            const expired = Date.now() - Date.parse(item.creationTime);
+            if (item.billId == null && expired > 900000) {
+              this.ticketService
+                .deleteTicket(item.seatId)
+                .pipe(catchError((err) => of(err)), finalize(() =>
+                  setTimeout(() => { this.isLoading = false }, 1000)))
+                .subscribe()
+            } else {
+              this.tickets.push(item);
+              localStorage.setItem('tickets', JSON.stringify(this.tickets));
+            }
+          })
+          localStorage.removeItem('seat');
+          this.handleCancel();
+        });
+    })
+  }
+
+  checkSeat(id: any) {
+    const seat = this.tickets.find(t => t.seatId === id);
+    if (!seat) {
+      const s = this.seats.find(s => s.seatId == id);
+      if (s.type == 1) {
+        return 'yellow';
+      } else {
+        return 'gray';
+      }
+    } else {
+      if (seat.billId != null) {
+        return 'red';
+      } else {
+        if (seat.creatorUserId == this.user.id) {
+          return 'blue';
+        } else {
+          return 'green';
+        }
+      }
+    }
   }
 }

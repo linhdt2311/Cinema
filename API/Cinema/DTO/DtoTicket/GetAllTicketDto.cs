@@ -12,13 +12,17 @@ namespace Cinema.DTO.DtoTicket
             this.SeatId = (Guid)row["SeatId"];
             this.Price = (int)row["Price"];
             this.PromotionId = row["PromotionId"].ToString();
-            this.BillId = (Guid)row["BillId"];
+            this.BillId = row["BillId"] == null ? (Guid)row["BillId"] : null;
+            this.CreatorUserId = (Guid)row["CreatorUserId"];
+            this.CreationTime = (DateTime)row["CreationTime"];
         }
-        public Guid Id { get; set; }
+        public Guid Id { get; set; }    
         public DateTime Date { get; set; }
         public Guid SeatId { get; set; }
         public int Price { get; set; }
         public string PromotionId { get; set; }
-        public Guid BillId { get; set; }
+        public Guid? BillId { get; set; }
+        public Guid CreatorUserId { get; set; }
+        public DateTime CreationTime { get; set; }
     }
 }

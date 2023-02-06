@@ -11,15 +11,15 @@
         (nzCurrentPageDataChange)="onCurrentPageDataChange($event)" nzShowQuickJumper
         [nzPaginationPosition]="setting.paginationPosition" [nzBordered]="true"
         [nzPaginationType]="setting.paginationType" [nzSimple]="setting.paginationSimple">
-        <ng-template #rangeTemplate let-range="range" let-total>
+        <ng-template #rangeTemplate let-range="range" let-total width="100%">
             {{ range[0] }}-{{ range[1] }} of {{ total }} items
         </ng-template>
         <div list>
-            <tbody cdkDropList (cdkDropListDropped)="drop($event)" style="cursor: pointer;">
+            <tbody cdkDropList (cdkDropListDropped)="drop($event)" style="cursor: pointer; width: 100%;">
                 <tr *ngFor="let data of rowSelectionTable.data" cdkDrag>
                     <td style="width: 20%; text-align: center;">{{ data.date | date: 'dd/MM/YYYY' }}</td>
-                    <td>{{ data.history }}</td>
-                    <td>{{ changeToMoney(data.price) }}</td>
+                    <td style="width: 60%;">{{ data.history }}</td>
+                    <td style="width: 20%;">{{ changeToMoney(data.price) }}</td>
                 </tr>
             </tbody>
         </div>

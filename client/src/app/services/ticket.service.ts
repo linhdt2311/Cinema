@@ -21,6 +21,6 @@ export class TicketService {
     return this.http.put(this.baseUrl + '/update', payload);
   }
   deleteTicket(payload: any): Observable<any> {
-    return this.http.delete(this.baseUrl + '/delete', payload);
+    return this.http.delete(this.baseUrl + '/delete?seatId=' + payload);
   }
 }

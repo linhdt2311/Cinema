@@ -56,9 +56,9 @@
         </span>
     </div>
 </nz-card>
-<nz-card nzTitle="Revenue's cinema in this month" class="revenueForMonth" *ngFor="let data of revenueForCinema">
+<nz-card nzTitle="Revenue's cinema in this month" class="revenueForMonth">
     <div style="height: 100px; display: flex;">
-        <div nz-card-grid style="width: 25rem; text-align: center">
+        <div nz-card-grid style="width: 25rem; text-align: center" *ngFor="let data of revenueForCinema">
             <span >{{ data.name }}</span><br>
             <span style="font-size: 20px; color: #ffb326;">{{ changeToMoney(data.count) }}</span>
         </div>

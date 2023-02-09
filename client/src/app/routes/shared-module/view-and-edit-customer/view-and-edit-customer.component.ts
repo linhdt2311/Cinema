@@ -100,6 +100,15 @@ export class ViewAndEditCustomerComponent implements OnInit {
   }
 
   submit() {
+    let check = true;
+    this.accounts.forEach((item) => {
+      if (item.email == this.form.value.email && item.id != this.form.value.id) {
+        check = false;
+      }
+      if (item.identityCard == this.form.value.identityCard && item.id != this.form.value.id) {
+        check = false;
+      }
+    })
     this.isLoading = true;
     this.form.get('role')?.setValue(1);
     this.form.get('doB')?.setValue(this.datepipe.transform(this.form.value.doB, 'YYYY-MM-dd'));
@@ -108,31 +117,35 @@ export class ViewAndEditCustomerComponent implements OnInit {
       this.form.controls[i].updateValueAndValidity();
     }
     if (this.form.valid) {
-      if (this.mode === 'create') {
-        this.accountService
-          .createAccount(this.form.value)
-          .pipe(catchError((err) => of(err)), finalize(() => this.isLoading = false))
-          .subscribe((response) => {
-            if (response) {
-              this.notification.create('success', 'Successfully!', '');
-            } else {
-              this.notification.create('error', 'Failed!', '');
-            }
-          })
-        this.onSubmit.emit(this.form.value);
+      if (check == true) {
+        if (this.mode === 'create') {
+          this.accountService
+            .createAccount(this.form.value)
+            .pipe(catchError((err) => of(err)), finalize(() => this.isLoading = false))
+            .subscribe((response) => {
+              if (response) {
+                this.notification.create('success', 'Successfully!', '');
+              } else {
+                this.notification.create('error', 'Failed!', '');
+              }
+            })
+          this.onSubmit.emit(this.form.value);
+        } else {
+          this.form.get('lastModifierUserId')?.setValue(this.user.id);
+          this.accountService
+            .updateAccount(this.form.value)
+            .pipe(catchError((err) => of(err)), finalize(() => this.isLoading = false))
+            .subscribe((response) => {
+              if (response) {
+                this.notification.create('success', 'Successfully!', '');
+              } else {
+                this.notification.create('error', 'Failed!', '');
+              }
+            })
+          this.onSubmit.emit(this.form.value);
+        }
       } else {
-        this.form.get('lastModifierUserId')?.setValue(this.user.id);
-        this.accountService
-          .updateAccount(this.form.value)
-          .pipe(catchError((err) => of(err)), finalize(() => this.isLoading = false))
-          .subscribe((response) => {
-            if (response) {
-              this.notification.create('success', 'Successfully!', '');
-            } else {
-              this.notification.create('error', 'Failed!', '');
-            }
-          })
-        this.onSubmit.emit(this.form.value);
+        this.notification.create('warning', 'This email or identity card is existed!!!', '')
       }
     } else {
       this.notification.create('warning', 'You must enter all information!', '');

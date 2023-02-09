@@ -6,6 +6,7 @@
         <img *ngIf="movie.poster !== ''" alt="Poster" src="{{ movie.poster }}" class="poster" />
         <div style="padding: 0 50px;">
             <span class="name">{{ movie.name }}</span><br>
+            <nz-rate [ngModel]="3.5" nzAllowHalf nzDisabled></nz-rate><br>
             <span>Opening Day: {{ movie.openingDay | date: 'dd/MM/YYYY' }}</span><br>
             <span>Time: {{ movie.time}} phút</span><br>
             <span>Director: {{ movie.director}}</span><br>

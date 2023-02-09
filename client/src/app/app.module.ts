@@ -57,6 +57,9 @@ import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { HistoryComponent } from './routes/history/history.component';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzBackTopModule } from 'ng-zorro-antd/back-top';
+import { NzAnchorModule } from 'ng-zorro-antd/anchor';
+import { NzRateModule } from 'ng-zorro-antd/rate';
 registerLocaleData(en);
 @NgModule({
   declarations: [
@@ -117,7 +120,10 @@ registerLocaleData(en);
     DragDropModule,
     NzStatisticModule,
     NzTypographyModule,
-    NzCheckboxModule
+    NzCheckboxModule,
+    NzBackTopModule,
+    NzAnchorModule,
+    NzRateModule
   ],
   providers: [
     DatePipe,

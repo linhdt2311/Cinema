@@ -34,7 +34,6 @@ export class ModalRoomComponent implements OnInit {
   accounts: any[] = [];
   cinemaId: string;
   seat: any;
-  url: any;
   user: User;
   times: any;
   checkUser: boolean = true;
@@ -132,11 +131,11 @@ export class ModalRoomComponent implements OnInit {
   }
 
   getPoster(id: any) {
-    this.url = this.movies.find(m => m.id == id)?.poster;
-    if (this.url == '') {
-      this.url = 'https://picsum.photos/200/300';
+    let url = this.movies.find(m => m.id == id)?.poster;
+    if (url == undefined || url == '') {
+      url = 'https://picsum.photos/200/300';
     };
-    return this.url;
+    return url;
   }
 
   getFormatMovieScreen(screen: any) {

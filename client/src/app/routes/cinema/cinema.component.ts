@@ -22,7 +22,6 @@ export class CinemaComponent implements OnInit {
   isVisible: boolean = false;
   sId: string = '';
   getAllShowtimes: GetAllShowtimes = new GetAllShowtimes();
-  url: any;
   cinemaName: string = '';
   date: any[] = [{ value: new Date() },
   { value: new Date(new Date().getTime() + 24 * 60 * 60 * 1000) },
@@ -101,11 +100,11 @@ export class CinemaComponent implements OnInit {
   }
 
   getPoster(id: any) {
-    this.url = this.movies.find(p => p.mId == id)?.poster
-    if (this.url == '') {
-      this.url = 'https://picsum.photos/200/300';
+    let url = this.movies.find(p => p.id == id)?.poster;
+    if (url == undefined || url == '') {
+      url = 'https://picsum.photos/200/300';
     }
-    return this.url
+    return url;
   }
   movieData() {
     this.movieService
@@ -123,11 +122,12 @@ export class CinemaComponent implements OnInit {
       .subscribe((response) => {
         this.showtimes = response;
       });
-
   }
+
   showTimeMovie(movie: any) {
     return this.showtimes.filter(a => a.movieId == movie);
   }
+  
   getDayName(value: Date) {
     return new Intl.DateTimeFormat("en-US", { weekday: "long" }).format(value);
   }

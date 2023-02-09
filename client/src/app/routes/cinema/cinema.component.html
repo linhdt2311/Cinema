@@ -26,9 +26,9 @@
         </ul>
         <div class="layout">
           <div *ngFor="let movie of movies">
-            <div  nz-row *ngIf="showTimeMovie(movie.id).length > 0">
-              <img alt="Poster" src="{{ getPoster(movie.mId) }}" class="poster" />
-              <div nz-col style="width: 70%; background-color: #001529; z-index: 1;">
+            <div  nz-row *ngIf="showTimeMovie(movie.id).length > 0" style="position: relative;background-color: #001529; z-index: 1;">
+              <img alt="Poster" src="{{ getPoster(movie.id) }}" class="poster" />
+              <div nz-col style="width: 70%">
                 <div class="cardMovie">
                   <h5 nz-typography nzEllipsis style="font-weight: bold; color: #fff">{{ movie.name }}</h5>
                   <nz-divider nzText="Format Screen"></nz-divider>

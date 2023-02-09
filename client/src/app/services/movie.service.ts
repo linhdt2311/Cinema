@@ -37,4 +37,7 @@ export class MovieService {
   deleteMovie(payload: any): Observable<any> {
     return this.http.delete(this.baseUrl + '/delete?deleterUserId=' + payload.deleterUserId + '&id=' + payload.id);
   }
+  getMovieByTime(toDate: any, fromDate: any): Observable<any> {
+    return this.http.get(this.baseUrl + '/get-movie-by-time?todate=' + toDate + '&fromdate=' + fromDate)
+  }
 }

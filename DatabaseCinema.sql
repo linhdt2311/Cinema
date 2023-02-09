@@ -437,13 +437,23 @@ go
 create proc CreateAccount
 @Email nvarchar(50), @Password nvarchar(30), @Role int, @Name nvarchar(50), @IdentityCard varchar(12), @DoB datetime, @Address nvarchar(max), @Phone varchar(10)
 as
-	insert into Account(CreationTime, IsDeleted, Email, Password, Role, Name, IdentityCard, DoB, Address, Phone, Point) values (getdate(), 0, @Email, @Password, @Role, @Name, @IdentityCard, @DoB, @Address, @Phone, 0)
+	declare @existEmail = select count(*) from Account where Email = @Email
+	declare @existId = select count(*) from Account where IdentityCard = @IdentityCard
+	if (@existEmail <> 1 and @existId <> 1)
+	begin
+		insert into Account(CreationTime, IsDeleted, Email, Password, Role, Name, IdentityCard, DoB, Address, Phone, Point) values (getdate(), 0, @Email, @Password, @Role, @Name, @IdentityCard, @DoB, @Address, @Phone, 0)
+	end
 go
 --proc update account
 create or alter proc UpdateAccount
 @LastModifierUserId uniqueidentifier, @Id uniqueidentifier, @Email nvarchar(50), @Password nvarchar(30), @Role int, @Name nvarchar(50), @IdentityCard varchar(12), @DoB datetime, @Address nvarchar(max), @Phone varchar(10), @Point int
 as
-	update Account set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, Email = @Email, Password = @Password, Name = @Name, IdentityCard = @IdentityCard, DoB = @DoB, Address = @Address, Phone = @Phone, Point = @Point where Id = @Id
+	declare @existEmail = select count(*) from Account where Email = @Email and Id != @Id
+	declare @existId = select count(*) from Account where IdentityCard = @IdentityCard and Id != @Id
+	if (@existEmail <> 1 and @existId <> 1)
+	begin
+		update Account set LastModificationTime = getdate(), LastModifierUserId = @LastModifierUserId, Email = @Email, Password = @Password, Name = @Name, IdentityCard = @IdentityCard, DoB = @DoB, Address = @Address, Phone = @Phone, Point = @Point where Id = @Id
+	end
 go
 --proc add showtimes
 create proc CreateShowtimes
@@ -754,4 +764,3 @@ begin
 	set @n = @n + 1;
 end
 go
-exec CreateTicket @CreatorUserId = 'd85e935f-5373-4de5-ab69-5b87e9a3cd98', @SeatId = 'c90467cd-a062-4ca8-82a1-e5ca48abf546', @Price = 50000

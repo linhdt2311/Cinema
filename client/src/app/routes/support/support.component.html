@@ -1,12 +1,17 @@
 <img width="100%" height="100%" style="object-fit:cover" src="../../../assets/background.webp" alt="background">
 <img width="100%" height="100%" style="object-fit:cover" src="../../../assets/background.webp" alt="background">
+<nz-back-top [nzTemplate]="tpl" [nzVisibilityHeight]="10">
+    <ng-template #tpl>
+        <div class="ant-back-top-inner"><i class="fa-solid fa-circle-up"></i></div>
+    </ng-template>
+</nz-back-top>
 <div class="content">
     <h1 class="title">Nhóm 2 - Đề tài quản lý đặt vé rạp chiếu phim</h1>
     <div class="part">Thành viên trong nhóm:</div>
     <ul>
         <li>Đặng Tuấn Linh - 120164</li>
         <li>Nguyễn Quang Huy - 103964</li>
-        <li>Tô Tiến Việt - </li>
+        <li>Tô Tiến Việt - 224564</li>
     </ul>
     <div class="part">Phát biểu</div>
     <p style="text-indent: 2em;">Trong các rạp chiếu phim hiện nay, việc quản lý và tổ chức chiếu phim, bán vé luôn là
@@ -78,11 +83,13 @@
             <i class="fa-brands fa-instagram fa-2x"></i>
             <span>@linhdepzai</span>
         </div>
-        <div class='social-btn flex-center linkedin' (click)="openSocial('https://www.linkedin.com/in/linh-%C4%91%E1%BA%B7ng-tu%E1%BA%A5n-b45b98244/')">
+        <div class='social-btn flex-center linkedin'
+            (click)="openSocial('https://www.linkedin.com/in/linh-%C4%91%E1%BA%B7ng-tu%E1%BA%A5n-b45b98244/')">
             <i class="fa-brands fa-linkedin fa-2x"></i>
             <span>in/hbqhm</span>
         </div>
-        <div class='social-btn flex-center youtube' (click)="openSocial('https://www.youtube.com/channel/UCDysGnPZIOzgoddk1d5pwkQ')">
+        <div class='social-btn flex-center youtube'
+            (click)="openSocial('https://www.youtube.com/channel/UCDysGnPZIOzgoddk1d5pwkQ')">
             <i class="fa-brands fa-youtube fa-2x"></i>
             <span>linhdepzai</span>
         </div>

@@ -39,6 +39,26 @@ namespace Cinema.Controllers
             conn.Close();
             return movieList.ToList();
         }
+        [HttpGet("get-movie-by-time")]
+        public List<MovieDto> GetMovieByTime(DateTime? todate, DateTime? fromdate)
+        {
+            conn.Open();
+            var toTime = string.IsNullOrWhiteSpace(todate.ToString()) ? null : todate.Value.ToString("yyyy-MM-dd");
+            var fromTime = string.IsNullOrWhiteSpace(fromdate.ToString()) ? null : fromdate.Value.ToString("yyyy-MM-dd");
+            string sql = string.Format("exec GetMovieByTime @ToDate ='" + toTime + "', @FromDate ='" + fromTime + "'");
+            SqlCommand sqlCommand = new SqlCommand(sql, conn);
+            DataTable data = new DataTable();
+            SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
+            adapter.Fill(data);
+            var movieList = new List<MovieDto>();
+            foreach (DataRow i in data.Rows)
+            {
+                MovieDto movie = new MovieDto(i);
+                movieList.Add(movie);
+            }
+            conn.Close();
+            return movieList.ToList();
+        }
         [HttpPost("search")]
         public List<MovieDto> SearchMovie(SearchMovieDto input)
         {

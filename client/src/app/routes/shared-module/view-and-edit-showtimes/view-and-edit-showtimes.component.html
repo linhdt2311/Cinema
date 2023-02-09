@@ -48,6 +48,7 @@
             <div nz-card-grid *ngFor="let s of filterTime" style="width: 25%; text-align: center; background-color: white;">
                 {{ s.timeStart | date: 'HH:mm' }} - {{ calc(s.timeStart, form.value.movieId) | date: 'HH:mm' }}
             </div>
+            <div *ngIf="filterTime.length <= 0">No screenings today!</div>
           </nz-card>
     <div *ngIf="isEdit" class="footer">
         <button nz-button nzType="primary" (click)="submit()">

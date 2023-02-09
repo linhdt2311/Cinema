@@ -2,13 +2,16 @@
     <div class="carousel" style="height: 300px">
         <nz-carousel nzAutoPlay>
             <div nz-carousel-content>
-                <img width="100%" height="100%" style="object-fit:cover" src="../../../assets/ant-man-quantumania.png" alt="Ant man">
+                <img width="100%" height="100%" style="object-fit:cover" src="../../../assets/ant-man-quantumania.png"
+                    alt="Ant man">
             </div>
             <div nz-carousel-content>
-                <img width="100%" height="100%" style="object-fit:cover" src="../../../assets/super-mario-bros.jpg" alt="Super Mario Bros">
+                <img width="100%" height="100%" style="object-fit:cover" src="../../../assets/super-mario-bros.jpg"
+                    alt="Super Mario Bros">
             </div>
             <div nz-carousel-content>
-                <img width="100%" height="100%" style="object-fit:cover" src="../../../assets/Johnwick.jpg" alt="johnwick">
+                <img width="100%" height="100%" style="object-fit:cover" src="../../../assets/Johnwick.jpg"
+                    alt="johnwick">
             </div>
         </nz-carousel>
     </div>
@@ -19,7 +22,7 @@
         <button class="btn_nowshowing" (click)="movieData('now')">Now Showing</button>
         <button class="btn_comingsoon" (click)="movieData('soon')">Coming soon</button>
         <nz-card style="background: none; border: none; padding: none;">
-            <div nz-card-grid *ngFor="let movie of movies" style="width: 25%; text-align: center;">
+            <div nz-card-grid *ngFor="let movie of movies" style="width: 25%; text-align: center; height: 487px;">
                 <nz-card nzHoverable class="card" [nzCover]="coverTemplate" [nzLoading]="loading">
                     <nz-card-meta nzTitle="{{ movie.name }}" style="padding: 15px;"
                         nzDescription="{{ movie.time }} phút | {{ movie.openingDay | date: 'dd/MM/yyyy' }}">
@@ -39,5 +42,11 @@
                 </ng-template>
             </div>
         </nz-card>
+        <div class="footer">
+            <div>CHĂM SÓC KHÁCH HÀNG</div>
+            <div>Hotline: 0387 008 631</div>
+            <div>Giờ làm việc: 8h00-22h00 tất cả các ngày trong tuần</div>
+            <div>Email: contact@hbqhmcinema.com</div>
+        </div>
     </div>
 </nz-layout>

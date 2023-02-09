@@ -422,7 +422,7 @@ as
 	insert into Room(CreationTime, CreatorUserId, IsDeleted, Name, Type, Status, CinemaId, FormatMovieScreen) values (getdate(), @CreatorUserId, 0, @Name, @Type, @Status, @CinemaId, @FormatMovieScreen)
 go
 --proc add movie
-create proc CreateMovie
+create or alter proc CreateMovie
 @CreatorUserId uniqueidentifier, @Name nvarchar(max), @Time int, @OpeningDay datetime, @Country nvarchar(50), @Director nvarchar(50), @Description nvarchar(max), @Poster nvarchar(max)
 as
 	insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description, Poster) values (getdate(), @CreatorUserId, 0, @Name, @Time, @OpeningDay, @Country, @Director, @Description, @Poster)
@@ -747,20 +747,4 @@ insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay
 insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director) values (getdate(), @AdminId, 0, N'Doraemon: Nobita to Sora no Utopia', 120, '2023-03', 'Japan', 'Doyama Takumi')
 insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Stand by me Doraemon', 120, '2014-08-08', 'Japan', 'Yamazaki Takashi Yagi Ryūichi', N'Dựa trên nhiều mẩu truyện ngắn khác nhau trong manga Doraemon gốc, tác phẩm được biên tập lại thành phim hoàn chỉnh phát hành nhân dịp kỉ niệm 80 năm ngày sinh cố tác giả Fujiko F. Fujio.Nội dung phim kể về Doraemon, một chú mèo máy không tai đến từ tương lai trở về những năm 70 để giúp một cậu bé "vô tích sự" Nobi Nobita thay đổi tương lai đen tối sang một viễn cảnh tương lai tươi sáng vốn sẽ thay đổi số phận của con cháu Nobita về sau và khi Doraemon hoàn tất nhiệm vụ chia tay Nobita cùng với đó là cuộc hội ngộ bất ngờ của họ do chính Nobita tạo ra.')
 insert into Movie(CreationTime, CreatorUserId, IsDeleted, Name, Time, OpeningDay, Country, Director, Description) values (getdate(), @AdminId, 0, N'Stand by me Doraemon 2', 120, '2020-11-20', 'Japan', 'Yamazaki Takashi Yagi Ryūichi', N'Đây là phần phim 3D tiếp nối sau Stand by Me Doraemon phát hành năm 2014, được sản xuất nhằm kỉ niệm 50 năm bộ truyện Doraemon ra đời, chủ yếu lấy cảm hứng từ các chương truyện tranh ngắn do tác giả Fujiko F. Fujio sáng tác và do nhà xuất bản Shogakukan ấn hành, các chương này sau đó từng được chuyển thể thành phim ngắn năm 2000 Kỉ niệm về bà và phim ngắn năm 2002 Ngày tớ ra đời.')
-go
---insert showtimes
-declare @AId uniqueidentifier = (select Id from (select top 1 * from Account) a)
-declare @n int = 1;
-while @n < 41
-begin
-	declare @MovieId uniqueidentifier = (select Id from (select row_number() over(order by Name asc) as row, * from Movie) m where row = @n)
-	declare @m int = 1;
-	while @m < 2
-	begin
-		declare @RoomId uniqueidentifier = (select Id from (select row_number() over(order by Name asc) as row, * from Room) r where row = @m)
-		insert into Showtimes(CreationTime, CreatorUserId, IsDeleted, MovieId, TimeStart, RoomId) values (getdate(), @AId, 0, @MovieId, getdate(), @RoomId)
-	set @m = @m + 1;
-	end
-	set @n = @n + 1;
-end
 go

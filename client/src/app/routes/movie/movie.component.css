@@ -228,3 +228,11 @@ h3 {
     transform: translate(0);
   }
 }
+
+.footer {
+  bottom: 0;
+  z-index: 1000;
+  color: #fff;
+  background-color: #001529;
+  width: 100%;
+}

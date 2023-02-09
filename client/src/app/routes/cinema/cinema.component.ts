@@ -79,7 +79,7 @@ export class CinemaComponent implements OnInit {
 
   showModal(id: any): void {
     let showtimeId = id;
-    this.seatInLocal.forEach((item) => { showtimeId = item.showtimesId });
+    if(this.seatInLocal.length > 0) this.seatInLocal.forEach((item) => { showtimeId = item.showtimesId });
     if (showtimeId !== this.sId) {
       localStorage.removeItem('seat');
       const resetseat: any[] = JSON.parse(localStorage.getItem('seat') || '[]');

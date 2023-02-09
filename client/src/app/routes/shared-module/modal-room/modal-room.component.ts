@@ -59,14 +59,12 @@ export class ModalRoomComponent implements OnInit {
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || '{}');
     this.booking = JSON.parse(localStorage.getItem('seat') || '[]');
-    this.tickets = JSON.parse(localStorage.getItem('tickets') || '[]');
     this.booking.forEach(item => { this.money += item.price })
     this.checkUser = Object.keys(this.user).length === 0;
-    this.getAllShowtimes.id = this.showtimesId
+    this.getAllShowtimes.id = this.showtimesId;
     this.showtimesData();
     this.seatData();
     this.movieData();
-    this.ticketData();
     this.accountData();
     if (Object.keys(this.booking).length !== 0) {
       this.countTime();
@@ -79,6 +77,7 @@ export class ModalRoomComponent implements OnInit {
       .pipe(catchError((err) => of(err)))
       .subscribe((response) => {
         this.seats = response;
+        this.ticketData();
       });
   }
 
@@ -114,8 +113,17 @@ export class ModalRoomComponent implements OnInit {
     this.ticketService
       .getAllTicket()
       .pipe(catchError((err) => of(err)))
-      .subscribe((response) => {
-        localStorage.setItem('tickets', JSON.stringify(response));
+      .subscribe((response: any[]) => {
+        sessionStorage.setItem('tickets', JSON.stringify(response));
+        this.tickets = JSON.parse(sessionStorage.getItem('tickets') || '[]');
+        this.booking = [];
+        this.money = 0;
+        this.checkTicket();
+        response.forEach((item) => {
+          if (item.creatorUserId == this.user.id && item.billId == '') {
+            this.addOrRemove(item.seatId);
+          }
+        })
       })
   }
 
@@ -150,6 +158,7 @@ export class ModalRoomComponent implements OnInit {
 
   bookingSeat(id: any) {
     let allow = false;
+    this.seat = this.seats.find(s => s.seatId === id);
     if (this.checkSeat(id) === 'red' || this.checkSeat(id) === 'green') {
       allow = false;
     } else {
@@ -160,7 +169,6 @@ export class ModalRoomComponent implements OnInit {
       this.isLoading = false;
       this.showLogin = true;
     } else {
-      this.seat = this.seats.find(s => s.seatId === id);
       if (allow == true) {
         if (!this.booking.find(b => b.seatId === id)) {
           if (this.booking.length < 6) {
@@ -181,11 +189,11 @@ export class ModalRoomComponent implements OnInit {
                   "seatId": this.seat.seatId,
                   "price": this.seat.price,
                   "promotionId": "",
-                  "billId": null,
+                  "billId": '',
                   "creatorUserId": this.user.id
                 }
                 this.tickets = [ticket, ...this.tickets];
-                localStorage.setItem('tickets', JSON.stringify(this.tickets));
+                sessionStorage.setItem('tickets', JSON.stringify(this.tickets));
               })
           } else {
             this.notification.create('warning', 'You cannot book more than 6 seat!', '');
@@ -203,7 +211,7 @@ export class ModalRoomComponent implements OnInit {
               const index = this.tickets.findIndex((item) => item.seatId == id);
               this.tickets.splice(index, 1);
               this.tickets = [...this.tickets];
-              localStorage.setItem('tickets', JSON.stringify(this.tickets));
+              sessionStorage.setItem('tickets', JSON.stringify(this.tickets));
             })
         }
       } else {
@@ -219,7 +227,6 @@ export class ModalRoomComponent implements OnInit {
 
   handleCancel(): void {
     this.money = 0;
-    this.booking = [];
     this.cancel.emit();
   }
 
@@ -282,7 +289,7 @@ export class ModalRoomComponent implements OnInit {
   foodSubmit() {
     this.showFood = false;
     this.money = 0;
-    this.booking = [];
+    this.ticketData();
     this.submit.emit();
   }
 
@@ -293,28 +300,41 @@ export class ModalRoomComponent implements OnInit {
       tap(() => this.counter--))
       .subscribe(this.counter = this.counter);
     interval(this.counter * 1000).subscribe(() => {
-      this.tickets = [];
-      this.ticketService
-        .getAllTicket()
-        .pipe(catchError((err) => of(err)))
-        .subscribe((response: any[]) => {
-          response.forEach((item) => {
-            const expired = Date.now() - Date.parse(item.creationTime);
-            if (item.billId == null && expired > 900000) {
-              this.ticketService
-                .deleteTicket(item.seatId)
-                .pipe(catchError((err) => of(err)), finalize(() =>
-                  setTimeout(() => { this.isLoading = false }, 1000)))
-                .subscribe()
-            } else {
-              this.tickets.push(item);
-              localStorage.setItem('tickets', JSON.stringify(this.tickets));
-            }
-          })
-          localStorage.removeItem('seat');
-          this.handleCancel();
-        });
+      this.checkTicket();
+      localStorage.removeItem('seat');
+      this.handleCancel();
     })
+  }
+
+  checkTicket() {
+    const array: any = [];
+    this.tickets.forEach((item) => {
+      const expired = Date.now() - Date.parse(item.creationTime);
+      if (item.billId == '' && expired > this.counter * 1000) {
+        this.ticketService
+          .deleteTicket(item.seatId)
+          .pipe(catchError((err) => of(err)), finalize(() =>
+            setTimeout(() => { this.isLoading = false }, 1000)))
+          .subscribe()
+      } else {
+        array.push(item);
+      }
+    })
+    this.tickets = array;
+    sessionStorage.setItem('tickets', JSON.stringify(this.tickets));
+  }
+
+  addOrRemove(id: any) {
+    this.seat = this.seats.find(s => s.seatId === id);
+    if (!this.booking.find(b => b.seatId === id)) {
+      this.booking.push(this.seat);
+      this.money = this.money + this.seat.price;
+    } else {
+      let index = this.booking.findIndex((item) => item.seatId == id);
+      this.booking.splice(index, 1);
+      this.booking = [...this.booking];
+      this.money = this.money - this.seat.price;
+    }
   }
 
   checkSeat(id: any) {
@@ -327,7 +347,7 @@ export class ModalRoomComponent implements OnInit {
         return 'gray';
       }
     } else {
-      if (seat.billId != null) {
+      if (seat.billId != '') {
         return 'red';
       } else {
         if (seat.creatorUserId == this.user.id) {

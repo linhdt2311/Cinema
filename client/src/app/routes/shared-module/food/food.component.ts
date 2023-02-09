@@ -154,26 +154,26 @@ export class FoodComponent implements OnInit {
       .subscribe((response) => {
         if (response) {
           this.notification.create('success', 'Successfully!', '');
+          const user = this.user;
+          user.point += (this.total / 2000);
+          if (localStorage.getItem('user')) {
+            localStorage.removeItem('user');
+            localStorage.setItem('user', JSON.stringify(user));
+          } else {
+            sessionStorage.removeItem('user');
+            sessionStorage.setItem('user', JSON.stringify(user));
+          };
+          localStorage.removeItem('seat');
+          this.billDetail = [];
+          this.getAllFood.size = null;
+          this.isPromotion = false;
+          this.discount = 0;
+          this.warningCode = '';
+          this.submit.emit();
         } else {
           this.notification.create('error', 'Failed!', '');
         }
       });
-    const user = this.user;
-    user.point += (this.total / 2000);
-    if(localStorage.getItem('user')){
-      localStorage.removeItem('user');
-      localStorage.setItem('user', JSON.stringify(user));
-    } else {
-      sessionStorage.removeItem('user');
-      sessionStorage.setItem('user', JSON.stringify(user));
-    };
-    localStorage.removeItem('seat');
-    this.billDetail = [];
-    this.getAllFood.size = null;
-    this.isPromotion = false;
-    this.discount = 0;
-    this.warningCode = '';
-    this.submit.emit();
   }
 
   getFoodSize(value: any) {

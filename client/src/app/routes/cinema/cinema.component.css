@@ -74,6 +74,7 @@ nz-content {
   background-size: cover;
   overflow: hidden;
   position: relative;
+  z-index: 1;
 }
 
 .poster .shadow_swhow_mini {
@@ -94,4 +95,11 @@ nz-content {
     border-bottom: 0;
 }
 
-
+.sorry {
+  position: absolute;
+  top: 50%;
+  left: 45%;
+  font-weight: bold;
+  font-size: xx-large;
+  z-index: 0;
+}

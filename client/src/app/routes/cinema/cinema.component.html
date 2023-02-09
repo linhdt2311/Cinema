@@ -25,30 +25,36 @@
           </li>
         </ul>
         <div class="layout">
-          <div nz-row *ngFor="let movie of movies">
-            <img alt="Poster" src="{{ getPoster(movie.mId) }}" class="poster" />
-            <div nz-col style="width: 70%;">
-              <div class="cardMovie">
-                <h5 nz-typography nzEllipsis style="font-weight: bold; color: #fff">{{ movie.name }}</h5>
-                <nz-divider nzText="Format Screen"></nz-divider>
-                <div nz-row [nzGutter]="1">
-                  <div nz-col [nzSpan]="6" *ngFor="let format of formatMovieScreen" style="text-align: center;">
-                    <button nz-button class="button" [nzLoading]="isLoading" nzType="default"
-                      (click)="onFilterScreen(format.value)">{{ format.viewValue }}
-                    </button>
+          <div *ngFor="let movie of movies">
+            <div  nz-row *ngIf="showTimeMovie(movie.id).length > 0">
+              <img alt="Poster" src="{{ getPoster(movie.mId) }}" class="poster" />
+              <div nz-col style="width: 70%; background-color: #001529; z-index: 1;">
+                <div class="cardMovie">
+                  <h5 nz-typography nzEllipsis style="font-weight: bold; color: #fff">{{ movie.name }}</h5>
+                  <nz-divider nzText="Format Screen"></nz-divider>
+                  <div nz-row [nzGutter]="1">
+                    <div nz-col [nzSpan]="6" *ngFor="let format of formatMovieScreen" style="text-align: center;">
+                      <button nz-button class="button" [nzLoading]="isLoading" nzType="default"
+                        (click)="onFilterScreen(format.value)">{{ format.viewValue }}
+                      </button>
+                    </div>
                   </div>
-                </div>
-                <nz-divider nzText="Showtimes"></nz-divider>
-                <div nz-row [nzGutter]="1">
-                  <div nz-col [nzSpan]="3" *ngFor="let s of showTimeMovie(movie.id)" style="text-align: center;">
-                    <button nz-button nzType="default" (click)="showModal(s.id)">
-                      {{ s.timeStart|date: 'hh:mm' }}
-                    </button>
+                  <nz-divider nzText="Showtimes"></nz-divider>
+                  <div nz-row [nzGutter]="1">
+                    <div nz-col [nzSpan]="3" *ngFor="let s of showTimeMovie(movie.id)" style="text-align: center;">
+                      <button nz-button nzType="default" (click)="showModal(s.id)">
+                        {{ s.timeStart|date: 'HH:mm' }}
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
+              <nz-divider></nz-divider>
             </div>
-            <nz-divider></nz-divider>
+          </div>
+          <div class="sorry">
+            <i class="fa-solid fa-robot"></i>
+            Sorry, this showtime can't find now
           </div>
         </div>
       </div>
